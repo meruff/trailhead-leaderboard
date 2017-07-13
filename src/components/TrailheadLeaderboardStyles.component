@@ -1,0 +1,35 @@
+<!--
+* File: TrailheadLeader
+* Author: Mat Ruff
+* Description: Displays a Leaderboard of Trailhead Users.
+-->
+<apex:component id="TrailheadLeaderboardStyles">
+    <style>
+        body {
+            background: url({!URLFOR($Resource.Trailhead_Leaderboard, 'trailheadLeaderboard/bg.png')}) no-repeat center center fixed !important;
+            background-size: cover !important;
+        }
+
+        a {
+            color: #394355 !important;
+        }
+
+        .leaderCrown {
+            width: 25px;
+            margin-top: -44px;
+            margin-right: -25px;
+            -ms-transform: rotate(-27deg);
+            -webkit-transform: rotate(-27deg);
+            transform: rotate(-27deg);
+        }
+
+        .message td {
+            padding: 0px !important;
+            color: #cc0000;
+        }
+
+        .message {
+            margin-bottom: 15px;
+        }
+    </style>
+</apex:component>

@@ -1,0 +1,234 @@
+<!--
+* File: trailheadLeaderboard.page
+* Author: Mat Ruff
+* Description: Displays a Leaderboard of Trailhead Users.
+-->
+<apex:page id="trailheadLeaderboard" controller="TrailheadLeaderboardController" showHeader="false" sideBar="false"
+           standardStylesheets="false" docType="html-5.0" applyBodyTag="false" applyHtmlTag="false">
+    <html xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+        <head>
+            <title>Trailhead Leaderboard</title>
+            <meta charset="utf-8"/>
+            <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+            <meta name="theme-color" content="#D8DEE6"/>
+            <apex:slds />
+            <c:TrailheadLeaderboardStyles />
+        </head>
+
+        <body class="slds-scope">
+            <!-- Main Container -->
+            <div class="slds-p-horizontal--large" style="margin-top:20px;margin-bottom:20px;">
+                <div class="slds-text-heading_large">
+                    <h2>Trailhead Leaderboard</h2>
+                </div>
+                <br />
+
+                <!-- Main Form -->
+                <apex:form id="mainPage">
+                    <!-- Leaderboard -->
+                    <div id="leaderBoard" class="slds-card">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                                <div class="slds-media__body">
+                                    <h2>
+                                        <span class="slds-text-heading--small">Trailblazers</span>
+                                    </h2>
+                                </div>
+                            </header>
+                            <div class="slds" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <a href="#newBlazerForm" onclick="openModal('newBlazerModal');">
+                                    <svg class="slds-button__icon" aria-hidden="true" style="margin:-3px 2px 0px 0px;">
+                                        <use xlink:href="{!URLFOR($Asset.SLDS, '/assets/icons/utility-sprite/svg/symbols.svg#new')}"></use>
+                                    </svg>
+                                    Add a new Trailblazer
+                                </a>
+                            </div>
+                        </div>
+                        <div class="slds-card__body">
+                            <div class="slds-scrollable--x">
+                                <table class="slds-table slds-table--bordered slds-table--cell-buffer">
+                                    <thead>
+                                        <tr class="slds-text-title--caps">
+                                            <th scope="col" class="slds-cell-wrap">
+                                                <div class="slds-truncate" title="Number">#</div>
+                                            </th>
+                                            <th scope="col" class="slds-cell-wrap">
+                                                <div class="slds-truncate" title="Name">Name</div>
+                                            </th>
+                                            <th scope="col" class="slds-cell-wrap">
+                                                <div class="slds-truncate" title="Rank">Rank</div>
+                                            </th>
+                                            <th scope="col" class="slds-cell-wrap">
+                                                <div class="slds-truncate" title="Points">Points</div>
+                                            </th>
+                                            <th scope="col" class="slds-cell-wrap">
+                                                <div class="slds-truncate" title="Badges">Badges</div>
+                                            </th>
+                                            <th scope="col" class="slds-cell-wrap">
+                                                <div class="slds-truncate" title="Trails">Trails</div>
+                                            </th>
+                                            <th scope="col" class="slds-cell-wrap">
+                                                <div class="slds-truncate" title="Trailblazer Since">Trailblazer Since</div>
+                                            </th>
+                                            <th scope="col" class="slds-cell-wrap">
+                                                <div class="slds-truncate" title="Profile">Profile</div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <apex:variable value="{!1}" var="rank"/>
+                                    <apex:repeat value="{!trailblazers}" var="tb">
+                                        <tr class="slds-hint-parent">
+                                            <td class="slds-cell-wrap">
+                                                <div class="slds-truncate">{!rank}</div>
+                                            </td>
+                                            <td class="slds-cell-wrap" style="white-space:nowrap;">
+                                                <div class="slds-truncate">
+                                                    <apex:image value="{!URLFOR($Resource.Trailhead_Leaderboard, 'trailheadLeaderboard/crown.png')}"
+                                                                styleClass="leaderCrown"
+                                                                rendered="{!rank = 1}"/>
+                                                    <span class="slds-avatar slds-avatar_large slds-avatar_circle" style="margin-right:15px;">
+                                                        <apex:image value="{!tb.Profile_Photo__c}"/>
+                                                    </span>
+                                                    {!tb.Name}
+                                                </div>
+                                            </td>
+                                            <td class="slds-cell-wrap" style="white-space:nowrap;">
+                                                <div class="slds-truncate">
+                                                    <span class="slds-avatar slds-avatar_large" style="margin-right:15px;">
+                                                        <apex:image value="{!URLFOR($Resource.Trailhead_Leaderboard, 'trailheadLeaderboard/ranks/' + LOWER(tb.Rank__c) + '.png')}"
+                                                                    style="{!IF(tb.Rank__c = 'Adventurer' || tb.Rank__c = 'Expeditioner','margin-top:7px;',IF(tb.Rank__c = 'Hiker', 'margin-top:4px;',IF(tb.Rank__c = 'Ranger', 'margin-top:4px;','')))};max-height:100%"/>
+                                                    </span>
+                                                    {!tb.Rank__c}
+                                                </div>
+                                            </td>
+                                            <td class="slds-cell-wrap">
+                                                <div class="slds-truncate">{!tb.Points__c}</div>
+                                            </td>
+                                            <td class="slds-cell-wrap">
+                                                <div class="slds-truncate">{!tb.Badges__c}</div>
+                                            </td>
+                                            <td class="slds-cell-wrap">
+                                                <div class="slds-truncate">{!tb.Trails__c}</div>
+                                            </td>
+                                            <td class="slds-cell-wrap" style="white-space:nowrap;">
+                                                <div class="slds-truncate">{!tb.Trailblazer_Since__c}</div>
+                                            </td>
+                                            <td class="slds-cell-wrap">
+                                                <div class="slds-truncate">
+                                                    <div class="slds" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                        <a href="{!tb.Profile_Link__c}" target="_blank">
+                                                            Link
+                                                            <svg class="slds-button__icon" aria-hidden="true" style="margin:-5px 0px 0px 4px;">
+                                                                <use xlink:href="{!URLFOR($Asset.SLDS, '/assets/icons/utility-sprite/svg/symbols.svg#new_window')}"></use>
+                                                            </svg>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <apex:variable value="{!rank + 1}" var="rank"/>
+                                    </apex:repeat>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- New Trailblazer Modal -->
+                    <div id="newBlazerModal" role="dialog" tabindex="-1" class="slds-modal slds-modal--large" aria-labelledby="header43" style="overflow-y:auto;">
+                        <div class="slds-modal__container">
+
+                            <!-- Modal Header -->
+                            <div class="slds-modal__header">
+                                <div class="slds" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                    <button class="modalx slds-button slds-modal__close slds-button--icon-inverse" title="Close"
+                                            onclick="closeModal('newBlazerModal'); return false;">
+                                        <svg class="slds-button__icon slds-button__icon--large" aria-hidden="true">
+                                            <use xlink:href="{!URLFOR($Asset.SLDS, '/assets/icons/utility-sprite/svg/symbols.svg#close')}"></use>
+                                        </svg>
+                                        <span class="slds-assistive-text">Close</span>
+                                    </button>
+                                </div>
+                                <h2 id="header43" class="slds-text-heading--medium">New Trailblazer</h2>
+                            </div>
+
+                            <!-- Modal Body -->
+                            <apex:outputPanel id="addNewReaderModalBody">
+                                <div class="slds-modal__content slds-p-around--medium">
+                                    <apex:pageMessages id="pageMessages"/>
+
+                                    <div class="slds-form slds-form_stacked">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label" for="blazerName">Trailblazer Name</label>
+                                            <div class="slds-form-element__control">
+                                                <apex:inputText styleClass="slds-input"
+                                                                id="blazerName"
+                                                                html-placeholder="Name"
+                                                                value="{!newBlazer.Name}"/>
+                                            </div>
+                                        </div>
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label" for="blazerProfileId">
+                                                Trailhead Profile Id
+                                            </label>
+                                            <div class="slds-form-element__control">
+                                                <apex:inputText styleClass="slds-input"
+                                                                id="blazerProfileId"
+                                                                html-placeholder="User Id from Trailhead"
+                                                                value="{!newBlazer.Profile_Id__c}"/>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <p>
+                                            <b>Note:</b>
+                                            To find your Profile Id, first make sure your Trailhead Profile is set to public.
+                                            Then copy the Salesforce User Id from the URL. It starts with 005.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="slds-modal__footer">
+                                    <a href="#" class="slds-button slds-button_neutral"
+                                       onclick="closeModal('newBlazerModal'); return false;">Cancel</a>
+                                    <apex:commandButton value="Submit"
+                                                        styleClass="slds-button slds-button--brand"
+                                                        action="{!createNewTrailblazer}"
+                                                        status="loadingStatus"
+                                                        reRender="mainPage,pageMessages"/>
+                                </div>
+                            </apex:outputPanel>
+                        </div>
+                    </div>
+                </apex:form>
+            </div>
+
+            <!-- Backdrop uses to disable content underneath an open modal -->
+            <div id="backdrop" class="slds-backdrop"></div>
+
+            <!-- Full Page Loading Spinner -->
+            <apex:actionStatus id="loadingStatus">
+                <apex:facet name="start">
+                    <div class="slds-spinner_container">
+                        <div role="status" class="slds-spinner slds-spinner--brand slds-spinner--medium">
+                            <span class="slds-assistive-text">Loading</span>
+                            <div class="slds-spinner__dot-a"></div>
+                            <div class="slds-spinner__dot-b"></div>
+                        </div>
+                    </div>
+                </apex:facet>
+            </apex:actionStatus>
+
+            <!-- Custom .js -->
+            <script type="text/javascript">
+                function openModal(modalId) {
+                    document.getElementById("backdrop").classList.add('slds-backdrop--open');
+                    document.getElementById(modalId).classList.add('slds-fade-in-open');
+                }
+
+                function closeModal(modalId) {
+                    document.getElementById("backdrop").classList.remove('slds-backdrop--open');
+                    document.getElementById(modalId).classList.remove('slds-fade-in-open');
+                }
+            </script>
+        </body>
+    </html>
+</apex:page>
