@@ -2,8 +2,15 @@
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
         <members>PopulateTrailblazers</members>
+        <members>PopulateTrailblazersTest</members>
+        <members>TrailheadCalloutMock</members>
         <members>TrailheadLeaderboardController</members>
+        <members>TrailheadLeaderboardControllerTest</members>
         <name>ApexClass</name>
+    </types>
+    <types>
+        <name>TrailheadLeaderboardStyles</name>
+        <name>ApexComponent</name>
     </types>
     <types>
         <members>trailheadLeaderboard</members>
@@ -19,8 +26,11 @@
     </types>
     <types>
         <members>Trailhead_Leaderboard</members>
-        <members>bootstrap_337</members>
         <name>StaticResource</name>
+    </types>
+    <types>
+        <members>Trailhead</members>
+        <name>RemoteSiteSetting</name>
     </types>
     <version>40.0</version>
 </Package>
