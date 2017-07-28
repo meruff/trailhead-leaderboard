@@ -1,16 +1,17 @@
 <!--
 * File: TrailheadLeader
-* Author: Mat Ruff
+* Author: detonation0
 * Description: Displays a Leaderboard of Trailhead Users.
 -->
 <apex:component id="TrailheadLeaderboardStyles">
     <style>
         body {
-            background: url({!URLFOR($Resource.Trailhead_Leaderboard, 'trailheadLeaderboard/bg.png')}) no-repeat center center fixed !important;
-            background-size: cover !important;
+            /*background: url({!URLFOR($Resource.Trailhead_Leaderboard, 'trailheadLeaderboard/bg.png')}) no-repeat center center fixed !important;*/
+            /*background-size: cover !important;*/
+            background: #eff8fc !important;
         }
 
-        a {
+        .cust-link {
             color: #394355 !important;
         }
 

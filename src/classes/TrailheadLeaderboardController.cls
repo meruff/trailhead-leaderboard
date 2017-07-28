@@ -1,6 +1,6 @@
 /*****************************************
 * File: TrailheadLeaderboardController
-* Author: Mat Ruff
+* Author: detonation0
 * Description: Controller class for trailheadLeaderboard.page
 ******************************************/
 public class TrailheadLeaderboardController {
@@ -9,11 +9,14 @@ public class TrailheadLeaderboardController {
     public Trailblazer__c newBlazer { get; set; }
 
     public TrailheadLeaderboardController() {
-        newBlazer = new Trailblazer__c();
         populateTrailblazers();
     }
 
+    /**
+     * @description Queries for current Trailblazer__c records to display on the Visualforce page.
+     */
     public void populateTrailblazers() {
+        newBlazer = new Trailblazer__c();
         trailblazerIds = new Set<Id>();
         trailblazers = new List<Trailblazer__c>([
             SELECT Id, Name, Badges__c, Points__c, Trailblazer_Since__c, Trails__c, Profile_Id__c,
@@ -27,54 +30,56 @@ public class TrailheadLeaderboardController {
         }
     }
 
-    public void createNewTrailblazer() {
+    /**
+     * @description Creates a new Trailblazer record to upsert into Salesforce by calling out to Trailhead with
+     * the provided profile Id on the Visualforce page.
+     */
+    public PageReference upsertNewTrailblazer() {
         if (newBlazer.Profile_Id__c.length() > 18 || newBlazer.Profile_Id__c.length() < 18) {
-            ApexPages.addMessage(new ApexPages.Message(
-                ApexPages.Severity.Error,
-                'Profile Ids must be 18 characters in length.'));
-            return;
-        }
-
-        if (String.isEmpty(newBlazer.Name) || String.isEmpty(newBlazer.Profile_Id__c)) {
-            ApexPages.addMessage(new ApexPages.Message(
-                ApexPages.Severity.Error,
-                'You must enter your Name and Trailhead Profile Id in order to be added to the leaderboard.'));
-            return;
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error, 'Profile Ids must be 18 characters in length.'));
+            return null;
         }
 
         if (trailblazerIds.contains(newBlazer.Profile_Id__c)) {
-            ApexPages.addMessage(new ApexPages.Message(
-                ApexPages.Severity.Error,
-                'This trailblazer already exists.'));
-            return;
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error, 'This trailblazer already exists.'));
+            return null;
         }
 
-        Trailblazer__c insertBlazer = updateTrailblazer(newBlazer);
+        Trailblazer__c insertBlazer = findTrailblazer(newBlazer.Profile_Id__c);
 
         if (insertBlazer != null) {
-            insert insertBlazer;
+            upsert insertBlazer Profile_Id__c;
             populateTrailblazers();
+            PageReference refresh = new PageReference('/trailheadLeaderboard');
+            refresh.setRedirect(true);
+            return refresh;
         } else {
-            return;
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error, 'Error during callout to Trailhead, please try again.'));
+            return null;
         }
     }
 
-    public Trailblazer__c updateTrailblazer(Trailblazer__c tb) {
+    /**
+     * @description Calls out to Trailhead and attempts to find the Trailblazer by the profile Id provided.
+     * @param profileId, the public Trailhead profile Id for the user. 
+     * @return tbToUpsert, the Trailblazer__c record to upsert into Salesforce.
+     */
+    public Trailblazer__c findTrailblazer(String profileId) {
         Http h = new Http();
         HttpRequest req = new HttpRequest();
-        req.setEndpoint('https://trailhead.salesforce.com/users/profiles/' + tb.Profile_Id__c);
+        req.setEndpoint('https://trailhead.salesforce.com/users/profiles/' + profileId);
         req.setMethod('GET');
         HttpResponse res = h.send(req);
 
-        if (res.getStatus() != 'Not Found' && (!res.getBody().contains('Someone\'s hiding!') && !res.getBody().contains('This user has chosen to keep their profile private.'))) {
-            Trailblazer__c tbToInsert = PopulateTrailblazers.populateTrailblazer(res.getBody());
-            tbToInsert.Profile_Id__c = tb.Profile_Id__c;
-            return tbToInsert;
+        if (res.getStatus() != 'Not Found'
+            && (!res.getBody().contains('Someone\'s hiding!')
+            && !res.getBody().contains('This user has chosen to keep their profile private.'))
+        ) {
+            Trailblazer__c tbToUpsert = PopulateTrailblazers.populateTrailblazer(res.getBody());
+            tbToUpsert.Profile_Id__c = profileId;
+            return tbToUpsert;
         } else {
-            ApexPages.addMessage(new ApexPages.Message(
-                ApexPages.Severity.Error,
-                'Could not find a Trailhead profile for User Id: ' + tb.Profile_Id__c + '. ' +
-                'Please ensure your profile is set to public and you\'ve copied your Id correctly.'));
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error, 'Could not find a Trailhead profile for User Id: ' + profileId + '. Please ensure your profile is set to public and you\'ve copied your Id correctly.'));
             return null;
         }
     }

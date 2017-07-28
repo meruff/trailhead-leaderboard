@@ -79,14 +79,15 @@
     </fields>
     <fields>
         <fullName>Profile_Id__c</fullName>
+        <caseSensitive>false</caseSensitive>
         <description>The Id of the Trailblazer&apos;s profile on Trailhead</description>
-        <externalId>false</externalId>
+        <externalId>true</externalId>
         <label>Profile Id</label>
         <length>255</length>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Text</type>
-        <unique>false</unique>
+        <unique>true</unique>
     </fields>
     <fields>
         <fullName>Profile_Link__c</fullName>

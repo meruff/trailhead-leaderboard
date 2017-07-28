@@ -1,6 +1,6 @@
 <!--
 * File: trailheadLeaderboard.page
-* Author: Mat Ruff
+* Author: detonation0
 * Description: Displays a Leaderboard of Trailhead Users.
 -->
 <apex:page id="trailheadLeaderboard" controller="TrailheadLeaderboardController" showHeader="false" sideBar="false"
@@ -37,7 +37,7 @@
                                 </div>
                             </header>
                             <div class="slds" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                <a href="#newBlazerForm" onclick="openModal('newBlazerModal');">
+                                <a href="#newBlazerForm" onclick="openModal('newBlazerModal');" class="cust-link">
                                     <svg class="slds-button__icon" aria-hidden="true" style="margin:-3px 2px 0px 0px;">
                                         <use xlink:href="{!URLFOR($Asset.SLDS, '/assets/icons/utility-sprite/svg/symbols.svg#new')}"></use>
                                     </svg>
@@ -117,7 +117,7 @@
                                             <td class="slds-cell-wrap">
                                                 <div class="slds-truncate">
                                                     <div class="slds" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                                        <a href="{!tb.Profile_Link__c}" target="_blank">
+                                                        <a href="{!tb.Profile_Link__c}" target="_blank" class="cust-link">
                                                             Link
                                                             <svg class="slds-button__icon" aria-hidden="true" style="margin:-5px 0px 0px 4px;">
                                                                 <use xlink:href="{!URLFOR($Asset.SLDS, '/assets/icons/utility-sprite/svg/symbols.svg#new_window')}"></use>
@@ -135,7 +135,7 @@
                     </div>
 
                     <!-- New Trailblazer Modal -->
-                    <div id="newBlazerModal" role="dialog" tabindex="-1" class="slds-modal slds-modal--large" aria-labelledby="header43" style="overflow-y:auto;">
+                    <div id="newBlazerModal" role="dialog" tabindex="-1" class="slds-modal slds-modal--medium" aria-labelledby="header43" style="overflow-y:auto;">
                         <div class="slds-modal__container">
 
                             <!-- Modal Header -->
@@ -159,15 +159,6 @@
 
                                     <div class="slds-form slds-form_stacked">
                                         <div class="slds-form-element">
-                                            <label class="slds-form-element__label" for="blazerName">Trailblazer Name</label>
-                                            <div class="slds-form-element__control">
-                                                <apex:inputText styleClass="slds-input"
-                                                                id="blazerName"
-                                                                html-placeholder="Name"
-                                                                value="{!newBlazer.Name}"/>
-                                            </div>
-                                        </div>
-                                        <div class="slds-form-element">
                                             <label class="slds-form-element__label" for="blazerProfileId">
                                                 Trailhead Profile Id
                                             </label>
@@ -189,11 +180,11 @@
                                 <div class="slds-modal__footer">
                                     <a href="#" class="slds-button slds-button_neutral"
                                        onclick="closeModal('newBlazerModal'); return false;">Cancel</a>
-                                    <apex:commandButton value="Submit"
-                                                        styleClass="slds-button slds-button--brand"
-                                                        action="{!createNewTrailblazer}"
-                                                        status="loadingStatus"
-                                                        reRender="mainPage,pageMessages"/>
+                                    <apex:commandLink value="Submit"
+                                                      styleClass="slds-button slds-button--brand"
+                                                      action="{!upsertNewTrailblazer}"
+                                                      status="loadingStatus"
+                                                      reRender="pageMessages"/>
                                 </div>
                             </apex:outputPanel>
                         </div>
