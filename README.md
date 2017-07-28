@@ -34,10 +34,10 @@ job a name, select `PopulateTrailblazers.cls` as your Apex class, and choose a r
 
 #### Possible Updates for the Future
 
-- Test/Mock Classes
 - Add Superbadges
 - Trailhead public API? (If they ever let us use it)
 - ~~Move from Bootstrap 3 to Salesforce Lightning Design System~~
+- ~~Test/Mock Classes~~
 
 ### License
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
