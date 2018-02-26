@@ -6,10 +6,12 @@ scrapes the profile of Users you specify and saves them into a custom Object nam
 `Trailblazer__c`. The Visualforce page displays the `Trailblazer__c` records. You can also 
 add new users at the bottom of the page by providing their Trailhead User Id.
 
+![Desktop Desktop](images/screenshot.png "Desktop View")
+
 > **Note:** This works by calling out to Trailhead and parsing the response body of the 
 User's Profile. If Salesforce decides to update/change the HTML of the Trailhead site this 
 could break at any time. If/when they decide to make api.trailhead.salesforce.com public, I 
-will update this to use that instead.
+will update this to use that instead. 
 
 #### Installation
 I prefer the [Force.com Migration Tool](https://developer.salesforce.com/page/Force.com_Migration_Tool). 
