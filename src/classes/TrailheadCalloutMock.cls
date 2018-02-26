@@ -7,58 +7,57 @@
 global class TrailheadCalloutMock implements HttpCalloutMock {
     global HttpResponse respond(HttpRequest req) {
         String resBody = '' +
-            // Name
-            '<span class=\'th-profile-fullname\'>detonation0</span>' +
+            // User Data
+            '<div data-react-class=\"profile/AboutMe\" data-react-props=\"' +
+                '{' +
+                    '\"user\":{' +
+                        '\"first_name\":\"Tony\",' +
+                        '\"last_name\":\"Stark\",' +
+                        '\"job_role\":\"Developer\",' +
+                        '\"company\":\"Test Co.\",' +
+                        '\"job_title\":\"Developer\",' +
+                        '\"created_at\":\"2014-02-11T13:35:04.000-08:00\",' +
+                        '\"th_sfid\":\"005500000061jCZBBB\",' +
+                        '\"full_name\":\"Tony Stark\"' +
+                    '},' +
+                    '\"profileUrl\":\"https://trailhead.salesforce.com/en/me/005500000061jCZBBB\",' +
+                    '\"profileShortcutUrl\":\"https://trailhead.com/me/005500000061jCZBBB\"' +
+                '}' +
+            '</' +
 
-            // Badges
-            '<div class=\'panel-heading\'>\n' +
-                '<h3 class=\'panel-heading__title\'>\n' +
-                    'Badges\n' +
-                '</h3>\n' +
-            '</div>\n' +
-            '<div class=\'panel-body text-center\'>\n' +
-                '<h4 class=\'th-profile-title th-profile-title--green leading-marg-m\'>' +
-                    '45' +
-                '</h4>' +
-
-            // Points
-            '<div class=\'panel-heading\'>\n' +
-                '<h3 class=\'panel-heading__title\'>\n' +
-                    'Points\n' +
-                '</h3>\n' +
-                '</div>\n' +
-            '<div class=\'panel-body text-center\'>\n' +
-                '<h4 class=\'th-profile-title th-profile-title--green leading-marg-m\'>' +
-                    '2000' +
-                '</h4>' +
-
-            // Trails
-            '<div class=\'panel-heading\'>\n' +
-                '<h3 class=\'panel-heading__title\'>\n' +
-                    'Trails\n' +
-                '</h3>\n' +
-            '</div>\n' +
-            '<div class=\'panel-body text-center\'>\n' +
-                '<h4 class=\'th-profile-title th-profile-title--green leading-marg-m\'>' +
-                    '5' +
-                '</h4>' +
-
-            // Trailblazer Since
-            '<div class=\'th-profile-textbox__text\'>Trailblazer Since</div>\n' +
-                '<div class=\'controls\'>\n' +
-                    '<div class=\'th-profile-value\'>August 21, 2010<' +
-
-            // Profile Link
-            '<div class=\'th-profile-textbox__text\'>Profile Link</div>\n' +
-                '<div class=\'controls\'>\n' +
-                    '<div class=\'th-profile-value\'>https://example.net<' +
+            'data-test-badges-count>1</' +
+            'data-test-points-count>6000</' +
+            'data-test-trails-count>0</' +
 
             // Rank
-            '<img class=\'th-profile-rank-image\' src=\'/assets/ranks/mountaineer-' +
+            '<a class=\'slds-show slds-text-align_center\' data-test-current-rank href=\'/en/trailblazer-ranks\'>' +
+                '<img width=\"100px\" src=\"/assets/ranks/expeditioner-test.png\" alt=\"Expeditioner\"/>' +
+            '</a>' +
 
             // Profile Photo
-            '<div class=\'th-profile-photo-container img-circle\'>\n' +
-                '<img src=\'/assets/somewhere\'>';
+            '<img class=\"user-information__avatar-img\" src=\"/assets/photo.jpg\">' +
+
+            // Badges
+            '<div data-react-class=\"BadgesPanel\" data-react-props=\"' +
+                '{' +
+                    '\"badges\":[{' +
+                        '\"user_id\":4783481,' +
+                        '\"api_name\":\"superbadge_aap\",' +
+                        '\"state\":\"Completed\",' +
+                        '\"last_attempted_at\":\"2018-02-19T12:16:19.008-08:00\",' +
+                        '\"finished_at\":\"2018-02-19T12:16:22.707-08:00\",' +
+                        '\"created_at\":\"2018-02-15T07:11:36.104-08:00\",' +
+                        '\"updated_at\":\"2018-02-19\",' +
+                        '\"type\":\"Th::UserSuperbadge\",' +
+                        '\"path\":\"/superbadges/superbadge_aap\",' +
+                        '\"badge_type\":\"superbadge\",' +
+                        '\"icon_url\":\"https://developer.salesforce.com/resource/images/trailhead/badges/superbadges/trailhead_superbadge_advanced_apex_specialist.png\",' +
+                        '\"title\":\"Advanced Apex Specialist\",' +
+                        '\"progress\":100,' +
+                        '\"points\":6000' +
+                    '}]' +
+                '}' +
+            '</';
 
         HttpResponse res = new HttpResponse();
         res.setHeader('Content-Type', 'application/json');

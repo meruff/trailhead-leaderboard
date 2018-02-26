@@ -43,7 +43,6 @@
     <allowInChatterGroups>false</allowInChatterGroups>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
-    <description>A custom object to hold Trailhead profiles for the trailhead leaderboard.</description>
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableChangeDataCapture>false</enableChangeDataCapture>
@@ -54,141 +53,93 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <fields>
-        <fullName>Badges__c</fullName>
-        <description>Number of Trailhead Badges</description>
+        <fullName>Date_Earned__c</fullName>
         <externalId>false</externalId>
-        <label>Badges</label>
-        <precision>7</precision>
+        <label>Date Earned</label>
         <required>false</required>
-        <scale>0</scale>
         <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
+        <type>DateTime</type>
     </fields>
     <fields>
-        <fullName>Company_Institution__c</fullName>
+        <fullName>Icon_Link__c</fullName>
         <externalId>false</externalId>
-        <label>Company/Institution</label>
-        <length>255</length>
+        <label>Icon Link</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>Url</type>
     </fields>
     <fields>
-        <fullName>Job_Role__c</fullName>
+        <fullName>Path__c</fullName>
+        <description>Link to badge on Trailhead</description>
         <externalId>false</externalId>
-        <label>Job Role</label>
-        <length>255</length>
+        <label>Path</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Job_Title__c</fullName>
-        <externalId>false</externalId>
-        <label>Job Title</label>
-        <length>255</length>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>Url</type>
     </fields>
     <fields>
         <fullName>Points__c</fullName>
-        <description>Number of Trailhead points</description>
         <externalId>false</externalId>
         <label>Points</label>
-        <precision>7</precision>
+        <length>5</length>
         <required>false</required>
-        <scale>0</scale>
         <trackTrending>false</trackTrending>
-        <type>Number</type>
+        <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Profile_Id__c</fullName>
+        <fullName>Trailblazer__c</fullName>
+        <externalId>false</externalId>
+        <label>Trailblazer</label>
+        <referenceTo>Trailblazer__c</referenceTo>
+        <relationshipLabel>Badges</relationshipLabel>
+        <relationshipName>Badges</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Type</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Upsert_Key__c</fullName>
         <caseSensitive>false</caseSensitive>
-        <description>The Id of the Trailblazer&apos;s profile on Trailhead</description>
+        <description>Trailblazer Id + api_name from Trailhead</description>
         <externalId>true</externalId>
-        <label>Profile Id</label>
+        <label>Upsert Key</label>
         <length>255</length>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>true</unique>
     </fields>
-    <fields>
-        <fullName>Profile_Link__c</fullName>
-        <description>Link to the Trailblazer&apos;s profile on Trailhead</description>
-        <externalId>false</externalId>
-        <label>Profile Link</label>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Url</type>
-    </fields>
-    <fields>
-        <fullName>Profile_Photo__c</fullName>
-        <description>Trailhead profile photo</description>
-        <externalId>false</externalId>
-        <label>Profile Photo</label>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Url</type>
-    </fields>
-    <fields>
-        <fullName>Rank__c</fullName>
-        <description>Trailhead Profile Rank</description>
-        <externalId>false</externalId>
-        <label>Rank</label>
-        <length>255</length>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Trailblazer_Since__c</fullName>
-        <description>The date the Trailblazer started Trailhead</description>
-        <externalId>false</externalId>
-        <label>Trailblazer Since</label>
-        <length>255</length>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Trails__c</fullName>
-        <description>Number of Trailhead trails completed</description>
-        <externalId>false</externalId>
-        <label>Trails</label>
-        <precision>7</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <label>Trailblazer</label>
+    <label>Badge</label>
     <listViews>
         <fullName>All</fullName>
         <columns>NAME</columns>
-        <columns>Badges__c</columns>
+        <columns>Trailblazer__c</columns>
+        <columns>Date_Earned__c</columns>
         <columns>Points__c</columns>
-        <columns>Trails__c</columns>
-        <columns>Profile_Link__c</columns>
-        <columns>Trailblazer_Since__c</columns>
+        <columns>Type__c</columns>
+        <columns>Icon_Link__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
     <nameField>
-        <label>Trailblazer Name</label>
+        <label>Badge Name</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Trailblazers</pluralLabel>
+    <pluralLabel>Badges</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

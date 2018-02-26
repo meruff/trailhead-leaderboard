@@ -9,7 +9,7 @@
         <name>ApexClass</name>
     </types>
     <types>
-        <name>TrailheadLeaderboardStyles</name>
+        <members>TrailheadLeaderboardStyles</members>
         <name>ApexComponent</name>
     </types>
     <types>
@@ -17,20 +17,27 @@
         <name>ApexPage</name>
     </types>
     <types>
+        <members>Badge__c</members>
         <members>Trailblazer__c</members>
         <name>CustomObject</name>
     </types>
     <types>
+        <members>Badge__c</members>
         <members>Trailblazer__c</members>
         <name>CustomTab</name>
     </types>
     <types>
-        <members>Trailhead_Leaderboard</members>
-        <name>StaticResource</name>
+        <members>Badge__c-Badge Layout</members>
+        <members>Trailblazer__c-Trailblazer Layout</members>
+        <name>Layout</name>
     </types>
     <types>
         <members>Trailhead</members>
         <name>RemoteSiteSetting</name>
     </types>
-    <version>40.0</version>
+    <types>
+        <members>Trailhead_Leaderboard</members>
+        <name>StaticResource</name>
+    </types>
+    <version>42.0</version>
 </Package>

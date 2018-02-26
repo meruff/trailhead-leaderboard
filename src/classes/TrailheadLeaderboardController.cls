@@ -6,68 +6,86 @@
 public class TrailheadLeaderboardController {
     private Set<Id> trailblazerIds;
     public List<Trailblazer__c> trailblazers { get; set; }
-    public Trailblazer__c newBlazer { get; set; }
+    public Map<Id, List<Badge__c>> badgesMap { get; set; }
+    public String newProfileId { get; set; }
+    public String selectedName { get; set; }
+    public String selectedId { get; set; }
 
     public TrailheadLeaderboardController() {
         populateTrailblazers();
     }
 
     /**
-     * @description Queries for current Trailblazer__c records to display on the Visualforce page.
+     * Queries for current Trailblazer__c records to display on the Visualforce page.
      */
     public void populateTrailblazers() {
-        newBlazer = new Trailblazer__c();
+        newProfileId = '';
         trailblazerIds = new Set<Id>();
+        badgesMap = new Map<Id, List<Badge__c>>();
+
         trailblazers = new List<Trailblazer__c>([
             SELECT Id, Name, Badges__c, Points__c, Trailblazer_Since__c, Trails__c, Profile_Id__c,
-                Profile_Link__c, Rank__c, Profile_Photo__c
+                Profile_Link__c, Rank__c, Profile_Photo__c, Job_Role__c, Job_Title__c, Company_Institution__c, (
+                SELECT Name, Icon_Link__c, Type__c, Points__c, Date_Earned__c, Path__c
+                FROM Badges__r
+                ORDER BY Date_Earned__c DESC NULLS LAST
+            )
             FROM Trailblazer__c
             ORDER BY Points__c DESC
         ]);
 
         for (Trailblazer__c tb : trailblazers) {
             trailblazerIds.add(tb.Profile_Id__c);
+
+            for (Badge__c badge : tb.Badges__r) {
+                if (!badgesMap.containsKey(tb.Profile_Id__c)) {
+                    badgesMap.put(tb.Profile_Id__c, new List<Badge__c>{badge});
+                } else {
+                    badgesMap.get(tb.Profile_Id__c).add(badge);
+                }
+            }
         }
     }
 
     /**
-     * @description Creates a new Trailblazer record to upsert into Salesforce by calling out to Trailhead with
-     * the provided profile Id on the Visualforce page.
+     * Creates a new Trailblazer record to upsert into Salesforce by calling out to Trailhead with the provided profile
+     * Id on the Visualforce page.
      */
     public PageReference upsertNewTrailblazer() {
-        if (newBlazer.Profile_Id__c.length() > 18 || newBlazer.Profile_Id__c.length() < 18) {
-            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error, 'Profile Ids must be 18 characters in length.'));
+        if (!(String.escapeSingleQuotes(newProfileId) InstanceOf Id)) {
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error,
+                ' Please provide a valid Salesforce Id'));
             return null;
         }
 
-        if (trailblazerIds.contains(newBlazer.Profile_Id__c)) {
-            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error, 'This trailblazer already exists.'));
+        if (trailblazerIds.contains(newProfileId)) {
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error, ' This trailblazer already exists.'));
             return null;
         }
 
-        Trailblazer__c insertBlazer = findTrailblazer(newBlazer.Profile_Id__c);
-
-        if (insertBlazer != null) {
-            upsert insertBlazer Profile_Id__c;
+        try {
+            findAndUpsertTrailblazer(newProfileId);
             populateTrailblazers();
             PageReference refresh = new PageReference('/trailheadLeaderboard');
             refresh.setRedirect(true);
             return refresh;
-        } else {
-            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error, 'Error during callout to Trailhead, please try again.'));
+        } catch(Exception e) {
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error,
+                ' Error during callout to Trailhead, please try again. ' + e.getMessage()));
             return null;
         }
     }
 
     /**
-     * @description Calls out to Trailhead and attempts to find the Trailblazer by the profile Id provided.
-     * @param profileId, the public Trailhead profile Id for the user. 
+     * Calls out to Trailhead and attempts to find the Trailblazer by the profile Id provided.
+     *
+     * @param profileId, the public Trailhead profile Id for the user.
      * @return tbToUpsert, the Trailblazer__c record to upsert into Salesforce.
      */
-    public Trailblazer__c findTrailblazer(String profileId) {
+    public void findAndUpsertTrailblazer(String profileId) {
         Http h = new Http();
         HttpRequest req = new HttpRequest();
-        req.setEndpoint('https://trailhead.salesforce.com/users/profiles/' + profileId);
+        req.setEndpoint(PopulateTrailblazers.TRAILHEAD_URL + '/me/' + profileId);
         req.setMethod('GET');
         HttpResponse res = h.send(req);
 
@@ -76,11 +94,22 @@ public class TrailheadLeaderboardController {
             && !res.getBody().contains('This user has chosen to keep their profile private.'))
         ) {
             Trailblazer__c tbToUpsert = PopulateTrailblazers.populateTrailblazer(res.getBody());
-            tbToUpsert.Profile_Id__c = profileId;
-            return tbToUpsert;
+            upsert tbToUpsert Profile_Id__c;
+
+            List<Badge__c> badgesToUpsert = PopulateTrailblazers.getTrailblazerBadges(res.getBody(), tbToUpsert);
+            if (badgesToUpsert.size() > 0) {
+                upsert badgesToUpsert Upsert_Key__c;
+            }
         } else {
-            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error, 'Could not find a Trailhead profile for User Id: ' + profileId + '. Please ensure your profile is set to public and you\'ve copied your Id correctly.'));
-            return null;
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error,
+                'Could not find a Trailhead profile for User Id: ' + profileId +
+                '. Please ensure your profile is set to public and you\'ve copied your Id correctly.'
+            ));
+            return;
         }
+    }
+
+    public Boolean getIsMapEmpty() {
+        return (badgesMap.get(selectedId) == null || badgesMap.get(selectedId).size() == 0);
     }
 }
