@@ -34,6 +34,32 @@ global class PopulateTrailblazers implements Schedulable {
             req.setMethod('GET');
             HttpResponse res = h.send(req);
 
+            // Handling for redirects (custom Trailhead Profiles /me/)
+            Boolean redirect = false;
+
+            if (res.getStatusCode() >= 300 && res.getStatusCode() <= 307 && res.getStatusCode() != 306) {
+                do {
+                    redirect = false; // reset the value each time
+                    String loc = res.getHeader('Location'); // get location of the redirect
+
+                    if (loc == null) {
+                        redirect = false;
+                        continue;
+                    }
+
+                    req = new HttpRequest();
+                    req.setEndpoint(loc);
+                    req.setMethod('GET');
+                    res = h.send(req);
+
+                    if (res.getStatusCode() != 500) { // 500 = fail
+                        if (res.getStatusCode() >= 300 && res.getStatusCode() <= 307 && res.getStatusCode() != 306) {
+                            redirect = true;
+                        }
+                    }
+                } while (redirect && Limits.getCallouts() != Limits.getLimitCallouts());
+            }
+
             Trailblazer__c newBlazer = populateTrailblazer(res.getBody());
             trailblazersToUpsert.add(newBlazer);
             badgesToUpsert.addAll(getTrailblazerBadges(res.getBody(), newBlazer));
@@ -108,7 +134,7 @@ global class PopulateTrailblazers implements Schedulable {
             }
 
             return tb;
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.debug('ERROR - problem parsing response body from Trailhead. ' + e.getMessage() + ' ' + e.getLineNumber());
             return null;
         }
