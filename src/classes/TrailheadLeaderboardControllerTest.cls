@@ -1,11 +1,11 @@
 /*****************************************
 * File: TrailheadLeaderboardControllerTest
-* Author: detonation0
+* Author: meruff
 * Description: Unit tests for TrailheadLeaderboardControllerTest.cls
 ******************************************/
-@isTest
+@IsTest
 private class TrailheadLeaderboardControllerTest {
-    @testSetup
+    @TestSetup
     static void setUpData() {
         Trailblazer__c newBlazer = new Trailblazer__c(
             Name = 'Some ExistingBlazer',
@@ -18,7 +18,7 @@ private class TrailheadLeaderboardControllerTest {
         insert newBlazer;
     }
 
-    @isTest
+    @IsTest
     static void testAddTrailblazer() {
         // Arrange
         Test.setMock(HttpCalloutMock.class, new TrailheadCalloutMock());

@@ -1,11 +1,11 @@
 /*****************************************
 * File: PopulateTrailblazersTest
-* Author: detonation0
+* Author: meruff
 * Description: Unit Tests for PopulateTrailblazers.cls
 ******************************************/
-@isTest
+@IsTest
 private class PopulateTrailblazersTest {
-    @testSetup
+    @TestSetup
     static void setUpData() {
         Trailblazer__c newBlazer = new Trailblazer__c(
             Name = 'Tony Stark',
@@ -14,7 +14,7 @@ private class PopulateTrailblazersTest {
         insert newBlazer;
     }
 
-    @isTest
+    @IsTest
     static void testPopulateTrailblazers() {
         // Arrange
         Test.setMock(HttpCalloutMock.class, new TrailheadCalloutMock());
@@ -42,7 +42,7 @@ private class PopulateTrailblazersTest {
             'Trails__c should have been upserted to 0');
     }
 
-    @isTest
+    @IsTest
     static void testSchedulePopulation() {
         // Arrange
         Test.setMock(HttpCalloutMock.class, new TrailheadCalloutMock());

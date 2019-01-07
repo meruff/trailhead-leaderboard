@@ -1,6 +1,6 @@
 /*****************************************
 * File: PopulateTrailblazers
-* Author: detonation0
+* Author: meruff
 * Description: A class to call Trailhead profiles and update their related Objects in Salesforce.
 ******************************************/
 global class PopulateTrailblazers implements Schedulable {
@@ -18,7 +18,7 @@ global class PopulateTrailblazers implements Schedulable {
      * Calls out to Trailhead and updates Trailblazer__c records in Salesforce with new data
      * pulled from each users Trailhead profile.
      */
-    @future(callout=true)
+    @Future(Callout=true)
     public static void populateAll() {
         List<Trailblazer__c> trailblazersToUpsert = new List<Trailblazer__c>();
         List<Badge__c> badgesToUpsert = new List<Badge__c>();
@@ -32,6 +32,7 @@ global class PopulateTrailblazers implements Schedulable {
             HttpRequest req = new HttpRequest();
             req.setEndpoint(TRAILHEAD_URL + '/me/' + trailblazer.Profile_Id__c);
             req.setMethod('GET');
+            req.setTimeout(60000);
             HttpResponse res = h.send(req);
 
             // Handling for redirects (custom Trailhead Profiles /me/)
@@ -102,7 +103,7 @@ global class PopulateTrailblazers implements Schedulable {
             tb.Name = fixedName;
 
             // Trailblazer Since
-            DateTime createdAt = (DateTime) json.deserialize('\"' + userMap.get('created_at') + '\"', DateTime.class);
+            Datetime createdAt = (Datetime) JSON.deserialize('\"' + userMap.get('created_at') + '\"', Datetime.class);
             tb.Trailblazer_Since__c = createdAt.format('MMMM d, yyyy');
 
             // Profile Id
@@ -158,7 +159,7 @@ global class PopulateTrailblazers implements Schedulable {
 
             Badge__c newBadge = new Badge__c(
                 Name = String.valueOf(badge.get('title')),
-                Icon_LInk__c = String.valueOf(badge.get('icon_url')),
+                Icon_Link__c = String.valueOf(badge.get('icon_url')),
                 Points__c = String.valueOf(badge.get('points')),
                 Type__c = String.valueOf(badge.get('type')),
                 Path__c = TRAILHEAD_URL + String.valueOf(badge.get('path')),
@@ -172,7 +173,7 @@ global class PopulateTrailblazers implements Schedulable {
             }
 
             if (!String.isBlank(String.valueOf(badge.get('finished_at')))) {
-                DateTime finishedAt = (DateTime) json.deserialize('\"' + badge.get('finished_at') + '\"', DateTime.class);
+                Datetime finishedAt = (Datetime) JSON.deserialize('\"' + badge.get('finished_at') + '\"', Datetime.class);
                 newBadge.Date_Earned__c = finishedAt;
             }
 

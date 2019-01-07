@@ -1,9 +1,9 @@
 /*****************************************
 * File: TrailheadCalloutMock
-* Author: detonation0
+* Author: meruff
 * Description: Mock callout class for PopulateTrailblazers.cls
 ******************************************/
-@isTest
+@IsTest
 global class TrailheadCalloutMock implements HttpCalloutMock {
     global HttpResponse respond(HttpRequest req) {
         String resBody = '' +

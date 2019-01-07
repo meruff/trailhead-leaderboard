@@ -1,6 +1,6 @@
 <!--
 * File: trailheadLeaderboard.page
-* Author: detonation0
+* Author: meruff
 * Description: Displays a Leaderboard of Trailhead Users.
 -->
 <apex:page id="trailheadLeaderboard" controller="TrailheadLeaderboardController" showHeader="false" sideBar="false"

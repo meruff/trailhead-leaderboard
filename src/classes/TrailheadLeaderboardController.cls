@@ -1,6 +1,6 @@
 /*****************************************
 * File: TrailheadLeaderboardController
-* Author: detonation0
+* Author: meruff
 * Description: Controller class for trailheadLeaderboard.page
 ******************************************/
 public class TrailheadLeaderboardController {
@@ -52,14 +52,14 @@ public class TrailheadLeaderboardController {
      * Id on the Visualforce page.
      */
     public PageReference upsertNewTrailblazer() {
-        if (!(String.escapeSingleQuotes(newProfileId) InstanceOf Id)) {
-            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error,
+        if (!(String.escapeSingleQuotes(newProfileId) instanceof Id)) {
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR,
                 ' Please provide a valid Salesforce Id'));
             return null;
         }
 
         if (trailblazerIds.contains(newProfileId)) {
-            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error, ' This trailblazer already exists.'));
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, ' This trailblazer already exists.'));
             return null;
         }
 
@@ -70,7 +70,7 @@ public class TrailheadLeaderboardController {
             refresh.setRedirect(true);
             return refresh;
         } catch(Exception e) {
-            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error,
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR,
                 ' Error during callout to Trailhead, please try again. ' + e.getMessage()));
             return null;
         }
@@ -101,7 +101,7 @@ public class TrailheadLeaderboardController {
                 upsert badgesToUpsert Upsert_Key__c;
             }
         } else {
-            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error,
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR,
                 'Could not find a Trailhead profile for User Id: ' + profileId +
                 '. Please ensure your profile is set to public and you\'ve copied your Id correctly.'
             ));

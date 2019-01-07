@@ -1,6 +1,6 @@
 <!--
 * File: TrailheadLeader
-* Author: detonation0
+* Author: meruff
 * Description: Displays a Leaderboard of Trailhead Users.
 -->
 <apex:component id="TrailheadLeaderboardStyles">

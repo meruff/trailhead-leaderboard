@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2017 [Mathew Ruff](https://github.com/detonation0)
+Copyright (c) 2017 [Mathew Ruff](https://github.com/meruff)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

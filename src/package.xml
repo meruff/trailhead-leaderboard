@@ -33,6 +33,7 @@
     </types>
     <types>
         <members>Trailhead</members>
+        <members>Trailhead_Me</members>
         <name>RemoteSiteSetting</name>
     </types>
     <types>
