@@ -4,9 +4,19 @@
 * Description: Mock callout class for PopulateTrailblazers.cls
 ******************************************/
 @IsTest
-global class TrailheadCalloutMock implements HttpCalloutMock {
-    global HttpResponse respond(HttpRequest req) {
-        String resBody = '' +
+public class TrailheadCalloutMock implements HttpCalloutMock {
+    List<HttpResponse> responses = new List<HttpResponse>();
+
+    public void addResponse(HttpResponse response) {
+        responses.add(response);
+    }
+
+    public HttpResponse respond(HttpRequest req) {
+        return responses.remove(0);
+    }
+
+    public static String getSuccessfulResponseBody() {
+        return '' +
             // User Data
             '<div data-react-class=\"profile/AboutMe\" data-react-props=\"' +
                 '{' +
@@ -58,12 +68,5 @@ global class TrailheadCalloutMock implements HttpCalloutMock {
                     '}]' +
                 '}' +
             '</';
-
-        HttpResponse res = new HttpResponse();
-        res.setHeader('Content-Type', 'application/json');
-        res.setStatusCode(200);
-        res.setBody(resBody);
-
-        return res;
     }
 }
