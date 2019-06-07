@@ -3,13 +3,17 @@
 * Author: meruff
 * Description: A class to call Trailhead profiles and update their related Objects in Salesforce.
 ******************************************/
-public class with sharing PopulateTrailblazers implements Schedulable {
+public with sharing  class PopulateTrailblazers implements Schedulable {
+    
+    // URL to access trailhead
     public static final String TRAILHEAD_URL = 'https://trailhead.salesforce.com';
 
+    // Schedule class
     public void execute(SchedulableContext SC) {
         populateAll();
     }
 
+    // Constructor
     public PopulateTrailblazers() {
         populateAll();
     }
@@ -24,9 +28,9 @@ public class with sharing PopulateTrailblazers implements Schedulable {
         List<Badge__c> badgesToUpsert = new List<Badge__c>();
 
         for (Trailblazer__c trailblazer : [
-            SELECT Id, Name, Badges__c, Points__c, Trails__c, Trailblazer_Since__c, Profile_Link__c,
-                Profile_Id__c, Rank__c, Profile_Photo__c
-            FROM Trailblazer__c LIMIT 5000
+                        SELECT Id, Name, Badges__c, Points__c, Trails__c, Trailblazer_Since__c, Profile_Link__c,
+                                 Profile_Id__c, Rank__c, Profile_Photo__c
+                        FROM Trailblazer__c WITH SECURITY_ENFORCED LIMIT 5000
         ]) {
             Http h = new Http();
             HttpRequest req = new HttpRequest();
@@ -138,7 +142,7 @@ public class with sharing PopulateTrailblazers implements Schedulable {
             return tb;
         } catch (Exception e) {
             System.debug('ERROR - problem parsing response body from Trailhead. ' + e.getMessage() + ' ' + e.getLineNumber());
-            return null;
+            return tb;
         }
     }
 
