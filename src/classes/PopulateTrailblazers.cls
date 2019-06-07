@@ -3,10 +3,10 @@
 * Author: meruff
 * Description: A class to call Trailhead profiles and update their related Objects in Salesforce.
 ******************************************/
-global class PopulateTrailblazers implements Schedulable {
+public class with sharing PopulateTrailblazers implements Schedulable {
     public static final String TRAILHEAD_URL = 'https://trailhead.salesforce.com';
 
-    global void execute(SchedulableContext SC) {
+    public void execute(SchedulableContext SC) {
         populateAll();
     }
 
@@ -26,7 +26,7 @@ global class PopulateTrailblazers implements Schedulable {
         for (Trailblazer__c trailblazer : [
             SELECT Id, Name, Badges__c, Points__c, Trails__c, Trailblazer_Since__c, Profile_Link__c,
                 Profile_Id__c, Rank__c, Profile_Photo__c
-            FROM Trailblazer__c
+            FROM Trailblazer__c LIMIT 5000
         ]) {
             Http h = new Http();
             HttpRequest req = new HttpRequest();
@@ -66,11 +66,12 @@ global class PopulateTrailblazers implements Schedulable {
             badgesToUpsert.addAll(getTrailblazerBadges(res.getBody(), newBlazer));
         }
 
-        if (trailblazersToUpsert.size() > 0) {
+        if (trailblazersToUpsert.size() > 0 && Schema.sObjectType.Trailblazer__c.isUpdateable()) {
+            
             upsert trailblazersToUpsert Profile_Id__c;
         }
 
-        if (badgesToUpsert.size() > 0) {
+        if (badgesToUpsert.size() > 0 && Schema.sObjectType.Badge__c.isUpdateable()) {
             upsert badgesToUpsert Upsert_Key__c;
         }
     }
