@@ -70,7 +70,7 @@ public with sharing  class PopulateTrailblazers implements Schedulable {
             badgesToUpsert.addAll(getTrailblazerBadges(res.getBody(), newBlazer));
         }
 
-        if (trailblazersToUpsert.size() > 0 && Trailblazers__c.sObjectType.getDescribe().isAccessible()) {       
+        if (trailblazersToUpsert.size() > 0 && Trailblazers__c.sObjectType.getDescribe().isUpdateable()) {       
             upsert trailblazersToUpsert Profile_Id__c;
         }
 
