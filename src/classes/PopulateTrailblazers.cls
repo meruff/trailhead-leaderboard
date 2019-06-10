@@ -74,7 +74,7 @@ public with sharing  class PopulateTrailblazers implements Schedulable {
             upsert trailblazersToUpsert Profile_Id__c;
         }
 
-        if (badgesToUpsert.size() > 0 && Schema.sObjectType.Badge__c.isAccessible()) {
+        if (badgesToUpsert.size() > 0 && Schema.sObjectType.Badge__c.isUpdateable() && Schema.sObjectType.Badge__c.isCreateable()) {
             upsert badgesToUpsert Upsert_Key__c;
         }
     }
