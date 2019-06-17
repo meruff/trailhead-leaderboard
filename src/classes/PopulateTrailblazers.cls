@@ -149,35 +149,37 @@ global class PopulateTrailblazers implements Schedulable {
      * @return a List of Badge__c records for the Trailblazer.
      */
     public static List<Badge__c> getTrailblazerBadges(String resBody, Trailblazer__c tb) {
-        // Badges
-        String badges = resBody.substringBetween('<div data-react-class=\"BadgesPanel\" data-react-props=\"', '</').trim();
-        Map<String, Object> badgesMap = (Map<String, Object>) JSON.deserializeUntyped(badges.replace('&quot;', '\"'));
-
         List<Badge__c> newBadges = new List<Badge__c>();
-        for (Object o : (List<Object>) badgesMap.get('badges')) {
-            Map<String, Object> badge = (Map<String, Object>) o;
 
-            Badge__c newBadge = new Badge__c(
-                Name = String.valueOf(badge.get('title')),
-                Icon_Link__c = String.valueOf(badge.get('icon_url')),
-                Points__c = String.valueOf(badge.get('points')),
-                Type__c = String.valueOf(badge.get('type')),
-                Path__c = TRAILHEAD_URL + String.valueOf(badge.get('path')),
-                Trailblazer__r = new Trailblazer__c(Profile_Id__c = tb.Profile_Id__c)
-            );
+        if (resBody.contains('<div data-react-class=\"BadgesPanel\" data-react-props=\"')) {
+            String badges = resBody.substringBetween('<div data-react-class=\"BadgesPanel\" data-react-props=\"', '</').trim();
+            Map<String, Object> badgesMap = (Map<String, Object>) JSON.deserializeUntyped(badges.replace('&quot;', '\"'));
 
-            if (!String.isBlank(String.valueOf(badge.get('api_name')))) {
-                newBadge.Upsert_Key__c = tb.Profile_Id__c + String.valueOf(badge.get('api_name'));
-            } else if (!String.isBlank(String.valueOf(badge.get('id')))) {
-                newBadge.Upsert_Key__c = tb.Profile_Id__c + String.valueOf(badge.get('id'));
+            for (Object o : (List<Object>) badgesMap.get('badges')) {
+                Map<String, Object> badge = (Map<String, Object>) o;
+
+                Badge__c newBadge = new Badge__c(
+                    Name = String.valueOf(badge.get('title')),
+                    Icon_Link__c = String.valueOf(badge.get('icon_url')),
+                    Points__c = String.valueOf(badge.get('points')),
+                    Type__c = String.valueOf(badge.get('type')),
+                    Path__c = TRAILHEAD_URL + String.valueOf(badge.get('path')),
+                    Trailblazer__r = new Trailblazer__c(Profile_Id__c = tb.Profile_Id__c)
+                );
+
+                if (!String.isBlank(String.valueOf(badge.get('api_name')))) {
+                    newBadge.Upsert_Key__c = tb.Profile_Id__c + String.valueOf(badge.get('api_name'));
+                } else if (!String.isBlank(String.valueOf(badge.get('id')))) {
+                    newBadge.Upsert_Key__c = tb.Profile_Id__c + String.valueOf(badge.get('id'));
+                }
+
+                if (!String.isBlank(String.valueOf(badge.get('finished_at')))) {
+                    Datetime finishedAt = (Datetime) JSON.deserialize('\"' + badge.get('finished_at') + '\"', Datetime.class);
+                    newBadge.Date_Earned__c = finishedAt;
+                }
+
+                if (!String.isBlank(newBadge.Upsert_Key__c)) newBadges.add(newBadge);
             }
-
-            if (!String.isBlank(String.valueOf(badge.get('finished_at')))) {
-                Datetime finishedAt = (Datetime) JSON.deserialize('\"' + badge.get('finished_at') + '\"', Datetime.class);
-                newBadge.Date_Earned__c = finishedAt;
-            }
-
-            if (!String.isBlank(newBadge.Upsert_Key__c)) newBadges.add(newBadge);
         }
 
         return newBadges;

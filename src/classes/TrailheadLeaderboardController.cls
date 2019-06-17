@@ -4,9 +4,9 @@
 * Description: Controller class for trailheadLeaderboard.page
 ******************************************/
 public class TrailheadLeaderboardController {
-    private Set<Id> trailblazerIds;
+    private Set<String> trailblazerIds;
     public List<Trailblazer__c> trailblazers { get; set; }
-    public Map<Id, List<Badge__c>> badgesMap { get; set; }
+    public Map<String, List<Badge__c>> badgesMap { get; set; }
     public String newProfileId { get; set; }
     public String selectedName { get; set; }
     public String selectedId { get; set; }
@@ -20,8 +20,8 @@ public class TrailheadLeaderboardController {
      */
     public void populateTrailblazers() {
         newProfileId = '';
-        trailblazerIds = new Set<Id>();
-        badgesMap = new Map<Id, List<Badge__c>>();
+        trailblazerIds = new Set<String>();
+        badgesMap = new Map<String, List<Badge__c>>();
 
         trailblazers = new List<Trailblazer__c>([
             SELECT Id, Name, Badges__c, Points__c, Trailblazer_Since__c, Trails__c, Profile_Id__c,
@@ -52,17 +52,6 @@ public class TrailheadLeaderboardController {
      * Id on the Visualforce page.
      */
     public PageReference upsertNewTrailblazer() {
-        if (!(String.escapeSingleQuotes(newProfileId) instanceof Id)) {
-            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR,
-                ' Please provide a valid Salesforce Id'));
-            return null;
-        }
-
-        if (trailblazerIds.contains(newProfileId)) {
-            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, ' This trailblazer already exists.'));
-            return null;
-        }
-
         try {
             findAndUpsertTrailblazer(newProfileId);
             populateTrailblazers();

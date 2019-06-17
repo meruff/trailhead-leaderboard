@@ -292,19 +292,17 @@
 
                                     <div class="slds-form slds-form_stacked">
                                         <div class="slds-form-element">
-                                            <label class="slds-form-element__label" for="blazerProfileId">
-                                                Trailhead Profile Id
-                                            </label>
                                             <div class="slds-form-element__control">
                                                 <apex:inputText styleClass="slds-input" id="blazerProfileId"
-                                                                html-placeholder="User Id from Trailhead - starts with 005" value="{!newProfileId}"/>
+                                                                html-placeholder="Trailhead profile Id or custom URL name" value="{!newProfileId}"/>
                                             </div>
                                         </div>
                                         <br />
                                         <p>
                                             <b>Note:</b>
                                             To find your Profile Id, first make sure your Trailhead Profile is set to public.
-                                            Then copy the Salesforce User Id from the URL.
+                                            Then copy the Salesforce User Id from the URL after '/me/'. Or, if you've set up a
+                                            custom URL, copy and paste that here.
                                         </p>
                                     </div>
                                 </div>

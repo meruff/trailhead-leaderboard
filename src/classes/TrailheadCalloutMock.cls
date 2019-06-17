@@ -12,7 +12,11 @@ public class TrailheadCalloutMock implements HttpCalloutMock {
     }
 
     public HttpResponse respond(HttpRequest req) {
-        return responses.remove(0);
+        if (responses.size() > 1) {
+            return responses.remove(0);
+        } else {
+            return responses[0];
+        }
     }
 
     public static String getSuccessfulResponseBody() {

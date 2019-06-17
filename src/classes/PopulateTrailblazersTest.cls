@@ -71,6 +71,8 @@ private class PopulateTrailblazersTest {
         res2.setBody(TrailheadCalloutMock.getSuccessfulResponseBody());
         mock.addResponse(res2);
 
+        System.debug('merf: ' + mock);
+
         Test.setMock(HttpCalloutMock.class, mock);
 
         // Act
