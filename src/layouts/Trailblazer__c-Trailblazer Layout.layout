@@ -95,6 +95,10 @@
     </layoutSections>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>Type__c</fields>
+        <fields>Points__c</fields>
+        <fields>Date_Earned__c</fields>
+        <fields>Path__c</fields>
         <relatedList>Badge__c.Trailblazer__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>

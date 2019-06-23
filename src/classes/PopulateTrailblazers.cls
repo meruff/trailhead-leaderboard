@@ -152,25 +152,23 @@ global class PopulateTrailblazers implements Schedulable {
         List<Badge__c> newBadges = new List<Badge__c>();
 
         if (resBody.contains('<div data-react-class=\"BadgesPanel\" data-react-props=\"')) {
-            String badges = resBody.substringBetween('<div data-react-class=\"BadgesPanel\" data-react-props=\"', '</').trim();
+            String badges = resBody.substringBetween('<div data-react-class=\"BadgesPanel\" data-react-props=\"', '\"></').trim();
             Map<String, Object> badgesMap = (Map<String, Object>) JSON.deserializeUntyped(badges.replace('&quot;', '\"'));
 
             for (Object o : (List<Object>) badgesMap.get('badges')) {
                 Map<String, Object> badge = (Map<String, Object>) o;
 
                 Badge__c newBadge = new Badge__c(
-                    Name = String.valueOf(badge.get('title')),
+                    Title__c = String.valueOf(badge.get('title')),
                     Icon_Link__c = String.valueOf(badge.get('icon_url')),
                     Points__c = String.valueOf(badge.get('points')),
-                    Type__c = String.valueOf(badge.get('type')),
+                    Type__c = String.valueOf(badge.get('badge_type')),
                     Path__c = String.valueOf(badge.get('path')),
                     Trailblazer__r = new Trailblazer__c(Profile_Id__c = tb.Profile_Id__c)
                 );
 
-                if (!String.isBlank(String.valueOf(badge.get('api_name')))) {
-                    newBadge.Upsert_Key__c = tb.Profile_Id__c + String.valueOf(badge.get('api_name'));
-                } else if (!String.isBlank(String.valueOf(badge.get('id')))) {
-                    newBadge.Upsert_Key__c = tb.Profile_Id__c + String.valueOf(badge.get('id'));
+                if (!String.isBlank(String.valueOf(badge.get('title')))) {
+                    newBadge.Upsert_Key__c = tb.Profile_Id__c + '_' + newBadge.Icon_Link__c.substringAfterLast('/').substringBeforeLast('.');
                 }
 
                 if (!String.isBlank(String.valueOf(badge.get('finished_at')))) {
@@ -178,7 +176,9 @@ global class PopulateTrailblazers implements Schedulable {
                     newBadge.Date_Earned__c = finishedAt;
                 }
 
-                if (!String.isBlank(newBadge.Upsert_Key__c)) newBadges.add(newBadge);
+                if (!String.isBlank(newBadge.Upsert_Key__c)) {
+                    newBadges.add(newBadge);
+                }
             }
         }
 

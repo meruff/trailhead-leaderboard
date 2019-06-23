@@ -71,6 +71,6 @@ public class TrailheadCalloutMock implements HttpCalloutMock {
                         '\"points\":6000' +
                     '}]' +
                 '}' +
-            '</';
+            '\"></';
     }
 }

@@ -343,9 +343,9 @@
                                             <apex:repeat value="{!badgesMap[selectedId]}" var="badge">
                                                 <div class="slds-is-relative slds-col slds-size_1-of-2 slds-medium-size_1-of-4 slds-p-around_x-large" style="text-align:center;">
                                                     <a href="{!badge.Path__c}" target="_blank">
-                                                        <img title="{!badge.Name}" src="{!badge.Icon_Link__c}" style="width:100%;max-width:150px;"/>
+                                                        <img title="{!badge.Title__c}" src="{!badge.Icon_Link__c}" style="width:100%;max-width:150px;"/>
                                                         <span class="slds-text-title slds-text-align_center slds-m-top_large" style="font-size:1em;display:block;">
-                                                            <apex:outputText escape="false" value="{!badge.Name}"/>
+                                                            <apex:outputText escape="false" value="{!badge.Title__c}"/>
                                                         </span>
                                                     </a>
                                                 </div>

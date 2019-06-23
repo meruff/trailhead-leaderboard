@@ -26,7 +26,7 @@ public class TrailheadLeaderboardController {
         trailblazers = new List<Trailblazer__c>([
             SELECT Id, Name, Badges__c, Points__c, Trailblazer_Since__c, Trails__c, Profile_Id__c,
                 Profile_Link__c, Rank__c, Profile_Photo__c, Job_Role__c, Job_Title__c, Company_Institution__c, (
-                SELECT Name, Icon_Link__c, Type__c, Points__c, Date_Earned__c, Path__c
+                SELECT Title__c, Icon_Link__c, Type__c, Points__c, Date_Earned__c, Path__c
                 FROM Badges__r
                 ORDER BY Date_Earned__c DESC NULLS LAST
             )
