@@ -163,7 +163,7 @@ global class PopulateTrailblazers implements Schedulable {
                     Icon_Link__c = String.valueOf(badge.get('icon_url')),
                     Points__c = String.valueOf(badge.get('points')),
                     Type__c = String.valueOf(badge.get('type')),
-                    Path__c = TRAILHEAD_URL + String.valueOf(badge.get('path')),
+                    Path__c = String.valueOf(badge.get('path')),
                     Trailblazer__r = new Trailblazer__c(Profile_Id__c = tb.Profile_Id__c)
                 );
 
