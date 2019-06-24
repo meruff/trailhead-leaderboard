@@ -40,6 +40,7 @@ job a name, select `PopulateTrailblazers.cls` as your Apex class, and choose a r
 - ~~Add Badges~~
 - ~~Move from Bootstrap 3 to Salesforce Lightning Design System~~
 - ~~Test/Mock Classes~~
+- Convert to LWC - In Progress
 
 ### License
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details

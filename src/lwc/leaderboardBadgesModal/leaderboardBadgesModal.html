@@ -1,0 +1,44 @@
+<template>
+    <div class="slds-theme_default">
+        <template if:true={isModalOpen}>
+            <section role="dialog" tabindex="-1" aria-labelledby="badgesModalHeading" aria-modal="true" aria-describedby="badgesModalContent" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModal}>
+                            <lightning-icon icon-name="utility:close" size="medium">
+                            </lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <h2 id="badgesModalHeading" class="slds-text-heading_medium slds-hyphenate">{firstName}'s Badges</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium modal-body" id="badgesModalContent">
+                        <div class="slds-grid slds-grid_align-end">
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                                <lightning-combobox name="badgeFilter" label="Badge Type" variant="label-hidden" value={selectedBadgeType} options={badgeTypeOptions} onchange={updateSelectedBadgeFilter} class="slds-p-bottom_medium"></lightning-combobox>
+                            </div>
+                        </div>
+                        <div class="slds-grid slds-wrap">
+                            <template for:each={filteredBadges} for:item="badge">
+                                <div key={badge.Id} class="slds-p-around_small slds-col slds-size_1-of-2 slds-medium-size_1-of-3 slds-large-size_1-of-4">
+                                    <a href={badge.Path__c} target="_blank">
+                                        <img src={badge.Icon_Link__c} alt={badge.Title__c} />
+                                        <p class="slds-text-align_center slds-p-top_small">
+                                            <lightning-formatted-rich-text value={badge.Title__c}></lightning-formatted-rich-text>
+                                        </p>
+                                    </a>
+                                </div>
+                            </template>
+
+                            <div if:false={isFilteredBadges} class="slds-col slds-size_1-of-1" style="height:125px;">
+                                <div class="slds-align_absolute-center" style="height:100%">
+                                    No badges found.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    </div>
+</template>

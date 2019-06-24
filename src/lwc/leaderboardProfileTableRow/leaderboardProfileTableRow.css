@@ -1,0 +1,17 @@
+:host {
+    display: table-row;
+    cursor: pointer;
+}
+
+:host:hover {
+    background-color: #f4f6f9;
+}
+
+:host>td:first-child {
+    padding-left: 1.5rem;
+}
+
+.adjust-icon {
+    vertical-align: top;
+    margin-top: 1px;
+}

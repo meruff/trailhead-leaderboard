@@ -1,0 +1,85 @@
+<template>
+    <!-- Desktop View -->
+    <div class="slds-show--medium">
+        <lightning-card title="">
+            <h2 slot="title">
+                <span class="slds-text-heading_small">
+                    All Trailblazers
+                    <br/><span class="slds-text-title">Click on a user to view their badges</span>
+                </span>
+            </h2>
+
+            <div slot="actions">
+                <a class="brand-link">
+                    <lightning-icon icon-name="utility:new" size="xx-small" alternative-text="Plus Icon" class="adjust-icon"></lightning-icon>
+                    &nbsp;Add New
+                </a>
+            </div>
+
+            <div class="slds-scrollable--x">
+                <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                    <thead>
+                        <tr class="slds-text-title--caps">
+                            <th scope="col" class="slds-cell-wrap">
+                                <div class="slds-truncate" title="Number">#</div>
+                            </th>
+                            <th scope="col" class="slds-cell-wrap">
+                                <div class="slds-truncate" title="Name">Name</div>
+                            </th>
+                            <th scope="col" class="slds-cell-wrap">
+                                <div class="slds-truncate" title="Rank">Rank</div>
+                            </th>
+                            <th scope="col" class="slds-cell-wrap">
+                                <div class="slds-truncate" title="Points">Points</div>
+                            </th>
+                            <th scope="col" class="slds-cell-wrap">
+                                <div class="slds-truncate" title="Badges">Badges</div>
+                            </th>
+                            <th scope="col" class="slds-cell-wrap">
+                                <div class="slds-truncate" title="Trails">Trails</div>
+                            </th>
+                            <th scope="col" class="slds-cell-wrap">
+                                <div class="slds-truncate" title="Trailblazer Since">Trailblazer Since</div>
+                            </th>
+                            <th scope="col" class="slds-cell-wrap">
+                                <div class="slds-truncate" title="Profile">Profile</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template iterator:it={trailblazers}>
+                            <c-leaderboard-profile-table-row key={it.value.Id} trailblazer={it.value} first={it.first} index={it.index} onopenmodal={showModal}></c-leaderboard-profile-table-row>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </lightning-card>
+    </div>
+
+    <!-- Mobile View -->
+    <div class="slds-hide--medium">
+        <div class="slds-p-bottom_x-small">
+            <lightning-card title="">
+                <h2 slot="title">
+                    <span class="slds-text-heading_small">
+                        All Trailblazers
+                        <div class="slds-text-title">Click on a user to view their badges</div>
+                    </span>
+                </h2>
+
+                <div slot="actions">
+                    <a class="brand-link">
+                        <lightning-icon icon-name="utility:new" size="xx-small" alternative-text="Plus Icon" class="adjust-icon"></lightning-icon>
+                        &nbsp;Add New
+                    </a>
+                </div>
+            </lightning-card>
+        </div>
+
+        <template iterator:it={trailblazers}>
+            <c-leaderboard-profile-card key={it.value.Id} trailblazer={it.value} first={it.first} index={it.index} onopenmodal={showModal}></c-leaderboard-profile-card>
+        </template>
+    </div>
+
+    <c-leaderboard-badges-modal is-modal-open={isModalOpen} trailblazers={trailblazers} selected-trailblazer-id={selectedTrailblazerId} onclosemodal={hideModal}></c-leaderboard-badges-modal>
+</template>

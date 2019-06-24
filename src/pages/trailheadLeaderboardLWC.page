@@ -1,0 +1,29 @@
+<apex:page id="trailheadLeaderboardLWC" sideBar="false" showHeader="false" docType="HTML-5.0" standardStylesheets="false" cache="true">
+    <title>⚡️ Trailhead Leaderboard | LWC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta name="theme-color" content="#D8DEE6"/>
+    <apex:slds />
+    <c:TrailheadLeaderboardStyles />
+    <apex:includeLightning />
+
+    <div id="leaderboardDiv"></div>
+
+    <div id="loadingSpinner" class="slds-spinner_container">
+        <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+            <span class="slds-assistive-text">Loading</span>
+            <div class="slds-spinner__dot-a"></div>
+            <div class="slds-spinner__dot-b"></div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            $Lightning.use("c:LeaderboardContainer", function () {
+                $Lightning.createComponent("c:trailheadLeaderboard", null, "leaderboardDiv",
+                    function (cmp) {
+                        document.getElementById("loadingSpinner").style.display = "none";
+                    });
+            });
+        };
+    </script>
+</apex:page>

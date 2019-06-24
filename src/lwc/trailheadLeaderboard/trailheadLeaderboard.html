@@ -1,0 +1,17 @@
+<template>
+    <div class="slds-p-around_small">
+        <c-leaderboard-header></c-leaderboard-header>
+
+        <c-async promise={trailblazerPromise}>
+            <div slot="onFulfilled">
+                <c-leaderboard-table trailblazers={trailblazers}></c-leaderboard-table>
+            </div>
+            <div slot="onRejected">
+                Error occurred while retrieving Trailblazers.
+            </div>
+            <div slot="onPending">
+                <lightning-spinner alternative-text="Loading" variant="brand"></lightning-spinner>
+            </div>
+        </c-async>
+    </div>
+</template>

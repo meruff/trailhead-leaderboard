@@ -1,0 +1,71 @@
+<template>
+    <div class="slds-p-vertical_x-small" onclick={openModalHandler}>
+        <lightning-card title="">
+            <div class="slds-p-horizontal_medium slds-grid adjust-card">
+                <div class="slds-media slds-media_large slds-has-flexi-truncate slds-p-top_none">
+                    <div class="slds-media__figure" style="margin-right:0;">
+                        <span class="slds-avatar slds-avatar_large slds-avatar_circle slds-m-right_medium">
+                            <img src={trailblazer.Profile_Photo__c} />
+                        </span>
+                    </div>
+                    <div class="slds-media__body">
+                        <h2><span class="slds-text-heading_small">{trailblazer.Name}</span></h2>
+                        <div class="slds-text-title">
+                            <lightning-formatted-rich-text value={titleString}></lightning-formatted-rich-text>
+                        </div>
+                    </div>
+                    <div class="slds-media slds-media_reverse">
+                        <c-leaderboard-rank-badge rank-name={trailblazer.Rank__c}></c-leaderboard-rank-badge>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-card__body slds-card__body_inner">
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-size_1-of-2">
+                        <ul class="slds-list_vertical-space-medium slds-m-left_xx-small">
+                            <li class="slds-item">
+                                <div class="slds-text-title slds-m-bottom_xx-small">Rank</div>
+                                <div class="slds-text-body_regular">
+                                    <c-leaderboard-rank first={first} rank={index} show-hashtag="true"></c-leaderboard-rank>
+                                </div>
+                            </li>
+                            <li class="slds-item">
+                                <div class="slds-text-title slds-m-bottom_xx-small">Badges</div>
+                                <div class="slds-truncate">
+                                    <lightning-formatted-number value={trailblazer.Badges__c}></lightning-formatted-number>
+                                </div>
+                            </li>
+                            <li class="slds-item">
+                                <div class="slds-text-title slds-m-bottom_xx-small">Trailblazer Since</div>
+                                <div class="slds-text-body_regular">{trailblazer.Trailblazer_Since__c}</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="slds-size_1-of-2">
+                        <ul class="slds-list_vertical-space-medium slds-m-left_xx-small">
+                            <li class="slds-item">
+                                <div class="slds-text-title slds-m-bottom_xx-small">Points</div>
+                                <div class="slds-text-body_regular">
+                                    <lightning-formatted-number value={trailblazer.Points__c}></lightning-formatted-number>
+                                </div>
+                            </li>
+                            <li class="slds-item">
+                                <div class="slds-text-title slds-m-bottom_xx-small">Trails</div>
+                                <div class="slds-text-body_regular">{trailblazer.Trails__c}</div>
+                            </li>
+                            <li class="slds-item">
+                                <div class="slds-text-title slds-truncate slds-m-bottom_xx-small">Profile</div>
+                                <div class="slds-text-body_regular">
+                                    <a href={trailblazer.Profile_Link__c} class="cust-link profile_Link" target="_blank" onclick={handleProfileClick}>
+                                        Open
+                                        <lightning-icon icon-name="utility:new_window" alternative-text="Open Profile" size="xx-small" class="slds-p-left_xx-small adjust-icon"></lightning-icon>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </lightning-card>
+    </div>
+</template>
