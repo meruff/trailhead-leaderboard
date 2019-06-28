@@ -10,7 +10,7 @@
             </h2>
 
             <div slot="actions">
-                <a class="brand-link">
+                <a class="brand-link" onclick={showTrailblazerModal}>
                     <lightning-icon icon-name="utility:new" size="xx-small" alternative-text="Plus Icon" class="adjust-icon"></lightning-icon>
                     &nbsp;Add New
                 </a>
@@ -48,7 +48,7 @@
                     </thead>
                     <tbody>
                         <template iterator:it={trailblazers}>
-                            <c-leaderboard-profile-table-row key={it.value.Id} trailblazer={it.value} first={it.first} index={it.index} onopenmodal={showModal}></c-leaderboard-profile-table-row>
+                            <c-leaderboard-profile-table-row key={it.value.Id} trailblazer={it.value} first={it.first} index={it.index} onopenmodal={showBadgesModal}></c-leaderboard-profile-table-row>
                         </template>
                     </tbody>
                 </table>
@@ -68,7 +68,7 @@
                 </h2>
 
                 <div slot="actions">
-                    <a class="brand-link">
+                    <a class="brand-link" onclick={showTrailblazerModal}>
                         <lightning-icon icon-name="utility:new" size="xx-small" alternative-text="Plus Icon" class="adjust-icon"></lightning-icon>
                         &nbsp;Add New
                     </a>
@@ -77,9 +77,10 @@
         </div>
 
         <template iterator:it={trailblazers}>
-            <c-leaderboard-profile-card key={it.value.Id} trailblazer={it.value} first={it.first} index={it.index} onopenmodal={showModal}></c-leaderboard-profile-card>
+            <c-leaderboard-profile-card key={it.value.Id} trailblazer={it.value} first={it.first} index={it.index} onopenmodal={showBadgesModal}></c-leaderboard-profile-card>
         </template>
     </div>
 
-    <c-leaderboard-badges-modal is-modal-open={isModalOpen} trailblazers={trailblazers} selected-trailblazer-id={selectedTrailblazerId} onclosemodal={hideModal}></c-leaderboard-badges-modal>
+    <c-leaderboard-new-trailblazer-modal is-modal-open={isTrailblazerModalOpen} onclosemodal={hideTrailblazerModal}></c-leaderboard-new-trailblazer-modal>
+    <c-leaderboard-badges-modal is-modal-open={isBadgesModalOpen} trailblazers={trailblazers} selected-trailblazer-id={selectedTrailblazerId} onclosemodal={hideBadgesModal}></c-leaderboard-badges-modal>
 </template>

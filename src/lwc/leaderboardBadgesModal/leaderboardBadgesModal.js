@@ -8,6 +8,7 @@ export default class LeaderboardBadgesModal extends LightningElement {
     get selectedTrailblazerId() {
         return this._selectedTrailblazerId;
     }
+
     set selectedTrailblazerId(value) {
         this.setAttribute("selectedTrailblazerId", value);
         this._selectedTrailblazerId = value;
@@ -23,11 +24,6 @@ export default class LeaderboardBadgesModal extends LightningElement {
         {"label": "Projects", "value": "project"},
         {"label": "Event/Community", "value": "event"}
     ];
-
-    hideModal() {
-        this.isModalOpen = false;
-        this.dispatchEvent(new CustomEvent("closemodal"));
-    }
 
     get trailblazer() {
         return this.trailblazers.find(blazer => blazer.Id === this.selectedTrailblazerId);
@@ -55,5 +51,10 @@ export default class LeaderboardBadgesModal extends LightningElement {
 
     get isFilteredBadges() {
         return this.filteredBadges.length > 0;
+    }
+
+    hideModal() {
+        this.isModalOpen = false;
+        this.dispatchEvent(new CustomEvent("closemodal"));
     }
 }

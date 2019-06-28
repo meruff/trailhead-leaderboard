@@ -2,15 +2,24 @@ import {LightningElement, api, track} from 'lwc';
 
 export default class LeaderboardTable extends LightningElement {
     @api trailblazers;
-    @track isModalOpen = false;
+    @track isBadgesModalOpen = false;
+    @track isTrailblazerModalOpen = false;
     @track selectedTrailblazerId;
 
-    showModal(event) {
+    showBadgesModal(event) {
         this.selectedTrailblazerId = event.detail;
-        this.isModalOpen = true
+        this.isBadgesModalOpen = true;
     }
 
-    hideModal() {
-        this.isModalOpen = false
+    hideBadgesModal() {
+        this.isBadgesModalOpen = false;
+    }
+
+    showTrailblazerModal() {
+        this.isTrailblazerModalOpen = true;
+    }
+
+    hideTrailblazerModal() {
+        this.isTrailblazerModalOpen = false;
     }
 }

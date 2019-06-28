@@ -1,0 +1,41 @@
+<template>
+    <template if:true={isModalOpen}>
+        <section role="dialog" tabindex="-1" aria-labelledby="newTrailblazerHeading" aria-modal="true" aria-describedby="newTrailblazerModalContent" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModal}>
+                        <lightning-icon icon-name="utility:close" size="medium">
+                        </lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="newTrailblazerHeading" class="slds-text-heading_medium slds-hyphenate">Add a new Trailblazer</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium modal-body" id="newTrailblazerModalContent">
+                    <div if:true={error}>
+                        <c-alert-message type="error" message={error} textured></c-alert-message>
+                    </div>
+                    <lightning-input
+                            label="Trailhead Id/Handle"
+                            variant="label-hidden"
+                            placeholder="Trailhead Id or handle"
+                            value={userId}
+                            onchange={updateUserId}
+                            message-when-value-missing="Please enter a Trailhead User Id or handle"
+                            class="slds-p-vertical_small"
+                            required
+                    ></lightning-input>
+                    <div class="slds-p-horizontal_xxx-small">
+                        <b>Note:</b> To find your Id, first make sure your Trailhead profile is set to public,
+                        then copy the User Id from the URL after "/me/" (starts with 005). Or, if you've set up a
+                        custom handle, copy and paste that here.
+                    </div>
+                </div>
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={hideModal}>Cancel</button>
+                    <button class="slds-button slds-button_brand" onclick={saveTrailblazer}>Save</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

@@ -19,6 +19,10 @@ export default class LeaderboardProfileCard extends LightningElement {
         return title;
     }
 
+    get profileAlt() {
+        return this.trailblazer.Name.split(" ")[0] + "'s profile photo";
+    }
+
     handleProfileClick(event) {
         event.stopPropagation();
     }
