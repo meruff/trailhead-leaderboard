@@ -1,4 +1,4 @@
-import {LightningElement, api, track} from 'lwc';
+import { LightningElement, api, track } from 'lwc';
 import createTrailblazer from '@salesforce/apex/TrailheadLeaderboardAuraController.createTrailblazer';
 
 export default class LeaderboardNewTrailblazerModal extends LightningElement {
@@ -29,9 +29,15 @@ export default class LeaderboardNewTrailblazerModal extends LightningElement {
             }, true);
 
         if (allValid) {
-            createTrailblazer({userId: this.userId})
+            createTrailblazer({ userId: this.userId })
                 .then(result => {
-                    this.error = (result !== 'success') ? result : undefined;
+                    if (result === 'success') {
+                        this.error = undefined;
+                        this.hideModal();
+                        this.dispatchEvent(new CustomEvent("refreshtable"));
+                    } else {
+                        this.error = result;
+                    }
                     submitBtn.disabled = false;
                 })
                 .catch(error => {

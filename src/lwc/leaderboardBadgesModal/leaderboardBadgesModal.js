@@ -1,4 +1,4 @@
-import {LightningElement, api, track} from 'lwc';
+import { LightningElement, api, track } from 'lwc';
 
 export default class LeaderboardBadgesModal extends LightningElement {
     @api isModalOpen = false;
@@ -18,11 +18,11 @@ export default class LeaderboardBadgesModal extends LightningElement {
     @track selectedBadgeType = "all";
 
     badgeTypeOptions = [
-        {"label": "All Badges", "value": "all"},
-        {"label": "Superbadges", "value": "superbadge"},
-        {"label": "Modules", "value": "module"},
-        {"label": "Projects", "value": "project"},
-        {"label": "Event/Community", "value": "event"}
+        { "label": "All Badges", "value": "all" },
+        { "label": "Superbadges", "value": "superbadge" },
+        { "label": "Modules", "value": "module" },
+        { "label": "Projects", "value": "project" },
+        { "label": "Event/Community", "value": "event" }
     ];
 
     get trailblazer() {

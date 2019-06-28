@@ -23,11 +23,9 @@ public class TrailheadLeaderboardAuraController {
     public static String createTrailblazer(String userId) {
         Http h = new Http();
         HttpRequest req = new HttpRequest();
-        req.setEndpoint(PopulateTrailblazers.TRAILHEAD_URL + '/me/' + userId.replace(' ' , '').trim());
+        req.setEndpoint(PopulateTrailblazers.TRAILHEAD_URL + '/me/' + userId.replace(' ', '').trim());
         req.setMethod('GET');
         HttpResponse res = h.send(req);
-
-        System.debug('merf: ' + req.getEndpoint());
 
         // Handling for redirects (custom Trailhead Profiles /me/)
         Boolean redirect = false;
@@ -60,14 +58,13 @@ public class TrailheadLeaderboardAuraController {
             && !res.getBody().contains('This user has chosen to keep their profile private.'))
         ) {
             Trailblazer__c tbToUpsert = PopulateTrailblazers.populateTrailblazer(res.getBody());
-            System.debug('merf tbToUpsert: ' + tbToUpsert);
-//            upsert tbToUpsert Profile_Id__c;
+            upsert tbToUpsert Profile_Id__c;
 
             List<Badge__c> badgesToUpsert = PopulateTrailblazers.getTrailblazerBadges(res.getBody(), tbToUpsert);
-            System.debug('merf badgesToUpsert: ' + badgesToUpsert);
-//            if (badgesToUpsert.size() > 0) {
-//                upsert badgesToUpsert Upsert_Key__c;
-//            }
+            if (badgesToUpsert.size() > 0) {
+                upsert badgesToUpsert Upsert_Key__c;
+            }
+
             return 'success';
         } else {
             return 'Could not find a Trailhead profile for User Id/handle: ' + userId +

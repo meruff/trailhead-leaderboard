@@ -81,6 +81,6 @@
         </template>
     </div>
 
-    <c-leaderboard-new-trailblazer-modal is-modal-open={isTrailblazerModalOpen} onclosemodal={hideTrailblazerModal}></c-leaderboard-new-trailblazer-modal>
+    <c-leaderboard-new-trailblazer-modal is-modal-open={isTrailblazerModalOpen} onclosemodal={hideTrailblazerModal} onrefreshtable={fireRefresh}></c-leaderboard-new-trailblazer-modal>
     <c-leaderboard-badges-modal is-modal-open={isBadgesModalOpen} trailblazers={trailblazers} selected-trailblazer-id={selectedTrailblazerId} onclosemodal={hideBadgesModal}></c-leaderboard-badges-modal>
 </template>
