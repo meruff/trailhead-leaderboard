@@ -70,7 +70,7 @@ private class PopulateTrailblazersTest {
         res2.setStatusCode(200);
         res2.setBody(TrailheadCalloutMock.getSuccessfulResponseBody());
         mock.addResponse(res2);
-        
+
         Test.setMock(HttpCalloutMock.class, mock);
 
         // Act
