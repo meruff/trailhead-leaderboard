@@ -17,7 +17,7 @@ export default class LeaderboardRankBadge extends LightningElement {
         if (['Ranger', 'Adventurer', 'Expeditioner'].includes(this.rankName)) {
             return 'slds-m-top_x-small';
         } else if (this.rankName === 'Hiker') {
-            return 'slds-m-top_xx-small';
+            return 'slds-m-top_xx-small slds-m-left_xx-small';
         }
     }
 }

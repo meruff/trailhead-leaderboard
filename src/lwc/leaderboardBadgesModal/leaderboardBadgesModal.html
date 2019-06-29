@@ -13,7 +13,15 @@
                 <div class="slds-modal__content slds-p-around_medium modal-body" id="badgesModalContent">
                     <div class="slds-grid slds-grid_align-end">
                         <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
-                            <lightning-combobox name="badgeFilter" label="Badge Type" variant="label-hidden" value={selectedBadgeType} options={badgeTypeOptions} onchange={updateSelectedBadgeFilter} class="slds-p-bottom_medium"></lightning-combobox>
+                            <lightning-combobox
+                                    name="badgeFilter"
+                                    label="Badge Type"
+                                    variant="label-hidden"
+                                    value={selectedBadgeType}
+                                    options={badgeTypeOptions}
+                                    onchange={updateSelectedBadgeFilter}
+                                    class="slds-p-bottom_medium"
+                            ></lightning-combobox>
                         </div>
                     </div>
                     <div class="slds-grid slds-wrap">
@@ -33,6 +41,9 @@
                                 No badges found.
                             </div>
                         </div>
+                    </div>
+                    <div if:true={showMore} class="slds-align_absolute-center slds-p-vertical_small">
+                        <lightning-button variant="neutral" label={showMoreButtonLabel} onclick={handleShowAll}></lightning-button>
                     </div>
                 </div>
             </div>

@@ -3,6 +3,16 @@ import { LightningElement, api, track } from 'lwc';
 export default class LeaderboardBadgesModal extends LightningElement {
     @api isModalOpen = false;
     @api trailblazers;
+    @track showAll = false;
+    @track selectedBadgeType = "all";
+    initialListSize = 50;
+    badgeTypeOptions = [
+        { "label": "All Badges", "value": "all" },
+        { "label": "Superbadges", "value": "superbadge" },
+        { "label": "Modules", "value": "module" },
+        { "label": "Projects", "value": "project" },
+        { "label": "Event/Community", "value": "event" }
+    ];
 
     @api
     get selectedTrailblazerId() {
@@ -13,17 +23,8 @@ export default class LeaderboardBadgesModal extends LightningElement {
         this.setAttribute("selectedTrailblazerId", value);
         this._selectedTrailblazerId = value;
         this.selectedBadgeType = "all";
+        this.showAll = false;
     }
-
-    @track selectedBadgeType = "all";
-
-    badgeTypeOptions = [
-        { "label": "All Badges", "value": "all" },
-        { "label": "Superbadges", "value": "superbadge" },
-        { "label": "Modules", "value": "module" },
-        { "label": "Projects", "value": "project" },
-        { "label": "Event/Community", "value": "event" }
-    ];
 
     get trailblazer() {
         return this.trailblazers.find(blazer => blazer.Id === this.selectedTrailblazerId);
@@ -34,18 +35,22 @@ export default class LeaderboardBadgesModal extends LightningElement {
     }
 
     get badges() {
-        return this.trailblazers.find(blazer => blazer.Id === this.selectedTrailblazerId).Badges__r;
-    }
-
-    updateSelectedBadgeFilter(event) {
-        this.selectedBadgeType = event.target.value;
+        return this.trailblazer.Badges__r;
     }
 
     get filteredBadges() {
         if (this.selectedBadgeType !== "all") {
-            return this.badges.filter(badge => badge.Type__c.toLowerCase() === this.selectedBadgeType);
+            if (this.showAll) {
+                return this.badges.filter(badge => badge.Type__c.toLowerCase() === this.selectedBadgeType);
+            } else {
+                return this.badges.filter(badge => badge.Type__c.toLowerCase() === this.selectedBadgeType).slice(0, this.initialListSize);
+            }
         } else {
-            return this.badges;
+            if (this.showAll) {
+                return this.badges;
+            } else {
+                return this.badges.slice(0, this.initialListSize);
+            }
         }
     }
 
@@ -53,7 +58,28 @@ export default class LeaderboardBadgesModal extends LightningElement {
         return this.filteredBadges.length > 0;
     }
 
+    get showMore() {
+        if (this.selectedBadgeType !== "all") {
+            return this.filteredBadges.length < this.badges.filter(badge => badge.Type__c.toLowerCase() === this.selectedBadgeType).length;
+        } else {
+            return this.filteredBadges.length < this.badges.length;
+        }
+    }
+
+    get showMoreButtonLabel() {
+        return "Show More (" + (parseInt(this.trailblazer.Badges__c) - this.filteredBadges.length) + ")";
+    }
+
+    handleShowAll() {
+        this.showAll = true;
+    }
+
+    updateSelectedBadgeFilter(event) {
+        this.selectedBadgeType = event.target.value;
+    }
+
     hideModal() {
+        this.showAll = false;
         this.isModalOpen = false;
         this.dispatchEvent(new CustomEvent("closemodal"));
     }

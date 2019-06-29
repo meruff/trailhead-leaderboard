@@ -23,7 +23,7 @@ export default class LeaderboardProfileCard extends LightningElement {
         return this.trailblazer.Name.split(" ")[0] + "'s profile photo";
     }
 
-    handleProfileClick(event) {
+    static handleProfileClick(event) {
         event.stopPropagation();
     }
 
