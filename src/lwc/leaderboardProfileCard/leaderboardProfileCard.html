@@ -9,7 +9,12 @@
                         </span>
                     </div>
                     <div class="slds-media__body">
-                        <h2><span class="slds-text-heading_small">{trailblazer.Name}</span></h2>
+                        <h2>
+                            <span class="slds-text-heading_small">
+                                <c-leaderboard-rank rank={index} show-hashtag="true"></c-leaderboard-rank>
+                                &nbsp;{trailblazer.Name}
+                            </span>
+                        </h2>
                         <div class="slds-text-title">
                             <lightning-formatted-rich-text value={titleString}></lightning-formatted-rich-text>
                         </div>
@@ -24,15 +29,15 @@
                     <div class="slds-size_1-of-2">
                         <ul class="slds-list_vertical-space-medium slds-m-left_xx-small">
                             <li class="slds-item">
-                                <div class="slds-text-title slds-m-bottom_xx-small">Rank</div>
-                                <div class="slds-text-body_regular">
-                                    <c-leaderboard-rank first={first} rank={index} show-hashtag="true"></c-leaderboard-rank>
-                                </div>
-                            </li>
-                            <li class="slds-item">
                                 <div class="slds-text-title slds-m-bottom_xx-small">Badges</div>
                                 <div class="slds-truncate">
                                     <lightning-formatted-number value={trailblazer.Badges__c}></lightning-formatted-number>
+                                </div>
+                            </li>
+                            <li class="slds-item">
+                                <div class="slds-text-title slds-m-bottom_xx-small">Points</div>
+                                <div class="slds-text-body_regular">
+                                    <lightning-formatted-number value={trailblazer.Points__c}></lightning-formatted-number>
                                 </div>
                             </li>
                             <li class="slds-item">
@@ -44,14 +49,14 @@
                     <div class="slds-size_1-of-2">
                         <ul class="slds-list_vertical-space-medium slds-m-left_xx-small">
                             <li class="slds-item">
-                                <div class="slds-text-title slds-m-bottom_xx-small">Points</div>
-                                <div class="slds-text-body_regular">
-                                    <lightning-formatted-number value={trailblazer.Points__c}></lightning-formatted-number>
-                                </div>
-                            </li>
-                            <li class="slds-item">
                                 <div class="slds-text-title slds-m-bottom_xx-small">Trails</div>
                                 <div class="slds-text-body_regular">{trailblazer.Trails__c}</div>
+                            </li>
+                            <li class="slds-item">
+                                <div class="slds-text-title slds-m-bottom_xx-small">Superbadges</div>
+                                <div class="slds-text-body_regular">
+                                    <lightning-formatted-number value={superbadges}></lightning-formatted-number>
+                                </div>
                             </li>
                             <li class="slds-item">
                                 <div class="slds-text-title slds-truncate slds-m-bottom_xx-small">Profile</div>

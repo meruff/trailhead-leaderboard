@@ -1,7 +1,6 @@
 import { LightningElement, api } from 'lwc';
 
 export default class LeaderboardRank extends LightningElement {
-    @api first;
     @api showHashtag = false;
 
     @api
@@ -12,5 +11,9 @@ export default class LeaderboardRank extends LightningElement {
     set rank(value) {
         this.setAttribute('rank', value++);
         this._rank = value;
+    }
+
+    get first() {
+        return (this.rank === 1);
     }
 }

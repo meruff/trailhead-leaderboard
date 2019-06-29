@@ -73,4 +73,8 @@ public class TrailheadCalloutMock implements HttpCalloutMock {
                 '}' +
             '\"></';
     }
+
+    public static String getErrorResponseBody() {
+        return 'Someone\'s hiding!';
+    }
 }

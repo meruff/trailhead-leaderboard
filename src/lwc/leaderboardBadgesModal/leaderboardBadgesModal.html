@@ -24,9 +24,9 @@
                             ></lightning-combobox>
                         </div>
                     </div>
-                    <div class="slds-grid slds-wrap">
+                    <div class="slds-grid slds-wrap slds-grid_align-center">
                         <template for:each={filteredBadges} for:item="badge">
-                            <div key={badge.Id} class="slds-p-around_small slds-col slds-size_1-of-2 slds-medium-size_1-of-3 slds-large-size_1-of-4">
+                            <div key={badge.Id} class="slds-p-around_medium slds-col slds-size_1-of-2 slds-medium-size_1-of-3 slds-large-size_1-of-4">
                                 <a href={badge.Path__c} target="_blank">
                                     <img src={badge.Icon_Link__c} alt={badge.Title__c} />
                                     <p class="slds-text-align_center slds-p-top_small">

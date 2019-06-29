@@ -1,4 +1,6 @@
 import { LightningElement, api } from 'lwc';
+import LeaderboardProfileHelper from 'c/leaderboardProfileHelper';
+const profileHelper = new LeaderboardProfileHelper();
 
 export default class LeaderboardProfileCard extends LightningElement {
     @api trailblazer;
@@ -6,24 +8,18 @@ export default class LeaderboardProfileCard extends LightningElement {
     @api index;
 
     get titleString() {
-        let title = "";
-
-        if (this.trailblazer.Job_Title__c) {
-            title += this.trailblazer.Job_Title__c;
-        }
-
-        if (this.trailblazer.Company_Institution__c) {
-            title += ((this.trailblazer.Job_Title__c) ? "</br>" : "") + this.trailblazer.Company_Institution__c;
-        }
-
-        return title;
+        return profileHelper.getTitleString(this.trailblazer.Job_Title__c, this.trailblazer.Company_Institution__c);
     }
 
     get profileAlt() {
-        return this.trailblazer.Name.split(" ")[0] + "'s profile photo";
+        return profileHelper.getProfileAlt(this.trailblazer.Name);
     }
 
-    static handleProfileClick(event) {
+    get superbadges() {
+        return profileHelper.getSuperbadgeCount(this.trailblazer.Badges__r);
+    }
+
+    handleProfileClick(event) {
         event.stopPropagation();
     }
 
