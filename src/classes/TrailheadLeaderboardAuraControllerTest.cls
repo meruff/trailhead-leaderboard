@@ -36,7 +36,7 @@ private class TrailheadLeaderboardAuraControllerTest {
         mock.addResponse(res2);
 
         Test.setMock(HttpCalloutMock.class, mock);
-        Test.setCurrentPage(Page.trailheadLeaderboardLWC);
+        Test.setCurrentPage(Page.trailheadLeaderboard);
 
         // Act 
         Test.startTest();
@@ -65,7 +65,7 @@ private class TrailheadLeaderboardAuraControllerTest {
         mock.addResponse(res2);
 
         Test.setMock(HttpCalloutMock.class, mock);
-        Test.setCurrentPage(Page.trailheadLeaderboardLWC);
+        Test.setCurrentPage(Page.trailheadLeaderboard);
 
         // Act
         Test.startTest();
@@ -94,7 +94,7 @@ private class TrailheadLeaderboardAuraControllerTest {
         mock.addResponse(res2);
 
         Test.setMock(HttpCalloutMock.class, mock);
-        Test.setCurrentPage(Page.trailheadLeaderboardLWC);
+        Test.setCurrentPage(Page.trailheadLeaderboard);
 
         // Act
         Test.startTest();

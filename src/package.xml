@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>PopulateTrailblazers</members>
-        <members>PopulateTrailblazersTest</members>
-        <members>TrailheadCalloutMock</members>
-        <members>TrailheadLeaderboardController</members>
-        <members>TrailheadLeaderboardControllerTest</members>
+        <members>*</members>
         <name>ApexClass</name>
     </types>
     <types>
-        <members>TrailheadLeaderboardStyles</members>
+        <members>*</members>
         <name>ApexComponent</name>
     </types>
     <types>
-        <members>trailheadLeaderboard</members>
+        <members>*</members>
         <name>ApexPage</name>
     </types>
     <types>
-        <members>Badge__c</members>
-        <members>Trailblazer__c</members>
+        <members>*</members>
+        <name>AuraDefinitionBundle</name>
+    </types>
+    <types>
+        <members>*</members>
         <name>CustomObject</name>
     </types>
     <types>
-        <members>Badge__c</members>
-        <members>Trailblazer__c</members>
+        <members>*</members>
         <name>CustomTab</name>
     </types>
     <types>
-        <members>Badge__c-Badge Layout</members>
-        <members>Trailblazer__c-Trailblazer Layout</members>
+        <members>*</members>
         <name>Layout</name>
     </types>
     <types>
-        <members>Trailhead</members>
-        <members>Trailhead_Me</members>
+        <members>*</members>
+        <name>LightningComponentBundle</name>
+    </types>
+    <types>
+        <members>*</members>
         <name>RemoteSiteSetting</name>
     </types>
     <types>
-        <members>Trailhead_Leaderboard</members>
+        <members>*</members>
         <name>StaticResource</name>
     </types>
-    <version>42.0</version>
+    <version>46.0</version>
 </Package>
