@@ -32,7 +32,7 @@ You can schedule `PopulateTrailblazers.cls` to run at various intervals to updat
 - ~~Move from Bootstrap 3 to Salesforce Lightning Design System~~
 - ~~Test/Mock Classes~~
 - ~~Convert to Lightning Web Components ⚡~~
-- Convert to Salesforce DX Project?
+- ~~Convert to Salesforce DX Project~~
 - Trailhead public API? (If they ever let us use it)
 
 ## License
