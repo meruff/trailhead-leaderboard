@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Profile_Id__c</fullName>
+    <caseSensitive>false</caseSensitive>
+    <description>The Id of the Trailblazer&#39;s profile on Trailhead</description>
+    <externalId>true</externalId>
+    <label>Profile Id</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>true</unique>
+</CustomField>

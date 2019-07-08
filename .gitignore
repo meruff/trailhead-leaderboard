@@ -31,3 +31,6 @@ $RECYCLE.BIN/
 IlluminatedCloud/
 .vscode
 .eslintrc.json
+
+# Salesforce dev data
+sfdx-out/
