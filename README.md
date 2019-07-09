@@ -10,14 +10,9 @@ This is a simple app that displays Trailhead users on a leaderboard table using 
 
 > **Note:** This works by calling out to Trailhead and parsing the response body of the User's Profile. If Salesforce decides to update/change the HTML of the Trailhead site this could break at any time. If Salesforce ever makes api.trailhead.salesforce.com public, I will update this project to use that instead.
 
-## Installation
+You can deploy this using the [Salesforce CLI](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_install_cli.htm) or [convert it to metadata](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_force_source.htm) and use the [Force.com Migration Tool](https://developer.salesforce.com/docs/atlas.en-us.daas.meta/daas/forcemigrationtool_install.htm). 
 
-I prefer the [Force.com Migration Tool](https://developer.salesforce.com/page/Force.com_Migration_Tool). You can use the [package.xml](src/package.xml) in this repo.
-
-If you're not as developer-minded, you could also use this super slick tool [Andy in the Cloud](https://andyinthecloud.com) has made
-called [Github Salesforce Deploy Tool](https://github.com/afawcett/githubsfdeploy).
-
-## Adding New "Trailblazers"
+## Adding New Trailblazers
 
 To add new Users to the leaderboard, you'll need to first ensure their Trailhead profile is public. In the "About Me"
 section at the bottom of their profile, click the Edit icon in the top right and check "Profile Public". Now all you have to do is copy the Salesforce Id from the end of the URL and paste it into the Id field on the Leaderboard by clicking "Add New" (or if they have set up a custom handle, copy that i.e. "matruff"). The code will automatically pull in the User's data and upsert a new `Trailblazer__c` record for them, along with their related `Badge__c` records.
@@ -25,6 +20,12 @@ section at the bottom of their profile, click the Edit icon in the top right and
 ## Scheduling
 
 You can schedule `PopulateTrailblazers.cls` to run at various intervals to update your `Trailblazer__c` by simply going to *Setup > Custom Code > Apex Classes > Schedule Apex*. Give your job a name, select `PopulateTrailblazers.cls` as your Apex class, and choose a run date/time.
+
+Or, you can simply run it manually from anonymous Apex:
+
+```$java
+PopulateTrailblazers pop = new PopulateTrailblazers();
+```
 
 ## Possible Updates for the Future
 
