@@ -35,7 +35,7 @@ export default class LeaderboardBadgesModal extends LightningElement {
     }
 
     get badges() {
-        return this.trailblazer.Badges__r;
+        return (this.trailblazer.Badges__r) ? this.trailblazer.Badges__r : [];
     }
 
     get filteredBadges() {

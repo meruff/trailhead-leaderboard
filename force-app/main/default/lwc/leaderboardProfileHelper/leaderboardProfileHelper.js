@@ -18,6 +18,6 @@ export default class LeaderboardProfileHelper {
     }
 
     getSuperbadgeCount(badges) {
-        return badges.filter(badge => badge.Type__c.toLowerCase() === 'superbadge').length;
+        return (badges) ? badges.filter(badge => badge.Type__c.toLowerCase() === 'superbadge').length : 0;
     }
 }
