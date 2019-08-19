@@ -149,7 +149,7 @@ global class PopulateTrailblazers implements Schedulable {
      * @return a List of Badge__c records for the Trailblazer.
      */
     public static List<Badge__c> getTrailblazerBadges(String resBody, Trailblazer__c tb) {
-        List<Badge__c> newBadges = new List<Badge__c>();
+        Map<String, Badge__c> newBadgesByUpsertKey = new Map<String, Badge__c>();
 
         if (resBody.contains('<div data-react-class=\"BadgesPanel\" data-react-props=\"')) {
             String badges = resBody.substringBetween('<div data-react-class=\"BadgesPanel\" data-react-props=\"', '\"></').trim();
@@ -177,11 +177,11 @@ global class PopulateTrailblazers implements Schedulable {
                 }
 
                 if (!String.isBlank(newBadge.Upsert_Key__c)) {
-                    newBadges.add(newBadge);
+                    newBadgesByUpsertKey.put(newBadge.Upsert_Key__c, newBadge);
                 }
             }
         }
 
-        return newBadges;
+        return newBadgesByUpsertKey.values();
     }
 }
