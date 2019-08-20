@@ -67,7 +67,7 @@
 
     <!-- Mobile View -->
     <div class="slds-hide--medium">
-        <div class="slds-p-bottom_x-small">
+        <div class="slds-p-bottom_x-large">
             <lightning-card title="">
                 <h2 slot="title">
                     <span class="slds-text-heading_small">
@@ -89,13 +89,11 @@
             <c-leaderboard-profile-card key={it.value.Id} trailblazer={it.value} first={it.first} index={it.index} onopenmodal={showBadgesModal}></c-leaderboard-profile-card>
         </template>
 
-        <div class="slds-p-top_x-small">
-            <lightning-card title="">
-                <div class="slds-text-title_caps slds-align_absolute-center" style="margin-top:-.75rem;">
-                    &copy;&nbsp;2019&nbsp;<a href="https://github.com/meruff" target="_blank" class="brand-link">meruff</a>
-                </div>
-            </lightning-card>
-        </div>
+        <lightning-card title="">
+            <div class="slds-text-title_caps slds-align_absolute-center" style="margin-top:-.75rem;">
+                &copy;&nbsp;2019&nbsp;<a href="https://github.com/meruff" target="_blank" class="brand-link">meruff</a>
+            </div>
+        </lightning-card>
     </div>
 
     <c-leaderboard-new-trailblazer-modal is-modal-open={isTrailblazerModalOpen} onclosemodal={hideTrailblazerModal} onrefreshtable={fireRefresh}></c-leaderboard-new-trailblazer-modal>
