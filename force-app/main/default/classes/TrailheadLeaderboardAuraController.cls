@@ -1,5 +1,5 @@
 /**
-* @author Mathew Ruff, Sierra-Cedar
+* @author meruff
 * @date 2019-06-17
 *
 * Apex controller logic for LWC leaderboard.
@@ -8,12 +8,9 @@ public class TrailheadLeaderboardAuraController {
     @AuraEnabled(Cacheable=true)
     public static List<Trailblazer__c> populateTrailblazers() {
         return [
-            SELECT Id, Name, Badges__c, Points__c, Trailblazer_Since__c, Trails__c, Profile_Id__c,
-                Profile_Link__c, Rank__c, Profile_Photo__c, Job_Role__c, Job_Title__c, Company_Institution__c, (
-                SELECT Title__c, Icon_Link__c, Type__c, Points__c, Date_Earned__c, Path__c
-                FROM Badges__r
-                ORDER BY Title__c ASC
-            )
+            SELECT Id, Name, Badges__c, Points__c, Trailblazer_Since__c, Trails__c, Profile_Handle__c, Profile_Id__c,
+                Profile_Link__c, Rank__c, Profile_Photo__c, Job_Role__c, Job_Title__c, Company_Institution__c,
+                Rank_Badge_Link__c, Superbadges__c
             FROM Trailblazer__c
             ORDER BY Points__c DESC
         ];
@@ -21,54 +18,53 @@ public class TrailheadLeaderboardAuraController {
 
     @AuraEnabled
     public static String createTrailblazer(String userId) {
-        Http h = new Http();
-        HttpRequest req = new HttpRequest();
-        req.setEndpoint(PopulateTrailblazers.TRAILHEAD_URL + '/me/' + userId.replace(' ', '').trim());
-        req.setMethod('GET');
-        HttpResponse res = h.send(req);
+        Trailblazer__c newTrailblazer = new Trailblazer__c(Profile_Handle__c = userId.replace(' ', '').trim());
+        PopulateTrailblazers.populateTrailblazerProfileData(newTrailblazer, PopulateTrailblazers.getProfileData(newTrailblazer));
+        PopulateTrailblazers.populateTrailblazerProfileCountsData(newTrailblazer, PopulateTrailblazers.getProfileCountData(newTrailblazer));
+        PopulateTrailblazers.populateTrailblazerSuperbadgeData(newTrailblazer, PopulateTrailblazers.getSuperbadgeData(newTrailblazer));
 
-        // Handling for redirects (custom Trailhead Profiles /me/)
-        Boolean redirect = false;
-
-        if (res.getStatusCode() >= 300 && res.getStatusCode() <= 307 && res.getStatusCode() != 306) {
-            do {
-                redirect = false;
-                String loc = res.getHeader('Location');
-
-                if (loc == null) {
-                    redirect = false;
-                    continue;
-                }
-
-                req = new HttpRequest();
-                req.setEndpoint(loc);
-                req.setMethod('GET');
-                res = h.send(req);
-
-                if (res.getStatusCode() != 500) {
-                    if (res.getStatusCode() >= 300 && res.getStatusCode() <= 307 && res.getStatusCode() != 306) {
-                        redirect = true;
-                    }
-                }
-            } while (redirect && Limits.getCallouts() != Limits.getLimitCallouts());
-        }
-
-        if (res.getStatus() != 'Not Found'
-            && (!res.getBody().contains('Someone\'s hiding!')
-            && !res.getBody().contains('This user has chosen to keep their profile private.'))
-        ) {
-            Trailblazer__c tbToUpsert = PopulateTrailblazers.populateTrailblazer(res.getBody());
-            upsert tbToUpsert Profile_Id__c;
-
-            List<Badge__c> badgesToUpsert = PopulateTrailblazers.getTrailblazerBadges(res.getBody(), tbToUpsert);
-            if (badgesToUpsert.size() > 0) {
-                upsert badgesToUpsert Upsert_Key__c;
-            }
-
+        try {
+            upsert newTrailblazer Profile_Handle__c;
             return 'success';
-        } else {
+        } catch(Exception e) {
             return 'Could not find a Trailhead profile for User Id/handle: ' + userId +
                 '. Please ensure your profile is set to public and you\'ve copied your Id correctly.';
+        }
+    }
+
+    @AuraEnabled
+    public static List<BadgeData.EarnedAwards> getBadgeData(String userId, String filter, String offset) {
+        String calloutURL = '';
+
+        if (!String.isBlank(filter)) {
+            calloutURL = PopulateTrailblazers.GO_TRAILHEAD_API + userId + '/badges/' + filter;
+
+            if (!String.isBlank(offset)) {
+                calloutURL += '/' + offset;
+            }
+        } else {
+            calloutURL = PopulateTrailblazers.GO_TRAILHEAD_API + userId + 'badges';
+        }
+
+        Http h = new Http();
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint(calloutURL);
+        req.setMethod('GET');
+        req.setTimeout(60000);
+        HttpResponse res = h.send(req);
+        System.debug('merf: ' + calloutURL);
+        if (res.getBody().contains('application-error')) {
+            System.debug('merf error during callout');
+            return null;
+        }
+
+        BadgeData data = (BadgeData) JSON.deserialize(res.getBody().replaceAll('__c', ''), BadgeData.class);
+        System.debug('merf data: ' + data);
+        if (data.value != null && !data.value.isEmpty() && data.value[0].EarnedAwards != null && !data.value[0].EarnedAwards.isEmpty()) {
+            System.debug('merf badges from aura controller: ' + data.value[0].EarnedAwards);
+            return data.value[0].EarnedAwards;
+        } else {
+            return null;
         }
     }
 }

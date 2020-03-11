@@ -1,0 +1,49 @@
+/**
+* @author meruff
+* @date 3/9/20
+*
+* A class to deserialize Trailhead Badge data into
+*/
+public class BadgeData {
+    @AuraEnabled
+    public List<value> value { get; set; }
+
+    public class value {
+        @AuraEnabled
+        public List<EarnedAwards> EarnedAwards { get; set; }
+
+        @AuraEnabled
+        public String Id { get; set; }
+    }
+
+    public class EarnedAwards {
+        @AuraEnabled
+        public String AwardType { get; set; }
+
+        @AuraEnabled
+        public String LearningUrl { get; set; }
+
+        @AuraEnabled
+        public Award Award { get; set; }
+
+        @AuraEnabled
+        public String Id { get; set; }
+    }
+
+    public class Award {
+        @AuraEnabled
+        public String Name { get; set; }
+
+        @AuraEnabled
+        public String Label { get; set; }
+
+        @AuraEnabled
+        public String ImageUrl { get; set; }
+
+        @AuraEnabled
+        public String Id { get; set; }
+
+        @AuraEnabled
+        public String OrganizationId { get; set; }
+    }
+}

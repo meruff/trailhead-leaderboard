@@ -88,6 +88,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Trailblazer__c.Profile_Handle__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Trailblazer__c.Profile_Link__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -99,6 +104,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Trailblazer__c.Rank__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Trailblazer__c.SuperBadges__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

@@ -5,9 +5,12 @@ export default class LeaderboardTable extends LightningElement {
     @track isBadgesModalOpen = false;
     @track isTrailblazerModalOpen = false;
     @track selectedTrailblazerId;
+    @track selectedTrailblazerHandle;
 
     showBadgesModal(event) {
-        this.selectedTrailblazerId = event.detail;
+        this.selectedTrailblazerId = event.detail.trailblazerId;
+        this.selectedTrailblazerHandle = event.detail.trailblazerHandle;
+        console.log(event.detail.trailblazerHandle);
         this.isBadgesModalOpen = true;
     }
 

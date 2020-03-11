@@ -1,0 +1,15 @@
+{
+  "orgName": "trailhead-leaderboard - Dev Org",
+  "edition": "Developer",
+  "settings": {
+    "lightningExperienceSettings": {
+      "enableS1DesktopEnabled": true
+    },
+    "chatterSettings": {
+      "enableChatter": true
+    },
+    "languageSettings": {
+      "enableTranslationWorkbench": true
+    }
+  }
+}

@@ -24,6 +24,6 @@ export default class LeaderboardProfileCard extends LightningElement {
     }
 
     openModalHandler() {
-        this.dispatchEvent(new CustomEvent("openmodal", { detail: this.trailblazer.Id }));
+        this.dispatchEvent(new CustomEvent("openmodal", { detail: {trailblazerId: this.trailblazer.Id, trailblazerHandle: this.trailblazer.Profile_Handle__c} }));
     }
 }

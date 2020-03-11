@@ -1,10 +1,17 @@
 {
-  "orgName": "meruff Devbox",
+  "orgName": "trailhead-leaderboard scratch",
   "edition": "Developer",
-  "features": [],
+  "features": [
+    "API",
+    "AuthorApex",
+    "Communities",
+    "Sites",
+    "SiteDotCom",
+    "Workflow"
+  ],
   "settings": {
-    "orgPreferenceSettings": {
-      "s1DesktopEnabled": true
+    "communitiesSettings": {
+      "enableNetworksEnabled": true
     }
   }
 }

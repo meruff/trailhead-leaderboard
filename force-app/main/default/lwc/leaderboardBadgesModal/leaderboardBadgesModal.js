@@ -1,11 +1,14 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api, wire, track } from "lwc";
+import getBadgeData from "@salesforce/apex/TrailheadLeaderboardAuraController.getBadgeData";
 
 export default class LeaderboardBadgesModal extends LightningElement {
-    @api isModalOpen = false;
     @api trailblazers;
-    @track showAll = false;
+    @api isModalOpen = false;
+    @track badges = [];
+    @track noMoreBadges = false;
+    @track showSpinner = false;
     @track selectedBadgeType = "all";
-    initialListSize = 50;
+
     badgeTypeOptions = [
         { "label": "All Badges", "value": "all" },
         { "label": "Superbadges", "value": "superbadge" },
@@ -22,8 +25,32 @@ export default class LeaderboardBadgesModal extends LightningElement {
     set selectedTrailblazerId(value) {
         this.setAttribute("selectedTrailblazerId", value);
         this._selectedTrailblazerId = value;
+    }
+
+    @api
+    get selectedTrailblazerHandle() {
+        return this._selectedTrailblazerHandle;
+    }
+
+    set selectedTrailblazerHandle(value) {
+        this.setAttribute("selectedTrailblazerHandle", value);
+        this._selectedTrailblazerHandle = value;
         this.selectedBadgeType = "all";
-        this.showAll = false;
+
+        if (value) {
+            this.showSpinner = true;
+
+            getBadgeData({ userId: value, filter: "all", offset: "" })
+                .then(result => {
+                    console.log(result);
+                    this.badges = result;
+                    this.showSpinner = false;
+                })
+                .catch(error => {
+                    console.error(error);
+                    this.showSpinner = false;
+                })
+        }
     }
 
     get trailblazer() {
@@ -34,52 +61,55 @@ export default class LeaderboardBadgesModal extends LightningElement {
         return this.trailblazer.Name.split(" ")[0];
     }
 
-    get badges() {
-        return (this.trailblazer.Badges__r) ? this.trailblazer.Badges__r : [];
-    }
-
-    get filteredBadges() {
-        if (this.selectedBadgeType !== "all") {
-            if (this.showAll) {
-                return this.badges.filter(badge => badge.Type__c.toLowerCase() === this.selectedBadgeType);
-            } else {
-                return this.badges.filter(badge => badge.Type__c.toLowerCase() === this.selectedBadgeType).slice(0, this.initialListSize);
-            }
-        } else {
-            if (this.showAll) {
-                return this.badges;
-            } else {
-                return this.badges.slice(0, this.initialListSize);
-            }
-        }
-    }
-
-    get isFilteredBadges() {
-        return this.filteredBadges.length > 0;
-    }
-
     get showMore() {
-        if (this.selectedBadgeType !== "all") {
-            return this.filteredBadges.length < this.badges.filter(badge => badge.Type__c.toLowerCase() === this.selectedBadgeType).length;
-        } else {
-            return this.filteredBadges.length < this.badges.length;
-        }
-    }
-
-    get showMoreButtonLabel() {
-        return "Show More (" + (parseInt(this.trailblazer.Badges__c) - this.filteredBadges.length) + ")";
-    }
-
-    handleShowAll() {
-        this.showAll = true;
+        return this.badges && this.badges.length > 29 && !this.noMoreBadges;
     }
 
     updateSelectedBadgeFilter(event) {
         this.selectedBadgeType = event.target.value;
+        this.showSpinner = true;
+
+        getBadgeData({
+            userId: this.selectedTrailblazerHandle,
+            filter: this.selectedBadgeType,
+            offset: ""
+        })
+            .then(result => {
+                this.badges = result;
+                this.showSpinner = false;
+            })
+            .catch(error => {
+                console.error(error);
+                this.showSpinner = false;
+            })
+    }
+
+    handleShowMore() {
+        this.showSpinner = true;
+
+        getBadgeData({
+            userId: this.selectedTrailblazerHandle,
+            filter: this.selectedBadgeType,
+            offset: (this.badges.length <= 30) ? 30 : this.badges.length + 30
+        })
+            .then(result => {
+                if (result) {
+                    this.badges = this.badges.concat(result);
+                } else {
+                    this.noMoreBadges = true;
+                }
+
+                this.showSpinner = false;
+            })
+            .catch(error => {
+                console.error(error);
+                this.showSpinner = false;
+            })
     }
 
     hideModal() {
-        this.showAll = false;
+        this.badges = [];
+        this.noMoreBadges = false;
         this.isModalOpen = false;
         this.dispatchEvent(new CustomEvent("closemodal"));
     }

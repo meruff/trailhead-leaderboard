@@ -17,17 +17,16 @@
                     <lightning-input
                             label="Trailhead Id/Handle"
                             variant="label-hidden"
-                            placeholder="Trailhead Id or handle"
+                            placeholder="Trailhead handle"
                             value={userId}
                             onchange={updateUserId}
-                            message-when-value-missing="Please enter a Trailhead User Id or handle"
+                            message-when-value-missing="Please enter a Trailhead User handle"
                             class="slds-p-vertical_small"
                             required
                     ></lightning-input>
                     <div class="slds-p-horizontal_xxx-small">
-                        <b>Note:</b> To find your Id, first make sure your Trailhead profile is set to public,
-                        then copy the User Id from the URL after "/me/" (starts with 005). Or, if you've set up a
-                        custom handle, copy and paste that here.
+                        <b>Note:</b> To find User handle, first make sure your Trailhead profile is set to public,
+                        then copy the handle from your profile URL after "/me/".
                     </div>
                 </div>
                 <footer class="slds-modal__footer">

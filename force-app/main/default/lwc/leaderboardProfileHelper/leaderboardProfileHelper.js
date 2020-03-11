@@ -16,8 +16,4 @@ export default class LeaderboardProfileHelper {
     getProfileAlt(name) {
         return name.split(" ")[0] + "'s profile photo";
     }
-
-    getSuperbadgeCount(badges) {
-        return (badges) ? badges.filter(badge => badge.Type__c.toLowerCase() === 'superbadge').length : 0;
-    }
 }

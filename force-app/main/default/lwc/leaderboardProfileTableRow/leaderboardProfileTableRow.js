@@ -15,15 +15,11 @@ export default class LeaderboardProfileTableRow extends LightningElement {
         return profileHelper.getProfileAlt(this.trailblazer.Name);
     }
 
-    get superbadges() {
-        return profileHelper.getSuperbadgeCount(this.trailblazer.Badges__r);
-    }
-
     handleProfileClick(event) {
         event.stopPropagation();
     }
 
     openModalHandler() {
-        this.dispatchEvent(new CustomEvent("openmodal", { detail: this.trailblazer.Id }));
+        this.dispatchEvent(new CustomEvent("openmodal", { detail: {trailblazerId: this.trailblazer.Id, trailblazerHandle: this.trailblazer.Profile_Handle__c} }));
     }
 }

@@ -1,0 +1,35 @@
+Insert Trailblazer__c:
+  sf_object: Trailblazer__c
+  table: Trailblazer__c
+  fields:
+    Id: sf_id
+    Name: Name
+    Badges__c: Badges__c
+    Company_Institution__c: Company_Institution__c
+    Job_Role__c: Job_Role__c
+    Job_Title__c: Job_Title__c
+    Points__c: Points__c
+    Profile_Handle__c: Profile_Handle__c
+    Profile_Id__c: Profile_Id__c
+    Profile_Link__c: Profile_Link__c
+    Profile_Photo__c: Profile_Photo__c
+    Rank_Badge_Link__c: Rank_Badge_Link__c
+    Rank__c: Rank__c
+    Superbadges__c: Superbadges__c
+    Trailblazer_Since__c: Trailblazer_Since__c
+    Trails__c: Trails__c
+Insert Badge__c:
+  sf_object: Badge__c
+  table: Badge__c
+  fields:
+    Id: sf_id
+    Date_Earned__c: Date_Earned__c
+    Icon_Link__c: Icon_Link__c
+    Path__c: Path__c
+    Points__c: Points__c
+    Title__c: Title__c
+    Type__c: Type__c
+    Upsert_Key__c: Upsert_Key__c
+  lookups:
+    Trailblazer__c:
+      table: Trailblazer__c

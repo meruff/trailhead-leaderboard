@@ -1,0 +1,31 @@
+minimum_cumulusci_version: '3.8.0'
+project:
+    name: trailhead-leaderboard
+    package:
+        name:  trailhead-leaderboard
+        api_version: '48.0'
+    test:
+        name_match: '%Test'
+    source_format: sfdx
+
+tasks:
+    robot:
+        options:
+            suites: robot/trailhead-leaderboard/tests
+            options:
+                outputdir: robot/trailhead-leaderboard/results
+
+    robot_testdoc:
+        options:
+            path: robot/trailhead-leaderboard/tests
+            output: robot/trailhead-leaderboard/doc/trailhead-leaderboard_tests.html
+
+flows:
+    dev_org:
+        steps:
+            5:
+                task: update_admin_profile
+            6:
+                task: load_dataset
+                options:
+                    org: dev

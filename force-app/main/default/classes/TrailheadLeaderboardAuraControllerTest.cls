@@ -1,5 +1,5 @@
 /**
-* @author Mathew Ruff, Sierra-Cedar
+* @author meruff
 * @date 2019-06-28
 *
 * Unit Tests for TrailheadLeaderboardAuraController.cls
