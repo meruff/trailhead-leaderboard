@@ -1,15 +1,26 @@
 {
-  "orgName": "trailhead-leaderboard - Dev Org",
-  "edition": "Developer",
-  "settings": {
-    "lightningExperienceSettings": {
-      "enableS1DesktopEnabled": true
-    },
-    "chatterSettings": {
-      "enableChatter": true
-    },
-    "languageSettings": {
-      "enableTranslationWorkbench": true
+    "orgName": "trailhead-leaderboard - Dev Org",
+    "edition": "Developer",
+    "features": [
+        "API",
+        "AuthorApex",
+        "Communities",
+        "Sites",
+        "SiteDotCom",
+        "Workflow"
+    ],
+    "settings": {
+        "lightningExperienceSettings": {
+            "enableS1DesktopEnabled": true
+        },
+        "communitiesSettings": {
+            "enableNetworksEnabled": true
+        },
+        "chatterSettings": {
+            "enableChatter": true
+        },
+        "languageSettings": {
+            "enableTranslationWorkbench": true
+        }
     }
-  }
 }

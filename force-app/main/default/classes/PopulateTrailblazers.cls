@@ -71,7 +71,7 @@ global class PopulateTrailblazers implements Schedulable {
      * @param resBody, the response body JSON to deserialize and write to the Trailblazer__c record.
      */
     public static void populateTrailblazerProfileData(Trailblazer__c trailblazer, String resBody) {
-        if (resBody.contains('application-error')) {
+        if (resBody.contains('application-error') || String.isBlank(resBody)) {
             return;
         }
 
@@ -120,10 +120,10 @@ global class PopulateTrailblazers implements Schedulable {
      * @param resBody, the response body JSON to deserialize and write to the Trailblazer__c record.
      */
     public static void populateTrailblazerProfileCountsData(Trailblazer__c trailblazer, String resBody) {
-        if (resBody.contains('application-error')) {
+        if (resBody.contains('application-error') || String.isBlank(resBody)) {
             return;
         }
-
+        
         ProfileCountData data = (ProfileCountData) JSON.deserialize(resBody.replaceAll('__c', ''), ProfileCountData.class);
 
         if (data.value != null && !data.value.isEmpty() && data.value[0].ProfileCounts != null && !data.value[0].ProfileCounts.isEmpty()) {
@@ -161,7 +161,7 @@ global class PopulateTrailblazers implements Schedulable {
      * @param resBody, the response body JSON to deserialize and write to the Trailblazer__c record.
      */
     public static void populateTrailblazerSuperbadgeData(Trailblazer__c trailblazer, String resBody) {
-        if (resBody.contains('application-error')) {
+        if (resBody.contains('application-error') || String.isBlank(resBody)) {
             return;
         }
 

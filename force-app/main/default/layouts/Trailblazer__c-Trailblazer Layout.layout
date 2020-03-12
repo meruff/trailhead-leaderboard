@@ -31,10 +31,6 @@
                 <behavior>Edit</behavior>
                 <field>Profile_Handle__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Profile_Id__c</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -56,10 +52,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Profile_Link__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Trailblazer_Since__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
