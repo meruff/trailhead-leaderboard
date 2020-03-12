@@ -4,11 +4,11 @@
 
 **Now built using Lightning Web Components!**
 
-This is a simple app that displays Trailhead users on a leaderboard table using Salesforce Lightning
+This is a simple app that displays Trailhead users on a leader board table using Salesforce Lightning
 Web Components. The bulk of the work happens in a scheduled Apex class that calls out to a custom
 Trailhead API. This API pulls back profile data and inserts it into your Salesforce org in a custom
 Object named `Trailblazer__c`. The page simply queries for and displays the `Trailblazer__c` records.
-Users can add themselves to the leaderboard by clicking "Add New" at the top right of the page.
+Users can add themselves to the leader board by clicking "Add New" at the top right of the page.
 
 ![Desktop Desktop](images/screenshot.png "Desktop View")
 
@@ -24,7 +24,7 @@ and use the [Force.com Migration Tool](https://developer.salesforce.com/docs/atl
 
 ## Adding New Trailblazers
 
-To add new Users to the leaderboard, you'll need to first ensure their Trailhead profile is public.
+To add new Users to the leader board, you'll need to first ensure their Trailhead profile is public.
 In the "About Me" section at the bottom of their profile, click the Edit icon in the top right and
 check "Profile Public", then create a custom handle, if you haven't already. Now all you have to do
 is enter your handle into the field on the Leaderboard by clicking "Add New" at the top right. The 
@@ -45,13 +45,18 @@ PopulateTrailblazers pop = new PopulateTrailblazers();
 
 ## Update From an Older Version
 
-The latest version of the leaderboard uses a middleware API that I've built to call directly in 
-the Trailhead API to get Profile data. Salesforce has updated Trailhead to use custom User handles
-now instead of Profile Ids, which the old leaderboard used to get User data. There's a new field
-on `Trailblazer__c` called `Profile_Handle__c` that all callouts use to get data from the API, so
-you'll need to populate this for all your users. One way to do this would be to run some anonymous
-Apex code to parse the custom handle out of the `Profile_Link__c` field. In this example I'm parsing
-the handle after '/id/', but older versions of the leaderboard also used '/me/'.
+The latest version of the leader board uses a
+[middleware API that I've built](https://github.com/meruff/go-trailhead-leaderboard-api) to call 
+directly in the Trailhead API to get Profile data. Salesforce has updated Trailhead to use custom 
+User handles now instead of Profile Ids, which the old leader board used to get User data, which is 
+one of the reasons why a new middleware that retrieved data differently was required. If you prefer
+to clone the repo and host your own Heroku instance of the app, or build your own, you are free to
+do so.
+
+There's a new field on `Trailblazer__c` called `Profile_Handle__c` that all callouts use to get data 
+from the API, so you'll need to populate this for all your users. One way to do this would be to 
+run some anonymous Apex code to parse the custom handle out of the `Profile_Link__c` field. In this 
+example I'm parsing the handle after '/id/', but older versions of the leader board also used '/me/'.
 
 ``` java
 List<Trailblazer__c> trailblazersToUpdate = new List<Trailblazer__c>();
