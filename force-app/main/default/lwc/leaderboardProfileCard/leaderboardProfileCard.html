@@ -1,10 +1,10 @@
 <template>
-    <div class="slds-p-vertical_x-small" onclick={openModalHandler}>
+    <div class="slds-m-bottom_x-large" onclick={openModalHandler}>
         <lightning-card title="">
             <div class="slds-p-horizontal_medium slds-grid adjust-card">
                 <div class="slds-media slds-media_large slds-has-flexi-truncate slds-p-top_none">
                     <div class="slds-media__figure" style="margin-right:0;">
-                        <span class="slds-avatar slds-avatar_large slds-avatar_circle slds-m-right_medium">
+                        <span class="slds-avatar slds-avatar_large slds-avatar_circle slds-m-right_medium mobile-avatar">
                             <img src={trailblazer.Profile_Photo__c} alt={profileAlt}/>
                         </span>
                     </div>
@@ -20,7 +20,9 @@
                         </div>
                     </div>
                     <div class="slds-media slds-media_reverse">
-                        <c-leaderboard-rank-badge rank-name={trailblazer.Rank__c}></c-leaderboard-rank-badge>
+                        <span class="mobile-avatar-rank">
+                            <c-leaderboard-rank-badge rank-name={trailblazer.Rank__c} mobile=true></c-leaderboard-rank-badge>
+                        </span>
                     </div>
                 </div>
             </div>

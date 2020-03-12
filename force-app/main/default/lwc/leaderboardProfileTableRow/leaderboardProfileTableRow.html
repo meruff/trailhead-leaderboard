@@ -5,8 +5,8 @@
         </div>
     </td>
     <td class="slds-cell-wrap" onclick={openModalHandler}>
-        <div class="slds-truncate">
-            <div class="slds-avatar slds-avatar_large slds-avatar_circle slds-m-right_medium">
+        <div class="slds-truncate" style="overflow:visible;">
+            <div class="slds-avatar slds-avatar_large slds-avatar_circle slds-m-right_medium avatar-table">
                 <img src={trailblazer.Profile_Photo__c} alt={profileAlt}/>
             </div>
             <div class="slds-show_inline-block slds-align-middle">
@@ -18,7 +18,7 @@
         </div>
     </td>
     <td class="slds-cell-wrap" onclick={openModalHandler}>
-        <div class="slds-truncate">
+        <div class="slds-truncate" style="overflow:visible;">
             <c-leaderboard-rank-badge rank-name={trailblazer.Rank__c} show-name="true"></c-leaderboard-rank-badge>
         </div>
     </td>
