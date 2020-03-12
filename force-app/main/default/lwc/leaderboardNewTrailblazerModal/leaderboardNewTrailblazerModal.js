@@ -5,6 +5,7 @@ export default class LeaderboardNewTrailblazerModal extends LightningElement {
     @api isModalOpen = false;
     @track userId = "";
     @track error;
+    @track showSpinner = false;
 
     hideModal() {
         this.error = undefined;
@@ -20,6 +21,7 @@ export default class LeaderboardNewTrailblazerModal extends LightningElement {
     saveTrailblazer(event) {
         let submitBtn = event.target;
         submitBtn.disabled = true;
+        this.showSpinner = true;
         this.error = undefined;
 
         const allValid = [...this.template.querySelectorAll('lightning-input')]
@@ -39,13 +41,15 @@ export default class LeaderboardNewTrailblazerModal extends LightningElement {
                         this.error = result;
                     }
                     submitBtn.disabled = false;
+                    this.showSpinner = false;
                 })
                 .catch(error => {
                     this.error = error;
                     submitBtn.disabled = false;
+                    this.showSpinner = false;
                 });
         } else {
-            event.target.disabled = false;
+            submitBtn.disabled = false;
         }
     }
 }

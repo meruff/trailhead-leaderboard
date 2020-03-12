@@ -24,22 +24,37 @@
                                 <div class="slds-truncate" title="Number">#</div>
                             </th>
                             <th scope="col" class="slds-cell-wrap">
-                                <div class="slds-truncate" title="Name">Name</div>
+                                <div class="slds-truncate click-hover" title="Name" data-field="Name" onclick={sort}>
+                                    Name
+                                    <c-leaderboard-sort-dir column-field="Name" field-to-sort-by={fieldToSortBy} descending={descending}></c-leaderboard-sort-dir>
+                                </div>
                             </th>
                             <th scope="col" class="slds-cell-wrap">
                                 <div class="slds-truncate" title="Rank">Rank</div>
                             </th>
                             <th scope="col" class="slds-cell-wrap">
-                                <div class="slds-truncate" title="Points">Points</div>
+                                <div class="slds-truncate click-hover" title="Points" data-field="Points__c" onclick={sort}>
+                                    Points
+                                    <c-leaderboard-sort-dir column-field="Points__c" field-to-sort-by={fieldToSortBy} descending={descending}></c-leaderboard-sort-dir>
+                                </div>
                             </th>
                             <th scope="col" class="slds-cell-wrap">
-                                <div class="slds-truncate" title="Badges">Badges</div>
+                                <div class="slds-truncate click-hover" title="Badges" data-field="Badges__c" onclick={sort}>
+                                    Badges
+                                    <c-leaderboard-sort-dir column-field="Badges__c" field-to-sort-by={fieldToSortBy} descending={descending}></c-leaderboard-sort-dir>
+                                </div>
                             </th>
                             <th scope="col" class="slds-cell-wrap">
-                                <div class="slds-truncate" title="Trails">Trails</div>
+                                <div class="slds-truncate click-hover" title="Trails" data-field="Trails__c" onclick={sort}>
+                                    Trails
+                                    <c-leaderboard-sort-dir column-field="Trails__c" field-to-sort-by={fieldToSortBy} descending={descending}></c-leaderboard-sort-dir>
+                                </div>
                             </th>
                             <th scope="col" class="slds-cell-wrap">
-                                <div class="slds-truncate" title="Trails">Superbadges</div>
+                                <div class="slds-truncate click-hover" title="Superbadges" data-field="Superbadges__c" onclick={sort}>
+                                    Superbadges
+                                    <c-leaderboard-sort-dir column-field="Superbadges__c" field-to-sort-by={fieldToSortBy} descending={descending}></c-leaderboard-sort-dir>
+                                </div>
                             </th>
                             <th scope="col" class="slds-cell-wrap">
                                 <div class="slds-truncate" title="Profile">Profile</div>
@@ -48,7 +63,7 @@
                     </thead>
                     <tbody>
                         <template iterator:it={trailblazers}>
-                            <c-leaderboard-profile-table-row key={it.value.Id} trailblazer={it.value} first={it.first} index={it.index} onopenmodal={showBadgesModal}></c-leaderboard-profile-table-row>
+                            <c-leaderboard-profile-table-row key={it.value.Id} trailblazer={it.value} index={it.index} onopenmodal={showBadgesModal}></c-leaderboard-profile-table-row>
                         </template>
                     </tbody>
                 </table>

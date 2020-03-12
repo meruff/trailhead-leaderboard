@@ -6,11 +6,12 @@ export default class LeaderboardTable extends LightningElement {
     @track isTrailblazerModalOpen = false;
     @track selectedTrailblazerId;
     @track selectedTrailblazerHandle;
+    @track fieldToSortBy = "Points__c";
+    @track descending = true;
 
     showBadgesModal(event) {
         this.selectedTrailblazerId = event.detail.trailblazerId;
         this.selectedTrailblazerHandle = event.detail.trailblazerHandle;
-        console.log(event.detail.trailblazerHandle);
         this.isBadgesModalOpen = true;
     }
 
@@ -24,6 +25,17 @@ export default class LeaderboardTable extends LightningElement {
 
     hideTrailblazerModal() {
         this.isTrailblazerModalOpen = false;
+    }
+
+    sort(event) {
+        if (this.fieldToSortBy !== event.target.dataset.field) {
+            this.fieldToSortBy = event.target.dataset.field;
+            this.descending = true;
+        } else {
+            this.descending = !this.descending;
+        }
+
+        this.dispatchEvent(new CustomEvent("sort", { detail: {fieldToSortBy: this.fieldToSortBy, descending: this.descending} }));
     }
 
     fireRefresh() {

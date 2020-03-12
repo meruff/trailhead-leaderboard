@@ -1,4 +1,4 @@
-import { LightningElement, api } from 'lwc';
+import { LightningElement, api } from "lwc";
 
 export default class LeaderboardRank extends LightningElement {
     @api showHashtag = false;
@@ -9,11 +9,7 @@ export default class LeaderboardRank extends LightningElement {
     }
 
     set rank(value) {
-        this.setAttribute('rank', value++);
+        this.setAttribute("rank", value++);
         this._rank = value;
-    }
-
-    get first() {
-        return (this.rank === 1);
     }
 }

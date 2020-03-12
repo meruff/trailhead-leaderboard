@@ -13,3 +13,7 @@
 .brand-link:focus {
     color: #394355 !important;
 }
+
+.click-hover {
+    cursor: pointer;
+}

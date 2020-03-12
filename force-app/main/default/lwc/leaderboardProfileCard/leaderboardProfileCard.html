@@ -54,11 +54,15 @@
                                     <lightning-formatted-number value={trailblazer.Superbadges__c}></lightning-formatted-number>
                                 </div>
                             </li>
+                        </ul>
+                    </div>
+                    <div class="slds-size_1-of-1">
+                        <ul class="slds-list_vertical-space-medium slds-m-left_xx-small slds-p-top_medium">
                             <li class="slds-item">
                                 <div class="slds-text-title slds-truncate slds-m-bottom_xx-small">Profile</div>
                                 <div class="slds-text-body_regular">
                                     <a href={trailblazer.Profile_Link__c} class="brand-link" target="_blank" onclick={handleProfileClick}>
-                                        Open
+                                        trailblazer.me/id/{trailblazer.Profile_Handle__c}
                                         <lightning-icon icon-name="utility:new_window" alternative-text="Open Profile" size="xx-small" class="slds-p-left_xx-small adjust-icon"></lightning-icon>
                                     </a>
                                 </div>

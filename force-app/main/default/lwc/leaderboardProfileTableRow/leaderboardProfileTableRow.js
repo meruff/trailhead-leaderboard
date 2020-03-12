@@ -4,7 +4,6 @@ const profileHelper = new LeaderboardProfileHelper();
 
 export default class LeaderboardProfileTableRow extends LightningElement {
     @api trailblazer;
-    @api first;
     @api index;
 
     get titleString() {

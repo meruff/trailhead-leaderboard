@@ -1,7 +1,7 @@
 <template>
     <td class="slds-cell-wrap" onclick={openModalHandler}>
         <div class="slds-truncate">
-            <c-leaderboard-rank first={first} rank={index}></c-leaderboard-rank>
+            <c-leaderboard-rank rank={index}></c-leaderboard-rank>
         </div>
     </td>
     <td class="slds-cell-wrap" onclick={openModalHandler}>
@@ -41,7 +41,7 @@
     <td class="slds-cell-wrap" onclick={openModalHandler}>
         <div class="slds-truncate">
             <a href={trailblazer.Profile_Link__c} class="brand-link" target="_blank" onclick={handleProfileClick}>
-                Open
+                trailblazer.me/id/{trailblazer.Profile_Handle__c}
                 <lightning-icon icon-name="utility:new_window" alternative-text="Open Profile" size="xx-small" class="slds-p-left_xx-small adjust-icon"></lightning-icon>
             </a>
         </div>

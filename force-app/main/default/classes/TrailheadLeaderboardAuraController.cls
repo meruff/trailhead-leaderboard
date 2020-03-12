@@ -6,14 +6,28 @@
 */
 public class TrailheadLeaderboardAuraController {
     @AuraEnabled(Cacheable=true)
-    public static List<Trailblazer__c> populateTrailblazers() {
-        return [
-            SELECT Id, Name, Badges__c, Points__c, Trailblazer_Since__c, Trails__c, Profile_Handle__c, Profile_Id__c,
-                Profile_Link__c, Rank__c, Profile_Photo__c, Job_Role__c, Job_Title__c, Company_Institution__c,
-                Rank_Badge_Link__c, Superbadges__c
-            FROM Trailblazer__c
-            ORDER BY Points__c DESC
-        ];
+    public static List<Trailblazer__c> populateTrailblazers(String fieldToSortBy, Boolean descending) {
+        String queryString = '' +
+            'SELECT Id, Name, Badges__c, Points__c, Trailblazer_Since__c, Trails__c, Profile_Handle__c, Profile_Id__c, ' +
+                'Profile_Link__c, Rank__c, Profile_Photo__c, Job_Role__c, Job_Title__c, Company_Institution__c, ' +
+                'Rank_Badge_Link__c, Superbadges__c ' +
+            'FROM Trailblazer__c';
+
+        if (String.isBlank(fieldToSortBy)) {
+            queryString += ' ORDER BY Points__c DESC';
+        } else {
+            queryString += ' ORDER BY ' + fieldToSortBy;
+
+            if (descending == null || descending) {
+                queryString += ' DESC';
+            } else {
+                queryString += ' ASC';
+            }
+        }
+
+        System.debug('merf: ' + queryString);
+
+        return Database.query(queryString);
     }
 
     @AuraEnabled
@@ -52,16 +66,14 @@ public class TrailheadLeaderboardAuraController {
         req.setMethod('GET');
         req.setTimeout(60000);
         HttpResponse res = h.send(req);
-        System.debug('merf: ' + calloutURL);
+
         if (res.getBody().contains('application-error')) {
-            System.debug('merf error during callout');
             return null;
         }
 
         BadgeData data = (BadgeData) JSON.deserialize(res.getBody().replaceAll('__c', ''), BadgeData.class);
-        System.debug('merf data: ' + data);
+
         if (data.value != null && !data.value.isEmpty() && data.value[0].EarnedAwards != null && !data.value[0].EarnedAwards.isEmpty()) {
-            System.debug('merf badges from aura controller: ' + data.value[0].EarnedAwards);
             return data.value[0].EarnedAwards;
         } else {
             return null;

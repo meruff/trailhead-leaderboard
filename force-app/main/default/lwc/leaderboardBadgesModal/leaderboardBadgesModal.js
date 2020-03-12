@@ -42,7 +42,6 @@ export default class LeaderboardBadgesModal extends LightningElement {
 
             getBadgeData({ userId: value, filter: "all", offset: "" })
                 .then(result => {
-                    console.log(result);
                     this.badges = result;
                     this.showSpinner = false;
                 })
@@ -51,6 +50,14 @@ export default class LeaderboardBadgesModal extends LightningElement {
                     this.showSpinner = false;
                 })
         }
+    }
+
+    get showNoBadgesMessage() {
+        return !this.showSpinner && (!this.badges || this.badges.length === 0);
+    }
+
+    get noBadgesMessage() {
+        return "No Badges found for this filter type.";
     }
 
     get trailblazer() {

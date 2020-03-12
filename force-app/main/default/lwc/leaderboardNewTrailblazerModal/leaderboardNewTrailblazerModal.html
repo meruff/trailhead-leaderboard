@@ -1,4 +1,9 @@
 <template>
+    <div if:true={showSpinner} class="slds-is-relative">
+        <lightning-spinner style="position:fixed;" alternative-text="Loading" size="large"></lightning-spinner>
+        <div style="position:fixed;" class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+
     <template if:true={isModalOpen}>
         <section role="dialog" tabindex="-1" aria-labelledby="newTrailblazerHeading" aria-modal="true" aria-describedby="newTrailblazerModalContent" class="slds-modal slds-fade-in-open">
             <div class="slds-modal__container">
@@ -15,15 +20,15 @@
                         <c-alert-message type="error" message={error} textured></c-alert-message>
                     </div>
                     <lightning-input
-                            label="Trailhead Id/Handle"
+                            label="Trailhead Handle"
                             variant="label-hidden"
                             placeholder="Trailhead handle"
                             value={userId}
                             onchange={updateUserId}
                             message-when-value-missing="Please enter a Trailhead User handle"
                             class="slds-p-vertical_small"
-                            required
-                    ></lightning-input>
+                            required>
+                    </lightning-input>
                     <div class="slds-p-horizontal_xxx-small">
                         <b>Note:</b> To find User handle, first make sure your Trailhead profile is set to public,
                         then copy the handle from your profile URL after "/me/".

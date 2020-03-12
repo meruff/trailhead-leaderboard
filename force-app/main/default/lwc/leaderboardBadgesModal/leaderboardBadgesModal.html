@@ -1,5 +1,8 @@
 <template>
-    <lightning-spinner if:true={showSpinner} alternative-text="Loading" size="large"></lightning-spinner>
+    <div if:true={showSpinner} class="slds-is-relative">
+        <lightning-spinner style="position:fixed;" alternative-text="Loading" size="large"></lightning-spinner>
+        <div style="position:fixed;" class="slds-backdrop slds-backdrop_open"></div>
+    </div>
 
     <template if:true={isModalOpen}>
         <section role="dialog" tabindex="-1" aria-labelledby="badgesModalHeading" aria-modal="true" aria-describedby="badgesModalContent" class="slds-modal slds-fade-in-open">
@@ -37,12 +40,11 @@
                                 </a>
                             </div>
                         </template>
-
-<!--                        <div if:false={isFilteredBadges} class="slds-col slds-size_1-of-1" style="height:125px;">-->
-<!--                            <div class="slds-align_absolute-center" style="height:100%">-->
-<!--                                No badges found.-->
-<!--                            </div>-->
-<!--                        </div>-->
+                        <template if:true={showNoBadgesMessage}>
+                            <div class="slds-align_absolute-center slds-p-top_xx-large">
+                                {noBadgesMessage}
+                            </div>
+                        </template>
                     </div>
                     <div if:true={showMore} class="slds-align_absolute-center slds-p-vertical_small">
                         <lightning-button variant="neutral" label="Show More" onclick={handleShowMore}></lightning-button>
