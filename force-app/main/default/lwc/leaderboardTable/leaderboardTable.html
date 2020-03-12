@@ -65,8 +65,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <template iterator:it={trailblazers}>
-                            <c-leaderboard-profile-table-row key={it.value.Id} trailblazer={it.value} index={it.index} onopenmodal={showBadgesModal}></c-leaderboard-profile-table-row>
+                        <template for:each={trailblazers} for:item="trailblazer" for:index="index">
+                            <c-leaderboard-profile-table-row key={trailblazer.Id} trailblazer={trailblazer} index={index} onopenmodal={showBadgesModal}></c-leaderboard-profile-table-row>
                         </template>
                     </tbody>
                 </table>
@@ -100,8 +100,8 @@
             </lightning-card>
         </div>
 
-        <template iterator:it={trailblazers}>
-            <c-leaderboard-profile-card key={it.value.Id} trailblazer={it.value} first={it.first} index={it.index} onopenmodal={showBadgesModal}></c-leaderboard-profile-card>
+        <template for:each={trailblazers} for:item="trailblazer" for:index="index">
+            <c-leaderboard-profile-card key={trailblazer.Id} trailblazer={trailblazer} index={index} onopenmodal={showBadgesModal}></c-leaderboard-profile-card>
         </template>
 
         <div style="margin-top:-1rem;">

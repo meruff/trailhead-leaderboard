@@ -1,6 +1,6 @@
-import { LightningElement, track, wire } from 'lwc';
-import populateTrailblazers from '@salesforce/apex/TrailheadLeaderboardAuraController.populateTrailblazers';
-import { refreshApex } from '@salesforce/apex';
+import { LightningElement, track, wire } from "lwc";
+import populateTrailblazers from "@salesforce/apex/TrailheadLeaderboardAuraController.populateTrailblazers";
+import { refreshApex } from "@salesforce/apex";
 
 export default class TrailheadLeaderboard extends LightningElement {
     @track fieldToSortBy = "Points__c";

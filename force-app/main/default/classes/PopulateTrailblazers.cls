@@ -35,7 +35,7 @@ global class PopulateTrailblazers implements Schedulable {
             populateTrailblazerProfileCountsData(newBlazer, getProfileCountData(trailblazer));
             populateTrailblazerSuperbadgeData(newBlazer, getSuperbadgeData(trailblazer));
 
-            if (!String.isBlank(newBlazer.Profile_Handle__c)) {
+            if (!String.isBlank(newBlazer.Profile_Handle__c) && !String.isBlank(newBlazer.Name)) {
                 trailblazersToUpsert.add(newBlazer);
             }
         }

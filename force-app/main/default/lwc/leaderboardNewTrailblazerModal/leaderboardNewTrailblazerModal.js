@@ -1,5 +1,5 @@
-import { LightningElement, api, track } from 'lwc';
-import createTrailblazer from '@salesforce/apex/TrailheadLeaderboardAuraController.createTrailblazer';
+import { LightningElement, api, track } from "lwc";
+import createTrailblazer from "@salesforce/apex/TrailheadLeaderboardAuraController.createTrailblazer";
 
 export default class LeaderboardNewTrailblazerModal extends LightningElement {
     @api isModalOpen = false;

@@ -1,5 +1,5 @@
-import { LightningElement, api } from 'lwc';
-import Leaderboard_Ranks from '@salesforce/resourceUrl/Trailhead_Leaderboard';
+import { LightningElement, api } from "lwc";
+import Leaderboard_Ranks from "@salesforce/resourceUrl/Trailhead_Leaderboard";
 
 export default class LeaderboardRankBadge extends LightningElement {
     @api rankName;
