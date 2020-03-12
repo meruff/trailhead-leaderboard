@@ -30,7 +30,10 @@
                                 </div>
                             </th>
                             <th scope="col" class="slds-cell-wrap">
-                                <div class="slds-truncate" title="Rank">Rank</div>
+                                <div class="slds-truncate click-hover" title="Rank" data-field="Rank__c" onclick={sort}>
+                                    Rank
+                                    <c-leaderboard-sort-dir column-field="Rank__c" field-to-sort-by={fieldToSortBy} descending={descending}></c-leaderboard-sort-dir>
+                                </div>
                             </th>
                             <th scope="col" class="slds-cell-wrap">
                                 <div class="slds-truncate click-hover" title="Points" data-field="Points__c" onclick={sort}>
