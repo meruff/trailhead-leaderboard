@@ -2,7 +2,7 @@
 * @author meruff
 * @date 3/9/20
 *
-* A class to deserialize Trailhead Badge data into
+* A class to deserialize Trailhead Badge data from the API into.
 */
 public class BadgeData {
     @AuraEnabled
@@ -11,9 +11,6 @@ public class BadgeData {
     public class value {
         @AuraEnabled
         public List<EarnedAwards> EarnedAwards { get; set; }
-
-        @AuraEnabled
-        public String Id { get; set; }
     }
 
     public class EarnedAwards {
@@ -25,9 +22,6 @@ public class BadgeData {
 
         @AuraEnabled
         public Award Award { get; set; }
-
-        @AuraEnabled
-        public String Id { get; set; }
     }
 
     public class Award {
@@ -39,11 +33,5 @@ public class BadgeData {
 
         @AuraEnabled
         public String ImageUrl { get; set; }
-
-        @AuraEnabled
-        public String Id { get; set; }
-
-        @AuraEnabled
-        public String OrganizationId { get; set; }
     }
 }

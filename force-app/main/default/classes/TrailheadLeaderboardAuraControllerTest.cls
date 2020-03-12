@@ -8,61 +8,68 @@
 private class TrailheadLeaderboardAuraControllerTest {
     @TestSetup
     static void setUpTest() {
-        Trailblazer__c newBlazer = new Trailblazer__c(
-            Name = 'Some ExistingBlazer',
-            Profile_Id__c = '005500000061jCZBBY',
-            Points__c = 450,
-            Trails__c = 8,
-            Trailblazer_Since__c = 'September 17th, 2000',
-            Profile_Photo__c = 'https://trailhead.com/photourl'
-        );
-        insert newBlazer;
+        insert new List<Trailblazer__c>{
+            new Trailblazer__c(
+                Name = 'Some ExistingBlazer',
+                Profile_Handle__c = 'existingBoye',
+                Points__c = 450,
+                Trails__c = 8,
+                Profile_Photo__c = 'https://trailhead.com/photourl'
+            ),
+            new Trailblazer__c(
+                Name = 'Another Trailblazer',
+                Profile_Handle__c = 'anotherBlazer',
+                Points__c = 1337,
+                Trails__c = 3,
+                Superbadges__c = 10,
+                Profile_Photo__c = 'https://trailhead.com/photourl'
+            )
+        };
     }
 
     @IsTest
     static void testPopulateTrailblazers() {
-        // Arrange
-        TrailheadCalloutMock mock = new TrailheadCalloutMock();
-        HttpResponse res1 = new HttpResponse();
-        res1.setHeader('Content-Type', 'application/json');
-        res1.setHeader('Location', 'forwardToUrl.com');
-        res1.setStatusCode(301);
-        mock.addResponse(res1);
-
-        HttpResponse res2 = new HttpResponse();
-        res2.setHeader('Content-Type', 'application/json');
-        res2.setStatusCode(200);
-        res2.setBody(TrailheadCalloutMock.getSuccessfulResponseBody());
-        mock.addResponse(res2);
-
-        Test.setMock(HttpCalloutMock.class, mock);
-        Test.setCurrentPage(Page.trailheadLeaderboard);
-
-        // Act 
+        // Act
         Test.startTest();
-        List<Trailblazer__c> trailblazers = TrailheadLeaderboardAuraController.populateTrailblazers();
+        List<Trailblazer__c> trailblazers = TrailheadLeaderboardAuraController.populateTrailblazers('', null);
         Test.stopTest();
 
         // Assert
-        System.assertEquals(1, trailblazers.size());
-        System.assertEquals('Some ExistingBlazer', trailblazers[0].Name);
+        System.assertEquals(2, trailblazers.size());
+        System.assertEquals(
+            'Another Trailblazer',
+            trailblazers[0].Name,
+            'Sort should default to Points, making Another Trailblazer the first on the list.'
+        );
+    }
+
+    @IsTest
+    static void testPopulateTrailblazersSort() {
+        // Act
+        Test.startTest();
+        List<Trailblazer__c> trailblazers = TrailheadLeaderboardAuraController.populateTrailblazers('Superbadges__c', false);
+        Test.stopTest();
+
+        // Assert
+        System.assertEquals(2, trailblazers.size());
+        System.assertEquals(
+            'Some ExistingBlazer',
+            trailblazers[0].Name,
+            'Sort should be by Superbadges Ascending, making the lowest number, Some ExistingBlazer, the first person ' +
+                'on the list.'
+        );
     }
 
     @IsTest
     static void testCreateNewTrailblazer() {
         // Arrange
         TrailheadCalloutMock mock = new TrailheadCalloutMock();
-        HttpResponse res1 = new HttpResponse();
-        res1.setHeader('Content-Type', 'application/json');
-        res1.setHeader('Location', 'forwardToUrl.com');
-        res1.setStatusCode(301);
-        mock.addResponse(res1);
-
-        HttpResponse res2 = new HttpResponse();
-        res2.setHeader('Content-Type', 'application/json');
-        res2.setStatusCode(200);
-        res2.setBody(TrailheadCalloutMock.getSuccessfulResponseBody());
-        mock.addResponse(res2);
+        HttpResponse res = new HttpResponse();
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Location', 'trailheadURL.com');
+        res.setStatusCode(200);
+        res.setBody(TrailheadCalloutMock.getSuccessfulProfileDataBody());
+        mock.addResponse(res);
 
         Test.setMock(HttpCalloutMock.class, mock);
         Test.setCurrentPage(Page.trailheadLeaderboard);
@@ -74,35 +81,41 @@ private class TrailheadLeaderboardAuraControllerTest {
 
         // Assert
         System.assertEquals('success', resultString);
-        System.assertEquals(2, TrailheadLeaderboardAuraController.populateTrailblazers().size(), 'Two Trailblazers should exist now.');
+        System.assertEquals(
+            3,
+            TrailheadLeaderboardAuraController.populateTrailblazers('', null).size(),
+            'Three Trailblazers should exist now.'
+        );
     }
 
     @IsTest
-    static void testCreateNewTrailblazerFail() {
+    static void testGetBadgeData() {
         // Arrange
         TrailheadCalloutMock mock = new TrailheadCalloutMock();
-        HttpResponse res1 = new HttpResponse();
-        res1.setHeader('Content-Type', 'application/json');
-        res1.setHeader('Location', 'forwardToUrl.com');
-        res1.setStatusCode(301);
-        mock.addResponse(res1);
-
-        HttpResponse res2 = new HttpResponse();
-        res2.setHeader('Content-Type', 'application/json');
-        res2.setStatusCode(200);
-        res2.setBody(TrailheadCalloutMock.getErrorResponseBody());
-        mock.addResponse(res2);
+        HttpResponse res = new HttpResponse();
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Location', 'trailheadURL.com');
+        res.setStatusCode(200);
+        res.setBody(TrailheadCalloutMock.getSuccessfulBadgeDataBody());
+        mock.addResponse(res);
 
         Test.setMock(HttpCalloutMock.class, mock);
         Test.setCurrentPage(Page.trailheadLeaderboard);
 
         // Act
         Test.startTest();
-        String resultString = TrailheadLeaderboardAuraController.createTrailblazer('someId');
+        List<BadgeData.EarnedAwards> badges = TrailheadLeaderboardAuraController.getBadgeData('someId', 'all', '0');
         Test.stopTest();
 
         // Assert
-        System.assertNotEquals('success', resultString);
-        System.assertEquals(1, TrailheadLeaderboardAuraController.populateTrailblazers().size(), 'After failing, only the 1 Trailblazer should exist.');
+        System.assertEquals(2, badges.size(), 'Two badges should have been returned.');
+
+        for (BadgeData.EarnedAwards award : badges) {
+            System.assertNotEquals(null, award.Award.ImageUrl);
+            System.assertNotEquals(null, award.Award.Label);
+            System.assertNotEquals(null, award.Award.Name);
+            System.assertNotEquals(null, award.LearningUrl);
+            System.assertNotEquals(null, award.AwardType);
+        }
     }
 }

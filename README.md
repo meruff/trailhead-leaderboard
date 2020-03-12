@@ -50,7 +50,8 @@ the Trailhead API to get Profile data. Salesforce has updated Trailhead to use c
 now instead of Profile Ids, which the old leaderboard used to get User data. There's a new field
 on `Trailblazer__c` called `Profile_Handle__c` that all callouts use to get data from the API, so
 you'll need to populate this for all your users. One way to do this would be to run some anonymous
-Apex code to parse the custom handle out of the `Profile_Link__c` field.
+Apex code to parse the custom handle out of the `Profile_Link__c` field. In this example I'm parsing
+the handle after '/id/', but older versions of the leaderboard also used '/me/'.
 
 ``` java
 List<Trailblazer__c> trailblazersToUpdate = new List<Trailblazer__c>();

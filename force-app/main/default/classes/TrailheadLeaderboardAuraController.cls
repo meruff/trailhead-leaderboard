@@ -25,8 +25,6 @@ public class TrailheadLeaderboardAuraController {
             }
         }
 
-        System.debug('merf: ' + queryString);
-
         return Database.query(queryString);
     }
 
