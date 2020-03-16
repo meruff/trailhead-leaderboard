@@ -1,7 +1,6 @@
 <template>
     <div if:true={showSpinner} class="slds-is-relative">
         <lightning-spinner style="position:fixed;" alternative-text="Loading" size="large"></lightning-spinner>
-        <div style="position:fixed;" class="slds-backdrop slds-backdrop_open"></div>
     </div>
 
     <template if:true={isModalOpen}>

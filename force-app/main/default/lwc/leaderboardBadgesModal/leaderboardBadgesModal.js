@@ -36,6 +36,7 @@ export default class LeaderboardBadgesModal extends LightningElement {
         this.setAttribute("selectedTrailblazerHandle", value);
         this._selectedTrailblazerHandle = value;
         this.selectedBadgeType = "all";
+        this.badges = [];
 
         if (value) {
             this.showSpinner = true;
@@ -115,7 +116,6 @@ export default class LeaderboardBadgesModal extends LightningElement {
     }
 
     hideModal() {
-        this.badges = [];
         this.noMoreBadges = false;
         this.isModalOpen = false;
         this.dispatchEvent(new CustomEvent("closemodal"));

@@ -1,11 +1,10 @@
 <template>
     <div if:true={showSpinner} class="slds-is-relative">
         <lightning-spinner style="position:fixed;" alternative-text="Loading" size="large"></lightning-spinner>
-        <div style="position:fixed;" class="slds-backdrop slds-backdrop_open"></div>
     </div>
 
     <template if:true={isModalOpen}>
-        <section role="dialog" tabindex="-1" aria-labelledby="badgesModalHeading" aria-modal="true" aria-describedby="badgesModalContent" class="slds-modal slds-fade-in-open">
+        <section role="dialog" tabindex="-1" aria-labelledby="badgesModalHeading" aria-modal="true" aria-describedby="badgesModalContent" class="slds-modal slds-fade-in-open slds-modal_medium">
             <div class="slds-modal__container">
                 <header class="slds-modal__header">
                     <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModal}>
@@ -17,7 +16,7 @@
                 </header>
                 <div class="slds-modal__content slds-p-around_medium modal-body" id="badgesModalContent">
                     <div class="slds-grid slds-grid_align-end">
-                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                        <div class="slds-col slds-size_1-of-1 slds-small-size_1-of-2 slds-large-size_1-of-3">
                             <lightning-combobox
                                     name="badgeFilter"
                                     label="Badge Type"
@@ -29,13 +28,13 @@
                             ></lightning-combobox>
                         </div>
                     </div>
-                    <div class="slds-grid slds-wrap slds-grid_align-center">
+                    <div class="slds-grid slds-wrap slds-grid_align-space">
                         <template for:each={badges} for:item="badge">
-                            <div key={badge.Id} class="slds-p-around_medium slds-col slds-size_1-of-2 slds-medium-size_1-of-3 slds-large-size_1-of-4">
-                                <a href={badge.LearningUrl} target="_blank">
-                                    <img src={badge.Award.ImageUrl} alt={badge.Award.Label} />
+                            <div key={badge.Id} class="slds-p-around_medium slds-col slds-size_1-of-2 slds-small-size_1-of-3 slds-medium-size_1-of-4 slds-large-size_1-of-5" style="max-width:180px;">
+                                <a href={badge.LearningUrl} target="_blank" title={badge.Award.Label}>
+                                    <img src={badge.Award.ImageUrl} alt={badge.Award.Label}/>
                                     <p class="slds-text-align_center slds-p-top_small">
-                                        <lightning-formatted-rich-text value={badge.Award.Label}></lightning-formatted-rich-text>
+                                        {badge.Award.Label}
                                     </p>
                                 </a>
                             </div>
