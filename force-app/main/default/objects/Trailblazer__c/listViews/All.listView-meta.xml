@@ -6,6 +6,7 @@
     <columns>Badges__c</columns>
     <columns>Trails__c</columns>
     <columns>Superbadges__c</columns>
+    <columns>Certifications__c</columns>
     <columns>Profile_Handle__c</columns>
     <columns>Profile_Link__c</columns>
     <filterScope>Everything</filterScope>

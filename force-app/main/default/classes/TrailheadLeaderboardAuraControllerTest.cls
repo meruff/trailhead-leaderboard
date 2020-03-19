@@ -89,6 +89,39 @@ private class TrailheadLeaderboardAuraControllerTest {
     }
 
     @IsTest
+    static void testGetCertificationData() {
+        // Arrange
+        TrailheadCalloutMock mock = new TrailheadCalloutMock();
+        HttpResponse res = new HttpResponse();
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Location', 'trailheadURL.com');
+        res.setStatusCode(200);
+        res.setBody(TrailheadCalloutMock.getSuccessfulCertificationDataBody());
+        mock.addResponse(res);
+
+        Test.setMock(HttpCalloutMock.class, mock);
+        Test.setCurrentPage(Page.trailheadLeaderboard);
+
+        // Act
+        Test.startTest();
+        List<CertificationData.certificationsList> certifications = TrailheadLeaderboardAuraController.getCertificationData('someId');
+        Test.stopTest();
+
+        // Assert
+        System.assertEquals(1, certifications.size(), 'One Certification should have been returned.');
+
+        for (CertificationData.certificationsList certification : certifications) {
+            System.assertEquals(null, certification.dateExpired);
+            System.assertNotEquals(null, certification.dateCompleted);
+            System.assertNotEquals(null, certification.description);
+            System.assertNotEquals(null, certification.certificationUrl);
+            System.assertNotEquals(null, certification.certificationStatus);
+            System.assertNotEquals(null, certification.title);
+            System.assertNotEquals(null, certification.certificationImageUrl);
+        }
+    }
+
+    @IsTest
     static void testGetBadgeData() {
         // Arrange
         TrailheadCalloutMock mock = new TrailheadCalloutMock();

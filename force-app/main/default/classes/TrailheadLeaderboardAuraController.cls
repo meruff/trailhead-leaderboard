@@ -5,12 +5,20 @@
 * Apex controller logic for LWC leaderboard.
 */
 public class TrailheadLeaderboardAuraController {
+    /**
+     * Queries for Trailblazer__c records to display on the page.
+     *
+     * @param fieldToSortBy, the API Name of the field used to sort, defaults to Points__c.
+     * @param descending, whether or not to sort by DESC.
+     *
+     * @return a List of Trailblazer__c records.
+     */
     @AuraEnabled(Cacheable=true)
     public static List<Trailblazer__c> populateTrailblazers(String fieldToSortBy, Boolean descending) {
         String queryString = '' +
             'SELECT Id, Name, Badges__c, Points__c, Trailblazer_Since__c, Trails__c, Profile_Handle__c, Profile_Id__c, ' +
                 'Profile_Link__c, Rank__c, Profile_Photo__c, Job_Role__c, Job_Title__c, Company_Institution__c, ' +
-                'Rank_Badge_Link__c, Superbadges__c ' +
+                'Rank_Badge_Link__c, Superbadges__c, Certifications__c ' +
             'FROM Trailblazer__c';
 
         if (String.isBlank(fieldToSortBy)) {
@@ -28,12 +36,20 @@ public class TrailheadLeaderboardAuraController {
         return Database.query(queryString);
     }
 
+    /**
+     * Creates and upserts a new Trailblazer__c record by calling out to the Trailhead API and parsing the response data.
+     *
+     * @param userId, the user handle to use when calling out to Trailhead.
+     *
+     * @return, a message String whether or not the callout succeeded.
+     */
     @AuraEnabled
     public static String createTrailblazer(String userId) {
         Trailblazer__c newTrailblazer = new Trailblazer__c(Profile_Handle__c = userId.replace(' ', '').trim());
         PopulateTrailblazers.populateTrailblazerProfileData(newTrailblazer, PopulateTrailblazers.getProfileData(newTrailblazer));
         PopulateTrailblazers.populateTrailblazerProfileCountsData(newTrailblazer, PopulateTrailblazers.getProfileCountData(newTrailblazer));
         PopulateTrailblazers.populateTrailblazerSuperbadgeData(newTrailblazer, PopulateTrailblazers.getSuperbadgeData(newTrailblazer));
+        PopulateTrailblazers.populateTrailblazerCertificationData(newTrailblazer, PopulateTrailblazers.getCertificationData(newTrailblazer));
 
         try {
             upsert newTrailblazer Profile_Handle__c;
@@ -44,6 +60,42 @@ public class TrailheadLeaderboardAuraController {
         }
     }
 
+    /**
+     * Returns a List of CertificationData.cerificationsList records after parsing the response data from the Trailhead API.
+     *
+     * @param userId, the user handle to use when calling out to Trailhead.
+     *
+     * @return, a List of CertificationData.certificationsList records.
+     */
+    @AuraEnabled
+    public static List<CertificationData.certificationsList> getCertificationData(String userId) {
+        Http h = new Http();
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint(PopulateTrailblazers.GO_TRAILHEAD_API + userId + 'certifications');
+        req.setMethod('GET');
+        req.setTimeout(60000);
+        HttpResponse res = h.send(req);
+
+        if (res.getBody().contains('application-error')) {
+            return null;
+        }
+
+        CertificationData data = (CertificationData) JSON.deserialize(res.getBody().replaceAll('__c', ''), CertificationData.class);
+
+        if (data != null && data.certificationsList != null && !data.certificationsList.isEmpty()) {
+            return data.certificationsList;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Returns a List of BadgeData.EarnedAwards records after parsing the response data from the Trailhead API.
+     *
+     * @param userId, the user handle to use when calling out to Trailhead.
+     *
+     * @return, a List of BadgeData.EarnedAwards records.
+     */
     @AuraEnabled
     public static List<BadgeData.EarnedAwards> getBadgeData(String userId, String filter, String offset) {
         String calloutURL = '';

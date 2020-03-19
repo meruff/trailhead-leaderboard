@@ -5,6 +5,7 @@ Insert Trailblazer__c:
     Id: sf_id
     Name: Name
     Badges__c: Badges__c
+    Certifications__c: Certifications__c
     Company_Institution__c: Company_Institution__c
     Job_Role__c: Job_Role__c
     Job_Title__c: Job_Title__c

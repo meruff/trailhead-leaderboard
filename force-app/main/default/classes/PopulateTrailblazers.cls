@@ -34,6 +34,7 @@ global class PopulateTrailblazers implements Schedulable {
             populateTrailblazerProfileData(newBlazer, getProfileData(trailblazer));
             populateTrailblazerProfileCountsData(newBlazer, getProfileCountData(trailblazer));
             populateTrailblazerSuperbadgeData(newBlazer, getSuperbadgeData(trailblazer));
+            populateTrailblazerCertificationData(newBlazer, getCertificationData(trailblazer));
 
             if (!String.isBlank(newBlazer.Profile_Handle__c) && !String.isBlank(newBlazer.Name)) {
                 trailblazersToUpsert.add(newBlazer);
@@ -177,6 +178,45 @@ global class PopulateTrailblazers implements Schedulable {
             trailblazer.Superbadges__c = count;
         } else {
             trailblazer.Superbadges__c = 0;
+        }
+    }
+
+    /**
+     * Calls out to the /trailblazer/ endpoint to get a JSON response.
+     *
+     * @param trailblazer, the Trailblazer__c record to populate with response data.
+     *
+     * @return res.getBody(), the JSON response body returned from the endpoint.
+     */
+    public static String getCertificationData(Trailblazer__c trailblazer) {
+        String calloutURL = '';
+
+        if (!String.isBlank(trailblazer.Profile_Handle__c)) {
+            calloutURL = GO_TRAILHEAD_API + trailblazer.Profile_Handle__c + '/certifications';
+        } else {
+            calloutURL = GO_TRAILHEAD_API + trailblazer.Profile_Id__c + '/certifications';
+        }
+
+        return doCallout(calloutURL);
+    }
+
+    /**
+     * Writes data from the /trailblazer/ endpoint to the Trailblazer__c record.
+     *
+     * @param trailblazer, a Trailblazer__c record to write to.
+     * @param resBody, the response body JSON to deserialize and write to the Trailblazer__c record.
+     */
+    public static void populateTrailblazerCertificationData(Trailblazer__c trailblazer, String resBody) {
+        if (resBody.contains('application-error') || String.isBlank(resBody)) {
+            return;
+        }
+
+        CertificationData data = (CertificationData) JSON.deserialize(resBody.replaceAll('__c', ''), CertificationData.class);
+
+        if (data != null && data.certificationsList != null && !data.certificationsList.isEmpty()) {
+            trailblazer.Certifications__c = data.certificationsList.size();
+        } else {
+            trailblazer.Certifications__c = 0;
         }
     }
 

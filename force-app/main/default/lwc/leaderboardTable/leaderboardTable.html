@@ -60,6 +60,12 @@
                                 </div>
                             </th>
                             <th scope="col" class="slds-cell-wrap">
+                                <div class="slds-truncate click-hover" title="Certifications" data-field="Certifications__c" onclick={sort}>
+                                    Certifications
+                                    <c-leaderboard-sort-dir column-field="Certifications__c" field-to-sort-by={fieldToSortBy} descending={descending}></c-leaderboard-sort-dir>
+                                </div>
+                            </th>
+                            <th scope="col" class="slds-cell-wrap">
                                 <div class="slds-truncate" title="Profile">Profile</div>
                             </th>
                         </tr>
