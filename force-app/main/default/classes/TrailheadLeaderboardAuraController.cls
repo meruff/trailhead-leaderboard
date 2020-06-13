@@ -19,7 +19,9 @@ public class TrailheadLeaderboardAuraController {
             'SELECT Id, Name, Badges__c, Points__c, Trailblazer_Since__c, Trails__c, Profile_Handle__c, Profile_Id__c, ' +
                 'Profile_Link__c, Rank__c, Profile_Photo__c, Job_Role__c, Job_Title__c, Company_Institution__c, ' +
                 'Rank_Badge_Link__c, Superbadges__c, Certifications__c ' +
-            'FROM Trailblazer__c';
+            'FROM Trailblazer__c ' +
+            'WHERE Points__c != NULL ' +
+            'AND Rank__c != NULL';
 
         if (String.isBlank(fieldToSortBy)) {
             queryString += ' ORDER BY Points__c DESC';

@@ -14,6 +14,7 @@ private class TrailheadLeaderboardAuraControllerTest {
                 Profile_Handle__c = 'existingBoye',
                 Points__c = 450,
                 Trails__c = 8,
+                Rank__c = 'Adventurer',
                 Profile_Photo__c = 'https://trailhead.com/photourl'
             ),
             new Trailblazer__c(
@@ -21,6 +22,7 @@ private class TrailheadLeaderboardAuraControllerTest {
                 Profile_Handle__c = 'anotherBlazer',
                 Points__c = 1337,
                 Trails__c = 3,
+                Rank__c = 'Ranger',
                 Superbadges__c = 10,
                 Profile_Photo__c = 'https://trailhead.com/photourl'
             )
