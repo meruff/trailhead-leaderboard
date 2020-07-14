@@ -48,10 +48,10 @@ public class TrailheadLeaderboardAuraController {
     @AuraEnabled
     public static String createTrailblazer(String userId) {
         Trailblazer__c newTrailblazer = new Trailblazer__c(Profile_Handle__c = userId.replace(' ', '').trim());
-        PopulateTrailblazers.populateTrailblazerProfileData(newTrailblazer, PopulateTrailblazers.getProfileData(newTrailblazer));
-        PopulateTrailblazers.populateTrailblazerProfileCountsData(newTrailblazer, PopulateTrailblazers.getProfileCountData(newTrailblazer));
-        PopulateTrailblazers.populateTrailblazerSuperbadgeData(newTrailblazer, PopulateTrailblazers.getSuperbadgeData(newTrailblazer));
-        PopulateTrailblazers.populateTrailblazerCertificationData(newTrailblazer, PopulateTrailblazers.getCertificationData(newTrailblazer));
+        GetTrailblazerInfoAsync.populateTrailblazerProfileData(newTrailblazer, GetTrailblazerInfoAsync.getProfileData(newTrailblazer));
+        GetTrailblazerInfoAsync.populateTrailblazerProfileCountsData(newTrailblazer, GetTrailblazerInfoAsync.getProfileCountData(newTrailblazer));
+        GetTrailblazerInfoAsync.populateTrailblazerSuperbadgeData(newTrailblazer, GetTrailblazerInfoAsync.getSuperbadgeData(newTrailblazer));
+        GetTrailblazerInfoAsync.populateTrailblazerCertificationData(newTrailblazer, GetTrailblazerInfoAsync.getCertificationData(newTrailblazer));
 
         try {
             upsert newTrailblazer Profile_Handle__c;
@@ -73,7 +73,7 @@ public class TrailheadLeaderboardAuraController {
     public static List<CertificationData.certificationsList> getCertificationData(String userId) {
         Http h = new Http();
         HttpRequest req = new HttpRequest();
-        req.setEndpoint(PopulateTrailblazers.GO_TRAILHEAD_API + userId + 'certifications');
+        req.setEndpoint(GetTrailblazerInfoAsync.GO_TRAILHEAD_API + userId + 'certifications');
         req.setMethod('GET');
         req.setTimeout(60000);
         HttpResponse res = h.send(req);
@@ -103,13 +103,13 @@ public class TrailheadLeaderboardAuraController {
         String calloutURL = '';
 
         if (!String.isBlank(filter)) {
-            calloutURL = PopulateTrailblazers.GO_TRAILHEAD_API + userId + '/badges/' + filter;
+            calloutURL = GetTrailblazerInfoAsync.GO_TRAILHEAD_API + userId + '/badges/' + filter;
 
             if (!String.isBlank(offset)) {
                 calloutURL += '/' + offset;
             }
         } else {
-            calloutURL = PopulateTrailblazers.GO_TRAILHEAD_API + userId + 'badges';
+            calloutURL = GetTrailblazerInfoAsync.GO_TRAILHEAD_API + userId + 'badges';
         }
 
         Http h = new Http();

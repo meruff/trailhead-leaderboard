@@ -2,7 +2,7 @@
 * @author meruff
 * @date 5/29/20
 *
-* 
+* A helper class for calling out to the Trailhead API and populating Trailblazer__c records.
 */
 public class GetTrailblazerInfoAsync implements Queueable, Database.AllowsCallouts {
     public static final String TRAILHEAD_ME = 'https://trailblazer.me/id/';
@@ -18,6 +18,10 @@ public class GetTrailblazerInfoAsync implements Queueable, Database.AllowsCallou
     }
 
     public void execute(QueueableContext context) {
+        if (trailblazers.isEmpty()) {
+            return;
+        }
+
         Trailblazer__c trailblazer = trailblazers[0];
 
         Trailblazer__c newBlazer = new Trailblazer__c();
@@ -32,12 +36,11 @@ public class GetTrailblazerInfoAsync implements Queueable, Database.AllowsCallou
             jobCount++;
 
             if (jobCount <= 4 && !trailblazers.isEmpty()) {
-                System.debug('merf enqueing next job: ' + jobCount);
                 if (!Test.isRunningTest()) {
                     System.enqueueJob(new GetTrailblazerInfoAsync(jobCount, trailblazers));
                 }
-            } else {
-                System.schedule('Populate Trailblazers', '* * * * * ? *', new PopulateTrailblazers(trailblazers));
+            } else if (!trailblazers.isEmpty()) {
+                System.scheduleBatch(new PopulateTrailblazers(trailblazers), 'Populate Trailblazers', 0);
             }
         }
     }

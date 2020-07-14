@@ -2,31 +2,32 @@
 * @author: meruff
 * @date 3/10/20
 *
-* A class to call Trailhead profiles and update their related Objects in Salesforce.
+* A class to populate Trailblazer__c records in batch.
 */
-global class PopulateTrailblazers implements Schedulable {
+global class PopulateTrailblazers implements Database.Batchable<sObject>, Database.Stateful {
     private List<Trailblazer__c> trailblazers;
 
-    global void execute(SchedulableContext SC) {
-        populateAll();
-    }
-
     public PopulateTrailblazers() {
-        populateAll();
+        trailblazers = new List<Trailblazer__c>();
     }
 
     public PopulateTrailblazers(List<Trailblazer__c> scope) {
         trailblazers = scope;
-        populateAll();
     }
 
-    private void populateAll() {
-        System.enqueueJob(
-            new GetTrailblazerInfoAsync(
-                0,
-                (trailblazers != null && !trailblazers.isEmpty())
-                    ? trailblazers : [SELECT Profile_Handle__c, Profile_Id__c FROM Trailblazer__c]
-            )
-        );
+    global Database.QueryLocator start(Database.BatchableContext BC) {
+        String queryString = 'SELECT Profile_Handle__c, Profile_Id__c FROM Trailblazer__c';
+
+        if (trailblazers != null && !trailblazers.isEmpty()) {
+            queryString += ' WHERE Id IN: trailblazers';
+        }
+
+        return Database.getQueryLocator(queryString);
     }
+
+    global void execute(Database.BatchableContext BC, List<SObject> scope) {
+        System.enqueueJob(new GetTrailblazerInfoAsync(0, scope));
+    }
+
+    global void finish(Database.BatchableContext BC) { }
 }

@@ -32,8 +32,10 @@ IlluminatedCloud/
 .vscode
 .eslintrc.json
 .cci
+.eslintrc
 
 # Salesforce dev data
 sfdx-out/
 
 Icon?
+package-lock.json
