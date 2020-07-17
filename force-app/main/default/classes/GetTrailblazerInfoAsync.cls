@@ -31,16 +31,21 @@ public class GetTrailblazerInfoAsync implements Queueable, Database.AllowsCallou
         populateTrailblazerSuperbadgeData(newBlazer, getSuperbadgeData(trailblazer));
         populateTrailblazerCertificationData(newBlazer, getCertificationData(trailblazer));
 
-        if (!String.isBlank(newBlazer.Profile_Handle__c)) {
+        if (!String.isBlank(newBlazer.Profile_Handle__c)
+            && !String.isBlank(newBlazer.Name)
+        ) {
             upsert newBlazer Profile_Handle__c;
-            trailblazers.remove(0);
-            jobCount++;
+        }
 
-            if (jobCount <= 4 && !trailblazers.isEmpty()) {
+        trailblazers.remove(0);
+        jobCount++;
+
+        if (!trailblazers.isEmpty()) {
+            if (jobCount <= 4) {
                 if (!Test.isRunningTest()) {
                     System.enqueueJob(new GetTrailblazerInfoAsync(jobCount, trailblazers));
                 }
-            } else if (!trailblazers.isEmpty()) {
+            } else {
                 System.scheduleBatch(new PopulateTrailblazers(trailblazers), JOB_NAME, 0);
             }
         }
