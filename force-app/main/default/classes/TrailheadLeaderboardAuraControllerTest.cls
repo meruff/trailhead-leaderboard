@@ -70,7 +70,7 @@ private class TrailheadLeaderboardAuraControllerTest {
         res.setHeader('Content-Type', 'application/json');
         res.setHeader('Location', 'trailheadURL.com');
         res.setStatusCode(200);
-        res.setBody(TrailheadCalloutMock.getSuccessfulProfileDataBody());
+        res.setBody(TrailheadCalloutMock.getSuccessfulResponseData());
         mock.addResponse(res);
 
         Test.setMock(HttpCalloutMock.class, mock);
@@ -98,7 +98,7 @@ private class TrailheadLeaderboardAuraControllerTest {
         res.setHeader('Content-Type', 'application/json');
         res.setHeader('Location', 'trailheadURL.com');
         res.setStatusCode(200);
-        res.setBody(TrailheadCalloutMock.getSuccessfulCertificationDataBody());
+        res.setBody(TrailheadCalloutMock.getSuccessfulResponseData());
         mock.addResponse(res);
 
         Test.setMock(HttpCalloutMock.class, mock);
@@ -131,7 +131,7 @@ private class TrailheadLeaderboardAuraControllerTest {
         res.setHeader('Content-Type', 'application/json');
         res.setHeader('Location', 'trailheadURL.com');
         res.setStatusCode(200);
-        res.setBody(TrailheadCalloutMock.getSuccessfulBadgeDataBody());
+        res.setBody(TrailheadCalloutMock.getSuccessfulResponseData());
         mock.addResponse(res);
 
         Test.setMock(HttpCalloutMock.class, mock);
@@ -143,7 +143,7 @@ private class TrailheadLeaderboardAuraControllerTest {
         Test.stopTest();
 
         // Assert
-        System.assertEquals(2, badges.size(), 'Two badges should have been returned.');
+        System.assertEquals(3, badges.size(), 'Three badges should have been returned.');
 
         for (BadgeData.EarnedAwards award : badges) {
             System.assertNotEquals(null, award.Award.ImageUrl);

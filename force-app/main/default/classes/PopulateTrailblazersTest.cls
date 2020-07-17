@@ -6,76 +6,59 @@
 */
 @IsTest
 private class PopulateTrailblazersTest {
-    @TestSetup
-    static void setUpData() {
-        Trailblazer__c newBlazer = new Trailblazer__c(
-            Name = 'mat ruff',
-            Profile_Handle__c = 'matruff'
-        );
-        insert newBlazer;
+    @IsTest
+    static void testExecuteBatch() {
+        Test.startTest();
+        Database.executeBatch(new PopulateTrailblazers());
+        Test.stopTest();
     }
 
     @IsTest
-    static void testPopulateTrailblazers() {
-        // Arrange
-        TrailheadCalloutMock mock = new TrailheadCalloutMock();
-        HttpResponse res = new HttpResponse();
-        res.setHeader('Content-Type', 'application/json');
-        res.setHeader('Location', 'trailheadURL.com');
-        res.setStatusCode(200);
-        res.setBody(TrailheadCalloutMock.getSuccessfulProfileDataBody());
-        mock.addResponse(res);
+    static void testExecuteBatchWithScope() {
+        insert new Trailblazer__c(
+            Name = 'mat ruff',
+            Profile_Handle__c = 'matruff'
+        );
 
-        Test.setMock(HttpCalloutMock.class, mock);
-
-        // Act 
         Test.startTest();
-        PopulateTrailblazers pop = new PopulateTrailblazers();
+        Database.executeBatch(
+            new PopulateTrailblazers([
+                SELECT Profile_Handle__c, Profile_Id__c 
+                FROM Trailblazer__c
+            ])
+        );
         Test.stopTest();
-
-        // Assert
-        List<Trailblazer__c> assertTrailblazers = [
-            SELECT Name, Badges__c, Trails__c, (SELECT Id FROM Badges__r)
-            FROM Trailblazer__c
-        ];
-
-        System.assertEquals(1, assertTrailblazers.size(),
-            'Should have created 1 Trailblazer during test set up and upserted that singular record.');
-        System.assertEquals('Mat Ruff', assertTrailblazers[0].Name,
-            'Name should have been upserted to Detonation. Capitalized and numbers removed.');
-        System.assertEquals(6, assertTrailblazers[0].Trails__c,
-            'Trails__c should have been upserted to 6');
     }
 
     @IsTest
     static void testSchedulePopulation() {
-        // Arrange
-        TrailheadCalloutMock mock = new TrailheadCalloutMock();
-        HttpResponse res = new HttpResponse();
-        res.setHeader('Content-Type', 'application/json');
-        res.setHeader('Location', 'forwardToUrl.com');
-        res.setStatusCode(200);
-        res.setBody(TrailheadCalloutMock.getSuccessfulProfileDataBody());
-        mock.addResponse(res);
-
-        Test.setMock(HttpCalloutMock.class, mock);
-
         // Act
         Test.startTest();
-        System.schedule('Test Scheduling PopulateTrailblazers', '0 0 23 * * ?', new PopulateTrailblazers());
+        String assertJobId = System.schedule('Test Scheduling PopulateTrailblazers', '0 0 23 * * ?', new PopulateTrailblazers());
         Test.stopTest();
 
         // Assert
-        List<Trailblazer__c> assertTrailblazers = [
-            SELECT Name, Badges__c, Trails__c, (SELECT Id FROM Badges__r)
-            FROM Trailblazer__c
+        List<AsyncApexJob> assertScheduledJobs = [
+            SELECT ApexClass.Name 
+            FROM AsyncApexJob 
+            WHERE JobType = 'ScheduledApex'
+        ];
+        
+        System.assertEquals('PopulateTrailblazers', assertScheduledJobs[0].ApexClass.Name, 
+            'PopulateTrailblazers should be scheduled.');
+        System.assertEquals(1, assertScheduledJobs.size(), 
+            'Only PopulateTrailblazers should be in the queue.');
+        
+
+        List<AsyncApexJob> assertBatchJobs = [
+            SELECT ApexClass.Name 
+            FROM AsyncApexJob 
+            WHERE JobType = 'BatchApex'
         ];
 
-        System.assertEquals(1, assertTrailblazers.size(),
-            'Should have created 1 Trailblazer during test set up and upserted that singular record.');
-        System.assertEquals('Mat Ruff', assertTrailblazers[0].Name,
-            'Name should have been upserted to Detonation. Capitalized and numbers removed.');
-        System.assertEquals(6, assertTrailblazers[0].Trails__c,
-            'Trails__c should have been upserted to 6');
+        System.assertEquals('PopulateTrailblazers', assertBatchJobs[0].ApexClass.Name, 
+            'PopulateTrailblazers should be in the batch queue.');
+        System.assertEquals(1, assertBatchJobs.size(), 
+            'Only PopulateTrailblazers should be in the queue.');
     }
 }

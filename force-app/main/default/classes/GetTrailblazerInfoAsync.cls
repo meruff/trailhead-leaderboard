@@ -8,6 +8,7 @@ public class GetTrailblazerInfoAsync implements Queueable, Database.AllowsCallou
     public static final String TRAILHEAD_ME = 'https://trailblazer.me/id/';
     public static final String TRAILHEAD_ME_USERID = 'https://trailblazer.me/id?cmty=trailhead&uid=';
     public static final String GO_TRAILHEAD_API = 'https://go-trailhead-leaderboard-api.herokuapp.com/trailblazer/';
+    public static final String JOB_NAME = 'Populate Trailblazers from GetTrailblazerInfoAsync';
 
     private Integer jobCount = 0;
     private List<Trailblazer__c> trailblazers;
@@ -30,7 +31,7 @@ public class GetTrailblazerInfoAsync implements Queueable, Database.AllowsCallou
         populateTrailblazerSuperbadgeData(newBlazer, getSuperbadgeData(trailblazer));
         populateTrailblazerCertificationData(newBlazer, getCertificationData(trailblazer));
 
-        if (!String.isBlank(newBlazer.Profile_Handle__c) && !String.isBlank(newBlazer.Name)) {
+        if (!String.isBlank(newBlazer.Profile_Handle__c)) {
             upsert newBlazer Profile_Handle__c;
             trailblazers.remove(0);
             jobCount++;
@@ -40,7 +41,7 @@ public class GetTrailblazerInfoAsync implements Queueable, Database.AllowsCallou
                     System.enqueueJob(new GetTrailblazerInfoAsync(jobCount, trailblazers));
                 }
             } else if (!trailblazers.isEmpty()) {
-                System.scheduleBatch(new PopulateTrailblazers(trailblazers), 'Populate Trailblazers', 0);
+                System.scheduleBatch(new PopulateTrailblazers(trailblazers), JOB_NAME, 0);
             }
         }
     }
