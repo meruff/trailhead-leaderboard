@@ -7,10 +7,15 @@ export default class LeaderboardNewTrailblazerModal extends LightningElement {
     @track error;
     @track showSpinner = false;
 
+    renderedCallback() {
+        if (this.isModalOpen) {
+            this.template.querySelector('.trailblazer-handle-input').focus();
+        }
+    }
+
     hideModal() {
         this.error = undefined;
         this.userId = "";
-        this.isModalOpen = false;
         this.dispatchEvent(new CustomEvent("closemodal"));
     }
 
@@ -21,7 +26,6 @@ export default class LeaderboardNewTrailblazerModal extends LightningElement {
     saveTrailblazer(event) {
         let submitBtn = event.target;
         submitBtn.disabled = true;
-        this.showSpinner = true;
         this.error = undefined;
 
         const allValid = [...this.template.querySelectorAll('lightning-input')]
@@ -31,6 +35,8 @@ export default class LeaderboardNewTrailblazerModal extends LightningElement {
             }, true);
 
         if (allValid) {
+            this.showSpinner = true;
+
             createTrailblazer({ userId: this.userId })
                 .then(result => {
                     if (result === 'success') {

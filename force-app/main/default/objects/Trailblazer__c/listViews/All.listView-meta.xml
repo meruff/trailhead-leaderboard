@@ -9,6 +9,7 @@
     <columns>Certifications__c</columns>
     <columns>Profile_Handle__c</columns>
     <columns>Profile_Link__c</columns>
+    <columns>LAST_UPDATE</columns>
     <filterScope>Everything</filterScope>
     <label>All</label>
 </ListView>

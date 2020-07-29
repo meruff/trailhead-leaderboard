@@ -66,6 +66,26 @@ public class TrailheadCalloutMock implements HttpCalloutMock {
                                     '"ImageUrl": "https://res.cloudinary.com/hy4kyit2a/f_auto,fl_lossy,q_70/learn/superbadges/superbadge_lwc_specialist/78066c22238610a42feb2565c4553d24_badge.png"' +
                                 '}' +
                             '}' +
+                        '],' +
+                        '"LearnedSkills": [' +
+                            '{' +
+                                '"Id": "0246ac31-20f5-95a9-3f27-f6eefe26f3b0",' +
+                                '"Label": "Apex",' +
+                                '"Name": "apex",' +
+                                '"UnitTotalPerSkill": 238' +
+                            '},' +
+                            '{' +
+                                '"Id": "0246ac31-20f5-95c8-40af-7ae405925d8a",' +
+                                '"Label": "Integration",' +
+                                '"Name": "integration",' +
+                                '"UnitTotalPerSkill": 217' +
+                            '},' +
+                            '{' +
+                                '"Id": "0246ac31-20f5-9502-7e50-097c19144f62",' +
+                                '"Label": "CRM",' +
+                                '"Name": "crm",' +
+                                '"UnitTotalPerSkill": 683' +
+                            '}' +
                         ']' +
                     '}' +
                 '],' +

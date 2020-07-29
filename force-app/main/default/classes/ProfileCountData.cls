@@ -6,9 +6,24 @@
 */
 public class ProfileCountData {
     public List<value> value { get; set; }
+
     public class value {
+        @AuraEnabled
+        public List<LearnedSkills> LearnedSkills { get; set; }
+
         public List<ProfileCounts> ProfileCounts { get; set; }
     }
+
+    public class LearnedSkills {
+        @AuraEnabled
+        public String Label { get; set; }
+        
+        @AuraEnabled
+        public String Name { get; set; }
+        
+        @AuraEnabled
+		public Integer UnitTotalPerSkill { get; set; }
+	}
 
     public class ProfileCounts {
         public Integer CompletedTrailTotal { get; set; }

@@ -91,6 +91,35 @@ private class TrailheadLeaderboardAuraControllerTest {
     }
 
     @IsTest
+    static void testGetSkillData() {
+        // Arrange
+        TrailheadCalloutMock mock = new TrailheadCalloutMock();
+        HttpResponse res = new HttpResponse();
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Location', 'trailheadURL.com');
+        res.setStatusCode(200);
+        res.setBody(TrailheadCalloutMock.getSuccessfulResponseData());
+        mock.addResponse(res);
+
+        Test.setMock(HttpCalloutMock.class, mock);
+        Test.setCurrentPage(Page.trailheadLeaderboard);
+
+        // Act
+        Test.startTest();
+        List<ProfileCountData.LearnedSkills> skills = TrailheadLeaderboardAuraController.getSkillData('someId');
+        Test.stopTest();
+
+        // Assert
+        System.assertEquals(3, skills.size(), 'Three skills should have been returned.');
+
+        for (ProfileCountData.LearnedSkills skill : skills) {
+            System.assertNotEquals(null, skill.Label);
+            System.assertNotEquals(null, skill.Name);
+            System.assertNotEquals(null, skill.UnitTotalPerSkill);
+        }
+    }
+
+    @IsTest
     static void testGetCertificationData() {
         // Arrange
         TrailheadCalloutMock mock = new TrailheadCalloutMock();
@@ -110,7 +139,7 @@ private class TrailheadLeaderboardAuraControllerTest {
         Test.stopTest();
 
         // Assert
-        System.assertEquals(1, certifications.size(), 'One Certification should have been returned.');
+        System.assertEquals(1, certifications.size(), 'One certification should have been returned.');
 
         for (CertificationData.certificationsList certification : certifications) {
             System.assertEquals(null, certification.dateExpired);

@@ -1,4 +1,5 @@
-import { LightningElement, api } from "lwc";
+import { LightningElement, api, track } from "lwc";
+import LEADERBOARD_SOURCE from "@salesforce/resourceUrl/Trailhead_Leaderboard";
 import LeaderboardProfileHelper from "c/leaderboardProfileHelper";
 const profileHelper = new LeaderboardProfileHelper();
 
@@ -13,6 +14,12 @@ export default class LeaderboardProfileCard extends LightningElement {
     set index(value) {
         this.setAttribute("index", value++);
         this._index = value;
+    }
+
+    @track photoError = false;
+
+    get placeholderProfilePhotoURL() {
+        return LEADERBOARD_SOURCE + "/trailheadLeaderboard/astro.png"
     }
 
     get titleString() {
@@ -33,5 +40,9 @@ export default class LeaderboardProfileCard extends LightningElement {
 
     openModalHandler() {
         this.dispatchEvent(new CustomEvent("openmodal", { detail: {trailblazerId: this.trailblazer.Id, trailblazerHandle: this.trailblazer.Profile_Handle__c} }));
+    }
+
+    loadPlaceholderPhoto() {
+        this.photoError = true;
     }
 }

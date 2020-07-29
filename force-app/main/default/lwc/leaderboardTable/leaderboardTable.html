@@ -1,19 +1,18 @@
 <template>
     <!-- Desktop View -->
-    <div class="slds-show--medium container">
+    <div class="slds-show_medium container">
         <lightning-card title="">
             <h2 slot="title">
                 <span class="slds-text-heading_small">
-                    All Trailblazers
-                    <br/><span class="slds-text-title">Click on a user to view their badges</span>
+                    {trailblazerCountString}
+                    <br/><span class="slds-text-title">{moreInfoText}</span>
                 </span>
             </h2>
 
             <div slot="actions">
-                <a class="brand-link" onclick={showTrailblazerModal}>
-                    <lightning-icon icon-name="utility:new" size="xx-small" alternative-text="Plus Icon" class="adjust-icon"></lightning-icon>
-                    &nbsp;Add New
-                </a>
+                <button type="button" class="slds-button slds-button_neutral brand-link" onclick={showNewTrailblazerModal}>
+                    Add New
+                </button>
             </div>
 
             <div class="slds-scrollable_x">
@@ -72,7 +71,7 @@
                     </thead>
                     <tbody>
                         <template for:each={trailblazers} for:item="trailblazer" for:index="index">
-                            <c-leaderboard-profile-table-row key={trailblazer.Id} trailblazer={trailblazer} index={index} onopenmodal={showBadgesModal}></c-leaderboard-profile-table-row>
+                            <c-leaderboard-profile-table-row key={trailblazer.Id} trailblazer={trailblazer} index={index} onopenmodal={showProfileModal}></c-leaderboard-profile-table-row>
                         </template>
                     </tbody>
                 </table>
@@ -87,28 +86,31 @@
     </div>
 
     <!-- Mobile View -->
-    <div class="slds-hide--medium">
+    <div class="slds-hide_medium">
         <div class="slds-p-bottom_x-large">
             <lightning-card title="">
                 <h2 slot="title">
                     <span class="slds-text-heading_small">
-                        All Trailblazers
-                        <div class="slds-text-title">Click on a user to view their badges</div>
+                        {trailblazerCountString}
+                        <div class="slds-text-title">{moreInfoText}</div>
                     </span>
                 </h2>
 
                 <div slot="actions">
-                    <a class="brand-link" onclick={showTrailblazerModal}>
-                        <lightning-icon icon-name="utility:new" size="xx-small" alternative-text="Plus Icon" class="adjust-icon"></lightning-icon>
-                        &nbsp;Add New
-                    </a>
+                    <button type="button" class="slds-button slds-button_neutral brand-link" onclick={showNewTrailblazerModal}>
+                        Add New
+                    </button>
                 </div>
             </lightning-card>
         </div>
 
-        <template for:each={trailblazers} for:item="trailblazer" for:index="index">
-            <c-leaderboard-profile-card key={trailblazer.Id} trailblazer={trailblazer} index={index} onopenmodal={showBadgesModal}></c-leaderboard-profile-card>
-        </template>
+        <lightning-layout multiple-rows="true">
+            <template for:each={trailblazers} for:item="trailblazer" for:index="index">
+                <lightning-layout-item key={trailblazer.Id} size="12">
+                    <c-leaderboard-profile-card trailblazer={trailblazer} index={index} onopenmodal={showProfileModal}></c-leaderboard-profile-card>
+                </lightning-layout-item>
+            </template>
+        </lightning-layout>
 
         <div style="margin-top:-1rem;">
             <lightning-card title="">
@@ -119,6 +121,6 @@
         </div>
     </div>
 
-    <c-leaderboard-new-trailblazer-modal is-modal-open={isTrailblazerModalOpen} onclosemodal={hideTrailblazerModal} onrefreshtable={fireRefresh}></c-leaderboard-new-trailblazer-modal>
-    <c-leaderboard-badges-modal is-modal-open={isBadgesModalOpen} trailblazers={trailblazers} selected-trailblazer-id={selectedTrailblazerId} selected-trailblazer-handle={selectedTrailblazerHandle} onclosemodal={hideBadgesModal}></c-leaderboard-badges-modal>
+    <c-leaderboard-new-trailblazer-modal is-modal-open={isTrailblazerModalOpen} onclosemodal={hideNewTrailblazerModal} onrefreshtable={fireRefresh}></c-leaderboard-new-trailblazer-modal>
+    <c-leaderboard-profile-modal is-modal-open={isProfileModalOpen} trailblazers={trailblazers} selected-trailblazer-id={selectedTrailblazerId} selected-trailblazer-handle={selectedTrailblazerHandle} onclosemodal={hideProfileModal}></c-leaderboard-profile-modal>
 </template>

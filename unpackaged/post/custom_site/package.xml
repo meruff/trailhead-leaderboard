@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>Trailhead_Leaderboard_Dev_Site</members>
+        <name>CustomSite</name>
+    </types>
+    <types>
+        <members>Trailhead Leaderboard Dev Site Profile</members>
+        <name>Profile</name>
+    </types>
+    <version>48.0</version>
+</Package>

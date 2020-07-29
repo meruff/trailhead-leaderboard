@@ -1,23 +1,20 @@
 <template>
     <div class="slds-m-bottom_x-large" onclick={openModalHandler}>
-        <lightning-card title="">
-            <div class="slds-p-horizontal_medium slds-grid adjust-card">
+        <article class="slds-card profile-card">
+            <div class="slds-p-horizontal_medium slds-p-top_small slds-grid">
                 <div class="slds-media slds-media_large slds-has-flexi-truncate slds-p-top_none">
                     <div class="slds-media__figure" style="margin-right:0;">
                         <span class="slds-avatar slds-avatar_large slds-avatar_circle slds-m-right_medium mobile-avatar">
-                            <img src={trailblazer.Profile_Photo__c} alt={profileAlt}/>
+                            <img if:false={photoError} src={trailblazer.Profile_Photo__c} onerror={loadPlaceholderPhoto} alt={profileAlt}/>
+                            <img if:true={photoError} src={placeholderProfilePhotoURL} alt={profileAlt}/>
                         </span>
                     </div>
                     <div class="slds-media__body">
-                        <h2>
-                            <span class="slds-text-heading_small">
-                                <c-leaderboard-rank rank={index} show-hashtag="true"></c-leaderboard-rank>
-                                &nbsp;{trailblazer.Name}
-                            </span>
+                        <h2 class="slds-text-heading_small">
+                            <c-leaderboard-rank rank={index} show-hashtag="true"></c-leaderboard-rank>
+                            &nbsp;{trailblazer.Name}
                         </h2>
-                        <div class="slds-text-title">
-                            <lightning-formatted-rich-text value={titleString}></lightning-formatted-rich-text>
-                        </div>
+                        <lightning-formatted-rich-text value={titleString}></lightning-formatted-rich-text>
                     </div>
                     <div class="slds-media slds-media_reverse">
                         <span class="mobile-avatar-rank">
@@ -67,6 +64,6 @@
                     </lightning-layout-item>
                 </lightning-layout>
             </div>
-        </lightning-card>
+        </article>
     </div>
 </template>

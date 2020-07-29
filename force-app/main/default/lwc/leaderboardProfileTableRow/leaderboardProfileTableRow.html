@@ -1,47 +1,48 @@
 <template>
-    <td class="slds-cell-wrap" onclick={openModalHandler}>
+    <td onclick={openModalHandler}>
         <div class="slds-truncate">
             <c-leaderboard-rank rank={index}></c-leaderboard-rank>
         </div>
     </td>
-    <td class="slds-cell-wrap" onclick={openModalHandler}>
-        <div class="slds-truncate" style="overflow:visible;">
-            <div class="slds-avatar slds-avatar_large slds-avatar_circle slds-m-right_medium avatar-table">
-                <img src={trailblazer.Profile_Photo__c} alt={profileAlt}/>
-            </div>
-            <div class="slds-show_inline-block slds-align-middle">
-                {trailblazer.Name}
-                <div class="slds-text-title">
-                    <lightning-formatted-rich-text value={titleString}></lightning-formatted-rich-text>
+    <td onclick={openModalHandler}>
+        <div class="slds-media slds-media_center">
+            <div class="slds-media__figure">
+                <div class="slds-avatar slds-avatar_large slds-avatar_circle avatar-table">
+                    <img if:false={photoError} src={trailblazer.Profile_Photo__c} onerror={loadPlaceholderPhoto} alt={profileAlt}/>
+                    <img if:true={photoError} src={placeholderProfilePhotoURL} alt={profileAlt}/>
                 </div>
             </div>
+            <div class="slds-media__body">
+                <h2 class="slds-text-heading_small">{trailblazer.Name}</h2>
+                <lightning-formatted-rich-text value={titleString}></lightning-formatted-rich-text>
+            </div>
         </div>
     </td>
-    <td class="slds-cell-wrap" onclick={openModalHandler}>
-        <div class="slds-truncate" style="overflow:visible;">
-            <c-leaderboard-rank-badge rank-name={trailblazer.Rank__c} show-name="true"></c-leaderboard-rank-badge>
+    <td onclick={openModalHandler}>
+        <div class="slds-truncate">
+            <c-leaderboard-rank-badge rank-name={trailblazer.Rank__c}></c-leaderboard-rank-badge>
         </div>
     </td>
-    <td class="slds-cell-wrap" onclick={openModalHandler}>
+    <td onclick={openModalHandler}>
         <div class="slds-truncate">
             <lightning-formatted-number value={trailblazer.Points__c}></lightning-formatted-number>
         </div>
     </td>
-    <td class="slds-cell-wrap" onclick={openModalHandler}>
+    <td onclick={openModalHandler}>
         <div class="slds-truncate">
             <lightning-formatted-number value={trailblazer.Badges__c}></lightning-formatted-number>
         </div>
     </td>
-    <td class="slds-cell-wrap" onclick={openModalHandler}>
+    <td onclick={openModalHandler}>
         <div class="slds-truncate">{trailblazer.Trails__c}</div>
     </td>
-    <td class="slds-cell-wrap" onclick={openModalHandler}>
+    <td onclick={openModalHandler}>
         <div class="slds-truncate">{trailblazer.Superbadges__c}</div>
     </td>
-    <td class="slds-cell-wrap" onclick={openModalHandler}>
+    <td onclick={openModalHandler}>
         <div class="slds-truncate">{trailblazer.Certifications__c}</div>
     </td>
-    <td class="slds-cell-wrap" onclick={openModalHandler}>
+    <td onclick={openModalHandler}>
         <div class="slds-truncate">
             <a href={trailblazer.Profile_Link__c} class="brand-link" target="_blank" onclick={handleProfileClick}>
                 trailblazer.me/id/{trailblazer.Profile_Handle__c}

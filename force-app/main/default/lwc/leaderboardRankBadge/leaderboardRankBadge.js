@@ -1,12 +1,12 @@
 import { LightningElement, api } from "lwc";
-import Leaderboard_Ranks from "@salesforce/resourceUrl/Trailhead_Leaderboard";
+import LEADERBOARD_SOURCE from "@salesforce/resourceUrl/Trailhead_Leaderboard";
 
 export default class LeaderboardRankBadge extends LightningElement {
     @api rankName;
     @api showName = false;
 
     get rankBadgeURL() {
-        return Leaderboard_Ranks + '/trailheadLeaderboard/ranks/' + this.rankName.toLowerCase() + '.png';
+        return LEADERBOARD_SOURCE + '/trailheadLeaderboard/ranks/' + this.rankName.toLowerCase() + '.png';
     }
 
     get alt() {

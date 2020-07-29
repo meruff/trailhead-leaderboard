@@ -2,28 +2,36 @@ import { LightningElement, api, track } from "lwc";
 
 export default class LeaderboardTable extends LightningElement {
     @api trailblazers;
-    @track isBadgesModalOpen = false;
+    @track isProfileModalOpen = false;
     @track isTrailblazerModalOpen = false;
     @track selectedTrailblazerId;
     @track selectedTrailblazerHandle;
     @track fieldToSortBy = "Points__c";
     @track descending = true;
 
-    showBadgesModal(event) {
+    get trailblazerCountString() {
+        return (this.trailblazers && this.trailblazers.length > 0) ? this.trailblazers.length + " Trailblazers" : "All Trailblazers";
+    }
+
+    get moreInfoText() {
+        return "Click on a Trailblazer for more info.";
+    }
+
+    showProfileModal(event) {
         this.selectedTrailblazerId = event.detail.trailblazerId;
         this.selectedTrailblazerHandle = event.detail.trailblazerHandle;
-        this.isBadgesModalOpen = true;
+        this.isProfileModalOpen = true;
     }
 
-    hideBadgesModal() {
-        this.isBadgesModalOpen = false;
+    hideProfileModal() {
+        this.isProfileModalOpen = false;
     }
 
-    showTrailblazerModal() {
+    showNewTrailblazerModal() {
         this.isTrailblazerModalOpen = true;
     }
 
-    hideTrailblazerModal() {
+    hideNewTrailblazerModal() {
         this.isTrailblazerModalOpen = false;
     }
 

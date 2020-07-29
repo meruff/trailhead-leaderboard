@@ -1,0 +1,49 @@
+<template>
+    <div class="slds-is-relative" style="min-height:100px;">
+        <div if:true={showSpinner}>
+            <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+        </div>
+        <lightning-layout multiple-rows="true" horizontal-align="end" if:true={showFilters}>
+            <!-- <div class="slds-col slds-size_1-of-1 slds-small-size_1-of-2 slds-large-size_1-of-3"> -->
+            <lightning-layout-item size="12" small-device-size="6" large-device-size="4">
+                <lightning-combobox
+                        name="badgeFilter"
+                        label="Badge Type"
+                        variant="label-hidden"
+                        value={selectedBadgeType}
+                        options={badgeTypeOptions}
+                        class="slds-p-bottom_medium"
+                        onchange={updateSelectedBadgeFilter}>
+                </lightning-combobox>
+            </lightning-layout-item>
+        </lightning-layout>
+        <lightning-layout multiple-rows="true" horizontal-align="space">
+            <template for:each={badges} for:item="badge">
+                <lightning-layout-item key={badge.Id} 
+                                       padding="around-medium" 
+                                       size="6" 
+                                       small-device-size="4" 
+                                       medium-device-size="3" 
+                                       large-device-size="2" 
+                                       flexibility="auto">
+                    <div style="max-width:130px;margin:auto;">
+                        <a href={badge.LearningUrl} target="_blank" title={badge.Award.Label}>
+                            <img src={badge.Award.ImageUrl} alt={badge.Award.Label}/>
+                            <p class="slds-text-align_center slds-p-top_small">
+                                {badge.Award.Label}
+                            </p>
+                        </a>
+                    </div>
+                </lightning-layout-item>
+            </template>
+            <template if:true={showNoBadgesMessage}>
+                <div class="slds-align_absolute-center slds-p-top_xx-large">
+                    {noBadgesMessage}
+                </div>
+            </template>
+        </lightning-layout>
+        <div if:true={showMore} class="slds-align_absolute-center slds-p-vertical_small">
+            <lightning-button variant="neutral" label="Show More" onclick={handleShowMore}></lightning-button>
+        </div>
+    </div>
+</template>

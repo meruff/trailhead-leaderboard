@@ -3,15 +3,10 @@
     margin: auto;
 }
 
-.adjust-icon {
-    vertical-align: top;
-    margin-top: 1px;
-}
-
 .brand-link,
 .brand-link:hover,
 .brand-link:focus {
-    color: #394355 !important;
+    color: #16325C !important;
 }
 
 .click-hover {

@@ -1,16 +1,19 @@
-import { LightningElement, api, wire, track } from "lwc";
+import { LightningElement, api, track } from "lwc";
 import getBadgeData from "@salesforce/apex/TrailheadLeaderboardAuraController.getBadgeData";
 
-export default class LeaderboardBadgesModal extends LightningElement {
-    @api trailblazers;
-    @api isModalOpen = false;
-    @track badges = [];
-    @track noMoreBadges = false;
+const OFFSET_STEP = 30;
+
+export default class LeaderboardBadges extends LightningElement {
+    @api trailblazer;
     @track showSpinner = false;
+    @track badges;
+    @track noMoreBadges = false;
     @track selectedBadgeType = "all";
 
+    offset = OFFSET_STEP;
+
     badgeTypeOptions = [
-        { "label": "All Badges", "value": "all" },
+        { "label": "All", "value": "all" },
         { "label": "Superbadges", "value": "superbadge" },
         { "label": "Modules", "value": "module" },
         { "label": "Projects", "value": "project" },
@@ -18,32 +21,48 @@ export default class LeaderboardBadgesModal extends LightningElement {
     ];
 
     @api
-    get selectedTrailblazerId() {
-        return this._selectedTrailblazerId;
+    get trailblazerId() {
+        return this._trailblazerId;
     }
 
-    set selectedTrailblazerId(value) {
-        this.setAttribute("selectedTrailblazerId", value);
-        this._selectedTrailblazerId = value;
+    set trailblazerId(value) {
+        this.setAttribute("trailblazerId", value);
+        this._trailblazerId = value;
     }
 
     @api
-    get selectedTrailblazerHandle() {
-        return this._selectedTrailblazerHandle;
+    get trailblazerHandle() {
+        return this._trailblazerHandle;
     }
 
-    set selectedTrailblazerHandle(value) {
-        this.setAttribute("selectedTrailblazerHandle", value);
-        this._selectedTrailblazerHandle = value;
+    set trailblazerHandle(value) {
+        this.setAttribute("trailblazerHandle", value);
+        this._trailblazerHandle = value;
         this.selectedBadgeType = "all";
         this.badges = [];
+        this.offset = OFFSET_STEP;
 
         if (value) {
             this.showSpinner = true;
 
             getBadgeData({ userId: value, filter: "all", offset: "" })
                 .then(result => {
-                    this.badges = result;
+                    if (result) {
+                        this.badges = result;
+
+                        this.dispatchEvent(
+                            new CustomEvent(
+                                "updatesectionlabel", 
+                                {
+                                    detail: { 
+                                        name: "badges", 
+                                        label: this.trailblazer.Badges__c + ((this.trailblazer.Badges__c === 1) ?  " Badge" : " Badges")
+                                    }
+                                }
+                            )
+                        );
+                    }
+
                     this.showSpinner = false;
                 })
                 .catch(error => {
@@ -53,16 +72,16 @@ export default class LeaderboardBadgesModal extends LightningElement {
         }
     }
 
+    get showFilters() {
+        return this.badges && this.badges.length > 0;
+    }
+
     get showNoBadgesMessage() {
         return !this.showSpinner && (!this.badges || this.badges.length === 0);
     }
 
     get noBadgesMessage() {
-        return "No Badges found for this filter type.";
-    }
-
-    get trailblazer() {
-        return this.trailblazers.find(blazer => blazer.Id === this.selectedTrailblazerId);
+        return (this.badges && this.badges.length === 0) ? "No badges found for this Trailblazer.": "No badges found for this Trailblazer using this filter type.";
     }
 
     get firstName() {
@@ -70,7 +89,9 @@ export default class LeaderboardBadgesModal extends LightningElement {
     }
 
     get showMore() {
-        return this.badges && this.badges.length > 29 && !this.noMoreBadges;
+        console.log(this.badges.length);
+        console.log(this.trailblazer.Badges__c);
+        return this.badges && this.badges.length > 29 && this.badges.length !== this.trailblazer.Badges__c && !this.noMoreBadges;
     }
 
     updateSelectedBadgeFilter(event) {
@@ -78,7 +99,7 @@ export default class LeaderboardBadgesModal extends LightningElement {
         this.showSpinner = true;
 
         getBadgeData({
-            userId: this.selectedTrailblazerHandle,
+            userId: this.trailblazerHandle,
             filter: this.selectedBadgeType,
             offset: ""
         })
@@ -96,12 +117,12 @@ export default class LeaderboardBadgesModal extends LightningElement {
         this.showSpinner = true;
 
         getBadgeData({
-            userId: this.selectedTrailblazerHandle,
+            userId: this.trailblazerHandle,
             filter: this.selectedBadgeType,
-            offset: (this.badges.length <= 30) ? 30 : this.badges.length + 30
+            offset: (this.badges.length <= OFFSET_STEP) ? OFFSET_STEP : this.offset += OFFSET_STEP
         })
             .then(result => {
-                if (result) {
+                if (result && result.length > 0) {
                     this.badges = this.badges.concat(result);
                 } else {
                     this.noMoreBadges = true;
@@ -113,11 +134,5 @@ export default class LeaderboardBadgesModal extends LightningElement {
                 console.error(error);
                 this.showSpinner = false;
             })
-    }
-
-    hideModal() {
-        this.noMoreBadges = false;
-        this.isModalOpen = false;
-        this.dispatchEvent(new CustomEvent("closemodal"));
     }
 }

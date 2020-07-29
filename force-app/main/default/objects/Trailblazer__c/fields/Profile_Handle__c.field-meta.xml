@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Profile_Handle__c</fullName>
-    <description>The custom handle of the Trailblazer&#39;s profile on Trailhead (ex: &quot;matruff&quot;)</description>
+    <caseSensitive>false</caseSensitive>
+    <description>The custom handle of the Trailblazer&apos;s profile on Trailhead (ex: &quot;matruff&quot;)</description>
     <externalId>true</externalId>
     <label>Profile Handle</label>
     <length>255</length>

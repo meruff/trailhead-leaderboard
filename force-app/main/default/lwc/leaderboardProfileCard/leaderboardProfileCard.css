@@ -1,7 +1,3 @@
-.adjust-card {
-    margin-top: -10px;
-}
-
 .adjust-icon {
     vertical-align: top;
     margin-top: 1px;
@@ -20,4 +16,11 @@
     position: absolute;
     top: 50px;
     left: 85px;
+}
+
+.profile-card {
+    border-top-style: solid !important;
+    border-top-color: #16325C !important;
+    border-top-width: 8px !important;
+    border-width: 0px;
 }

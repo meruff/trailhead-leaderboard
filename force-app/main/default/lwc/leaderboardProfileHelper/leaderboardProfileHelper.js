@@ -3,11 +3,11 @@ export default class LeaderboardProfileHelper {
         let titleString = "";
 
         if (title) {
-            titleString += title;
+            titleString += "<div class='slds-text-body_regular' style='white-space:normal;'>" + title + "</div>";
         }
 
         if (company) {
-            titleString += ((title) ? "<br/>" : "") + company;
+            titleString += "<div class='slds-text-title' style='white-space:normal;'>" + company + "</div>";
         }
 
         return titleString;

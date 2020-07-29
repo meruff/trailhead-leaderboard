@@ -1,0 +1,28 @@
+<template>
+    <div class="slds-media slds-media_responsive">
+        <div class="slds-media__figure">
+            <a href={certification.certificationUrl} target="_blank">
+                <img src={certification.certificationImageUrl} alt={certification.title} style="max-width:100px;" />
+            </a>
+        </div>
+        <div class="slds-media__body">
+            <h2 class="slds-text-heading_small">
+                <a href={certification.certificationUrl} target="_blank">
+                    {certification.title}
+                </a>
+            </h2>
+            <p>
+                <b>
+                    <lightning-formatted-date-time value={certification.dateCompleted} month="long" year="numeric"></lightning-formatted-date-time>
+                    <template if:true={showEndDate}>
+                        &nbsp;-&nbsp;<lightning-formatted-date-time value={certification.dateExpired} month="long" year="numeric"></lightning-formatted-date-time>
+                    </template>
+                    <template if:false={showEndDate}>
+                        &nbsp;-&nbsp;Present
+                    </template>
+                </b>
+            </p>
+            <p>{certification.description}</p>
+        </div>
+    </div>
+</template>
