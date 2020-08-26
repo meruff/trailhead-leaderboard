@@ -5,6 +5,7 @@
 * A class to deserialize Trailhead Profile data from the API into.
 */
 public class ProfileData {
+    public String error { get; set; }
     public String profilePhotoUrl { get; set; }
     public profileUser profileUser { get; set; }
 

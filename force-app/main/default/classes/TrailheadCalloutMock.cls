@@ -116,4 +116,8 @@ public class TrailheadCalloutMock implements HttpCalloutMock {
                 ']' +
             '}';
     }
+
+    public static String getUnsuccessfulResponseData() { 
+        return '{"error":"No response from Trailhead"}';
+    }
 }

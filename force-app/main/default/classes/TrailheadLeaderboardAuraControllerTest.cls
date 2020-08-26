@@ -91,6 +91,30 @@ private class TrailheadLeaderboardAuraControllerTest {
     }
 
     @IsTest
+    static void testCreateNewTrailblazerNoAPIResponse() {
+        // Arrange
+        TrailheadCalloutMock mock = new TrailheadCalloutMock();
+        HttpResponse res = new HttpResponse();
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Location', 'trailheadURL.com');
+        res.setStatusCode(200);
+        res.setBody(TrailheadCalloutMock.getUnsuccessfulResponseData());
+        mock.addResponse(res);
+
+        Test.setMock(HttpCalloutMock.class, mock);
+        Test.setCurrentPage(Page.trailheadLeaderboard);
+
+        // Act
+        Test.startTest();
+        String resultString = TrailheadLeaderboardAuraController.createTrailblazer('someId');
+        Test.stopTest();
+
+        // Assert
+        Trailblazer__c assertTrailblazer = [SELECT Badges__c FROM Trailblazer__c WHERE Profile_Handle__c = 'someId'];
+        System.assertEquals(null, assertTrailblazer.Badges__c, 'Badges shouldn\'t have been updates as there was an error response from the API.');
+    }
+
+    @IsTest
     static void testGetSkillData() {
         // Arrange
         TrailheadCalloutMock mock = new TrailheadCalloutMock();
@@ -181,5 +205,28 @@ private class TrailheadLeaderboardAuraControllerTest {
             System.assertNotEquals(null, award.LearningUrl);
             System.assertNotEquals(null, award.AwardType);
         }
+    }
+
+    @IsTest
+    static void testGetBadgeDataNoAPIResponse() {
+        // Arrange
+        TrailheadCalloutMock mock = new TrailheadCalloutMock();
+        HttpResponse res = new HttpResponse();
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Location', 'trailheadURL.com');
+        res.setStatusCode(200);
+        res.setBody(TrailheadCalloutMock.getUnsuccessfulResponseData());
+        mock.addResponse(res);
+
+        Test.setMock(HttpCalloutMock.class, mock);
+        Test.setCurrentPage(Page.trailheadLeaderboard);
+
+        // Act
+        Test.startTest();
+        List<BadgeData.EarnedAwards> badges = TrailheadLeaderboardAuraController.getBadgeData('someId', 'all', '0');
+        Test.stopTest();
+
+        // Assert
+        System.assertEquals(null, badges, 'No badges should have been returned as the API failed to respond with data.');
     }
 }

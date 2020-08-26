@@ -91,7 +91,12 @@ public without sharing class TrailheadLeaderboardAuraController {
 
         BadgeData data = (BadgeData) JSON.deserialize(res.getBody().replaceAll('__c', ''), BadgeData.class);
 
-        if (data.value != null && !data.value.isEmpty() && data.value[0].EarnedAwards != null && !data.value[0].EarnedAwards.isEmpty()) {
+        if (String.isBlank(data.error)
+            && data.value != null 
+            && !data.value.isEmpty() 
+            && data.value[0].EarnedAwards != null 
+            && !data.value[0].EarnedAwards.isEmpty()
+        ) {
             return data.value[0].EarnedAwards;
         } else {
             return null;
@@ -115,7 +120,12 @@ public without sharing class TrailheadLeaderboardAuraController {
 
         ProfileCountData data = (ProfileCountData) JSON.deserialize(res.getBody().replaceAll('__c', ''), ProfileCountData.class);
 
-        if (data.value != null && !data.value.isEmpty() && data.value[0].LearnedSkills != null && !data.value[0].LearnedSkills.isEmpty()) {
+        if (String.isBlank(data.error) 
+            && data.value != null 
+            && !data.value.isEmpty() 
+            && data.value[0].LearnedSkills != null 
+            && !data.value[0].LearnedSkills.isEmpty()
+        ) {
             return data.value[0].LearnedSkills;
         } else {
             return null;
@@ -139,7 +149,11 @@ public without sharing class TrailheadLeaderboardAuraController {
 
         CertificationData data = (CertificationData) JSON.deserialize(res.getBody().replaceAll('__c', ''), CertificationData.class);
 
-        if (data != null && data.certificationsList != null && !data.certificationsList.isEmpty()) {
+        if (String.isBlank(data.error) 
+            && data != null 
+            && data.certificationsList != null 
+            && !data.certificationsList.isEmpty()
+        ) {
             return data.certificationsList;
         } else {
             return null;

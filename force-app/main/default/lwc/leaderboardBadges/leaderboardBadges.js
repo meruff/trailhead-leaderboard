@@ -13,11 +13,11 @@ export default class LeaderboardBadges extends LightningElement {
     offset = OFFSET_STEP;
 
     badgeTypeOptions = [
-        { "label": "All", "value": "all" },
-        { "label": "Superbadges", "value": "superbadge" },
-        { "label": "Modules", "value": "module" },
-        { "label": "Projects", "value": "project" },
-        { "label": "Event/Community", "value": "event" }
+        { label: "All", value: "all" },
+        { label: "Superbadges", value: "superbadge" },
+        { label: "Modules", value: "module" },
+        { label: "Projects", value: "project" },
+        { label: "Event/Community", value: "event" }
     ];
 
     @api
@@ -89,8 +89,6 @@ export default class LeaderboardBadges extends LightningElement {
     }
 
     get showMore() {
-        console.log(this.badges.length);
-        console.log(this.trailblazer.Badges__c);
         return this.badges && this.badges.length > 29 && this.badges.length !== this.trailblazer.Badges__c && !this.noMoreBadges;
     }
 

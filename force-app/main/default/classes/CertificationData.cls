@@ -5,6 +5,8 @@
 * A class to deserialize Trailhead Certification data from the API into.
 */
 public class CertificationData {
+    public String error { get; set; }
+    
     @AuraEnabled
     public List<certificationsList> certificationsList { get; set; }
 

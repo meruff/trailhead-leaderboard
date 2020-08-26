@@ -24,17 +24,13 @@ public class GetTrailblazerInfoAsync implements Queueable, Database.AllowsCallou
         }
 
         Trailblazer__c trailblazer = trailblazers[0];
+        populateTrailblazerProfileData(trailblazer, getProfileData(trailblazer));
+        populateTrailblazerProfileCountsData(trailblazer, getProfileCountData(trailblazer));
+        populateTrailblazerSuperbadgeData(trailblazer, getSuperbadgeData(trailblazer));
+        populateTrailblazerCertificationData(trailblazer, getCertificationData(trailblazer));
 
-        Trailblazer__c newBlazer = new Trailblazer__c();
-        populateTrailblazerProfileData(newBlazer, getProfileData(trailblazer));
-        populateTrailblazerProfileCountsData(newBlazer, getProfileCountData(trailblazer));
-        populateTrailblazerSuperbadgeData(newBlazer, getSuperbadgeData(trailblazer));
-        populateTrailblazerCertificationData(newBlazer, getCertificationData(trailblazer));
-
-        if (!String.isBlank(newBlazer.Profile_Handle__c)
-            && !String.isBlank(newBlazer.Name)
-        ) {
-            upsert newBlazer Profile_Handle__c;
+        if (!String.isBlank(trailblazer.Profile_Handle__c) && !String.isBlank(trailblazer.Name)) {
+            upsert trailblazer Profile_Handle__c;
         }
 
         trailblazers.remove(0);
@@ -83,7 +79,7 @@ public class GetTrailblazerInfoAsync implements Queueable, Database.AllowsCallou
 
         ProfileData data = (ProfileData) JSON.deserialize(resBody.replaceAll('__c', ''), ProfileData.class);
 
-        if (data.profileUser != null) {
+        if (String.isBlank(data.error) && data.profileUser != null) {
             trailblazer.Profile_Id__c = data.profileUser.Id;
             trailblazer.Name = data.profileUser.FirstName + ' ' + data.profileUser.LastName;
             trailblazer.Profile_Photo__c = data.profilePhotoUrl;
@@ -132,7 +128,11 @@ public class GetTrailblazerInfoAsync implements Queueable, Database.AllowsCallou
 
         ProfileCountData data = (ProfileCountData) JSON.deserialize(resBody.replaceAll('__c', ''), ProfileCountData.class);
 
-        if (data.value != null && !data.value.isEmpty() && data.value[0].ProfileCounts != null && !data.value[0].ProfileCounts.isEmpty()) {
+        if (String.isBlank(data.error)
+            && data.value != null && !data.value.isEmpty() 
+            && data.value[0].ProfileCounts != null 
+            && !data.value[0].ProfileCounts.isEmpty()
+        ) {
             trailblazer.Points__c = data.value[0].ProfileCounts[0].EarnedPointTotal;
             trailblazer.Badges__c = data.value[0].ProfileCounts[0].EarnedBadgeTotal;
             trailblazer.Trails__c = data.value[0].ProfileCounts[0].CompletedTrailTotal;
@@ -173,7 +173,12 @@ public class GetTrailblazerInfoAsync implements Queueable, Database.AllowsCallou
 
         BadgeData data = (BadgeData) JSON.deserialize(resBody.replaceAll('__c', ''), BadgeData.class);
 
-        if (data.value != null && !data.value.isEmpty() && data.value[0].EarnedAwards != null && !data.value[0].EarnedAwards.isEmpty()) {
+        if (String.isBlank(data.error) 
+            && data.value != null 
+            && !data.value.isEmpty() 
+            && data.value[0].EarnedAwards != null 
+            && !data.value[0].EarnedAwards.isEmpty()
+        ) {
             Integer count = 0;
 
             for (BadgeData.EarnedAwards award : data.value[0].EarnedAwards) {
@@ -181,8 +186,6 @@ public class GetTrailblazerInfoAsync implements Queueable, Database.AllowsCallou
             }
 
             trailblazer.Superbadges__c = count;
-        } else {
-            trailblazer.Superbadges__c = 0;
         }
     }
 
@@ -218,10 +221,12 @@ public class GetTrailblazerInfoAsync implements Queueable, Database.AllowsCallou
 
         CertificationData data = (CertificationData) JSON.deserialize(resBody.replaceAll('__c', ''), CertificationData.class);
 
-        if (data != null && data.certificationsList != null && !data.certificationsList.isEmpty()) {
+        if (String.isBlank(data.error)
+            && data != null 
+            && data.certificationsList != null 
+            && !data.certificationsList.isEmpty()
+        ) {
             trailblazer.Certifications__c = data.certificationsList.size();
-        } else {
-            trailblazer.Certifications__c = 0;
         }
     }
 
