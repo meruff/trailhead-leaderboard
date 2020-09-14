@@ -91,7 +91,7 @@ private class TrailheadLeaderboardAuraControllerTest {
     }
 
     @IsTest
-    static void testCreateNewTrailblazerNoAPIResponse() {
+    static void testCreateNewTrailblazerWithError() {
         // Arrange
         TrailheadCalloutMock mock = new TrailheadCalloutMock();
         HttpResponse res = new HttpResponse();
@@ -110,8 +110,13 @@ private class TrailheadLeaderboardAuraControllerTest {
         Test.stopTest();
 
         // Assert
-        Trailblazer__c assertTrailblazer = [SELECT Badges__c FROM Trailblazer__c WHERE Profile_Handle__c = 'someId'];
-        System.assertEquals(null, assertTrailblazer.Badges__c, 'Badges shouldn\'t have been updates as there was an error response from the API.');
+        System.assertEquals(0, [SELECT Id FROM Trailblazer__c WHERE Profile_Handle__c = :'someId'].size(), 
+            'Test Trailblazer should not have been created.');
+        System.assertNotEquals('success', resultString);
+        System.assertEquals(2,
+            TrailheadLeaderboardAuraController.populateTrailblazers('', null).size(),
+            'Only the two Trailblazers should exist, \'someId\' should not have been created.'
+        );
     }
 
     @IsTest

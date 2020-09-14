@@ -48,17 +48,23 @@ public without sharing class TrailheadLeaderboardAuraController {
     @AuraEnabled
     public static String createTrailblazer(String userId) {
         Trailblazer__c newTrailblazer = new Trailblazer__c(Profile_Handle__c = userId.replace(' ', '').trim());
-        GetTrailblazerInfoAsync.populateTrailblazerProfileData(newTrailblazer, GetTrailblazerInfoAsync.getProfileData(newTrailblazer));
-        GetTrailblazerInfoAsync.populateTrailblazerProfileCountsData(newTrailblazer, GetTrailblazerInfoAsync.getProfileCountData(newTrailblazer));
-        GetTrailblazerInfoAsync.populateTrailblazerSuperbadgeData(newTrailblazer, GetTrailblazerInfoAsync.getSuperbadgeData(newTrailblazer));
-        GetTrailblazerInfoAsync.populateTrailblazerCertificationData(newTrailblazer, GetTrailblazerInfoAsync.getCertificationData(newTrailblazer));
+
+        for (String s : new Set<String>{
+            GetTrailblazerInfoAsync.getProfileCountsData(newTrailblazer, GetTrailblazerInfoAsync.buildCalloutURL(newTrailblazer, '')),
+            GetTrailblazerInfoAsync.getProfileData(newTrailblazer, GetTrailblazerInfoAsync.buildCalloutURL(newTrailblazer, GetTrailblazerInfoAsync.PROFILE_PATH)),
+            GetTrailblazerInfoAsync.getSuperbadgeData(newTrailblazer, GetTrailblazerInfoAsync.buildCalloutURL(newTrailblazer, GetTrailblazerInfoAsync.SUPERBADGES_PATH)),
+            GetTrailblazerInfoAsync.getCertificationData(newTrailblazer, GetTrailblazerInfoAsync.buildCalloutURL(newTrailblazer, GetTrailblazerInfoAsync.CERTIFICATIONS_PATH))
+        }) {
+            if (!s.equals(GetTrailblazerInfoAsync.SUCCESS)) {
+                return s;
+            }
+        }
 
         try {
             upsert newTrailblazer Profile_Handle__c;
             return 'success';
         } catch(Exception e) {
-            return 'Could not find a Trailhead profile for User Id/handle: ' + userId +
-                '. Please ensure your profile is set to public and you\'ve copied your Id correctly.';
+            return 'Error creating Trailblazer__c. Please try again.';
         }
     }
 
