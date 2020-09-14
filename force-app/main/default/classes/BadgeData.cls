@@ -5,6 +5,8 @@
 * A class to deserialize Trailhead Badge data from the API into.
 */
 public class BadgeData {
+    public String error { get; set; }
+
     @AuraEnabled
     public List<value> value { get; set; }
 

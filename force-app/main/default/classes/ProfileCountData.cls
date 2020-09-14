@@ -5,6 +5,7 @@
 * A class to deserialize ProfileCounts data from the API into.
 */
 public class ProfileCountData {
+    public String error { get; set; }
     public List<value> value { get; set; }
 
     public class value {
