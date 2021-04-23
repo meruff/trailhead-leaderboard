@@ -13,7 +13,7 @@
             </h2>
             <p>
                 <b>
-                    <lightning-formatted-date-time value={certification.dateCompleted} month="long" year="numeric"></lightning-formatted-date-time>
+                    <lightning-formatted-date-time value={dateCompleted} month="long" year="numeric"></lightning-formatted-date-time>
                     <template if:true={showEndDate}>
                         &nbsp;-&nbsp;<lightning-formatted-date-time value={certification.dateExpired} month="long" year="numeric"></lightning-formatted-date-time>
                     </template>
