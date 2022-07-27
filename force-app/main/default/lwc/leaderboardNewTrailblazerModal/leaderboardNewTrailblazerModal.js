@@ -50,7 +50,7 @@ export default class LeaderboardNewTrailblazerModal extends LightningElement {
                     this.showSpinner = false;
                 })
                 .catch(error => {
-                    this.error = error;
+                    this.error = error.error;
                     submitBtn.disabled = false;
                     this.showSpinner = false;
                 });

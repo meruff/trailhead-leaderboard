@@ -1,20 +1,24 @@
 /**
-* @author meruff
-* @date 2019-06-17
-*
-* Apex controller logic for LWC leaderboard.
-*/
+ * @description Apex controller logic for the main leaderboard.
+ *
+ * @author meruff
+ *
+ * @date 06/17/2019
+ */
 public without sharing class TrailheadLeaderboardAuraController {
     /**
-     * Queries for Trailblazer__c records to display on the page.
+     * @description Queries for Trailblazer__c records to display on the page.
      *
-     * @param fieldToSortBy, the API Name of the field used to sort, defaults to Points__c.
-     * @param descending, whether or not to sort by DESC.
+     * @param fieldToSortBy the API Name of the field used to sort, defaults to Points__c.
+     * @param descending whether or not to sort by DESC.
      *
      * @return a List of Trailblazer__c records.
      */
     @AuraEnabled(Cacheable=true)
-    public static List<Trailblazer__c> populateTrailblazers(String fieldToSortBy, Boolean descending) {
+    public static List<Trailblazer__c> populateTrailblazers(
+        String fieldToSortBy,
+        Boolean descending
+    ) {
         String queryString = '' +
             'SELECT Id, Name, Badges__c, Points__c, Trailblazer_Since__c, Trails__c, Profile_Handle__c, Profile_Id__c, ' +
                 'Profile_Link__c, Rank__c, Profile_Photo__c, Job_Role__c, Job_Title__c, Company_Institution__c, ' +
@@ -39,23 +43,53 @@ public without sharing class TrailheadLeaderboardAuraController {
     }
 
     /**
-     * Creates and upserts a new Trailblazer__c record by calling out to the Trailhead API and parsing the response data.
+     * @description Creates and upserts a new Trailblazer__c record by calling out to the Trailhead API and
+     * parsing the response data.
      *
-     * @param userId, the user handle to use when calling out to Trailhead.
+     * @param userId the user handle to use when calling out to Trailhead.
      *
-     * @return, a message String whether or not the callout succeeded.
+     * @return a message String whether or not the callout succeeded.
      */
     @AuraEnabled
     public static String createTrailblazer(String userId) {
-        Trailblazer__c newTrailblazer = new Trailblazer__c(Profile_Handle__c = userId.replace(' ', '').trim());
+        Trailblazer__c newTrailblazer = new Trailblazer__c(
+            Profile_Handle__c = userId.replace(' ', '').trim()
+        );
 
         for (String s : new Set<String>{
-            GetTrailblazerInfoAsync.getProfileCountsData(newTrailblazer, GetTrailblazerInfoAsync.buildCalloutURL(newTrailblazer, '')),
-            GetTrailblazerInfoAsync.getProfileData(newTrailblazer, GetTrailblazerInfoAsync.buildCalloutURL(newTrailblazer, GetTrailblazerInfoAsync.PROFILE_PATH)),
-            GetTrailblazerInfoAsync.getSuperbadgeData(newTrailblazer, GetTrailblazerInfoAsync.buildCalloutURL(newTrailblazer, GetTrailblazerInfoAsync.SUPERBADGES_PATH)),
-            GetTrailblazerInfoAsync.getCertificationData(newTrailblazer, GetTrailblazerInfoAsync.buildCalloutURL(newTrailblazer, GetTrailblazerInfoAsync.CERTIFICATIONS_PATH))
+            GetTrailblazerInfoAsync.getProfileData(
+                newTrailblazer,
+                TrailheadHelper.buildCalloutURL(
+                    newTrailblazer,
+                    TrailheadHelper.PROFILE_PATH
+                )
+            ),
+
+            GetTrailblazerInfoAsync.getRankData(
+                newTrailblazer,
+                TrailheadHelper.buildCalloutURL(
+                    newTrailblazer,
+                    TrailheadHelper.RANK_PATH
+                )
+            ),
+
+            GetTrailblazerInfoAsync.getSuperbadgeData(
+                newTrailblazer,
+                TrailheadHelper.buildCalloutURL(
+                    newTrailblazer,
+                    TrailheadHelper.SUPERBADGES_PATH
+                )
+            ),
+
+            GetTrailblazerInfoAsync.getCertificationData(
+                newTrailblazer,
+                TrailheadHelper.buildCalloutURL(
+                    newTrailblazer,
+                    TrailheadHelper.CERTIFICATIONS_PATH
+                )
+            )
         }) {
-            if (!s.equals(GetTrailblazerInfoAsync.SUCCESS)) {
+            if (!s.equals(TrailheadHelper.SUCCESS)) {
                 return s;
             }
         }
@@ -63,124 +97,131 @@ public without sharing class TrailheadLeaderboardAuraController {
         try {
             upsert newTrailblazer Profile_Handle__c;
             return 'success';
-        } catch(Exception e) {
+        } catch (Exception e) {
             return 'Error creating Trailblazer__c. Please try again.';
         }
     }
 
     /**
-     * Returns a List of BadgeData.EarnedAwards records after parsing the response data from the Trailhead API.
+     * @description Returns a List of BadgeData.EarnedAwards records after parsing the response data from the Trailhead API.
      *
-     * @param userId, the user handle to use when calling out to Trailhead.
+     * @param userId the user handle to use when calling out to Trailhead.
+     * @param filter the value to filter badges on.
+     * @param count the count of badges to return. Defaults to 8.
+     * @param after the "after" page value to query for more pages.
      *
-     * @return, a List of BadgeData.EarnedAwards records.
+     * @return a List of BadgeData.EarnedAwards records.
      */
     @AuraEnabled
-    public static List<BadgeData.EarnedAwards> getBadgeData(String userId, String filter, String offset) {
-        String calloutURL = '';
+    public static TrailheadGraphQlData.earnedAwards getBadgeData(
+        String userId,
+        String filter,
+        Integer count,
+        String after
+    ) {
+        String calloutURL = TrailheadHelper.GO_TRAILHEAD_API + userId + TrailheadHelper.BADGES_PATH;
 
-        if (!String.isBlank(filter)) {
-            calloutURL = GetTrailblazerInfoAsync.GO_TRAILHEAD_API + userId + '/badges/' + filter;
+        // Add badge type filter.
+        if (String.isNotBlank(filter)) {
+            calloutURL += '/' + filter;
 
-            if (!String.isBlank(offset)) {
-                calloutURL += '/' + offset;
+            // Add count type filter.
+            if (count != null) {
+                calloutURL += '/' + count;
+            } else {
+                calloutURL += '/8';
             }
-        } else {
-            calloutURL = GetTrailblazerInfoAsync.GO_TRAILHEAD_API + userId + 'badges';
+
+            // "after" is added last
+            if (String.isNotBlank(after)) {
+                calloutURL += '/' + after;
+            }
         }
 
-        HttpResponse res = doCallout(calloutURL);
+        String resBody = TrailheadHelper.doCallout(calloutURL);
 
-        if (res.getBody().contains('application-error')) {
+        if (resBody.contains('application-error')) {
             return null;
         }
 
-        BadgeData data = (BadgeData) JSON.deserialize(res.getBody().replaceAll('__c', ''), BadgeData.class);
+        TrailheadGraphQlData data = (TrailheadGraphQlData) JSON.deserialize(
+            resBody
+                .replaceAll('__c', '')
+                .replaceAll('__', ''),
+            TrailheadGraphQlData.class
+        );
 
         if (String.isBlank(data.error)
-            && data.value != null 
-            && !data.value.isEmpty() 
-            && data.value[0].EarnedAwards != null 
-            && !data.value[0].EarnedAwards.isEmpty()
+            && data.profile?.earnedAwards != null
         ) {
-            return data.value[0].EarnedAwards;
+            return data.profile.earnedAwards;
         } else {
             return null;
         }
     }
 
     /**
-     * Returns a List of ProfileCountData.LearnedSkills records after parsing the response data from the Trailhead API.
+     * @description Returns a List of ProfileCountData.LearnedSkills records after parsing the response data from the Trailhead API.
      *
-     * @param userId, the user handle to use when calling out to Trailhead.
+     * @param userId the user handle to use when calling out to Trailhead.
      *
-     * @return, a List of ProfileCountData.LearnedSkills records.
+     * @return a List of ProfileCountData.LearnedSkills records.
      */
     @AuraEnabled
-    public static List<ProfileCountData.LearnedSkills> getSkillData(String userId) {
-        HttpResponse res = doCallout(GetTrailblazerInfoAsync.GO_TRAILHEAD_API + userId);
+    public static List<TrailheadGraphQlData.earnedSkills> getSkillData(String userId) {
+        String resBody = TrailheadHelper.doCallout(
+            TrailheadHelper.GO_TRAILHEAD_API + userId + TrailheadHelper.SKILLS_PATH
+        );
 
-        if (res.getBody().contains('application-error')) {
+        if (resBody.contains('application-error')) {
             return null;
         }
 
-        ProfileCountData data = (ProfileCountData) JSON.deserialize(res.getBody().replaceAll('__c', ''), ProfileCountData.class);
+        TrailheadGraphQlData data = (TrailheadGraphQlData) JSON.deserialize(
+            resBody
+                .replaceAll('__c', '')
+                .replaceAll('__', ''),
+            TrailheadGraphQlData.class
+        );
 
-        if (String.isBlank(data.error) 
-            && data.value != null 
-            && !data.value.isEmpty() 
-            && data.value[0].LearnedSkills != null 
-            && !data.value[0].LearnedSkills.isEmpty()
+        if (String.isBlank(data.error)
+            && data?.profile?.earnedSkills != null
         ) {
-            return data.value[0].LearnedSkills;
+            return data?.profile?.earnedSkills;
         } else {
             return null;
         }
     }
 
     /**
-     * Returns a List of CertificationData.cerificationsList records after parsing the response data from the Trailhead API.
+     * @description Returns a List of CertificationData.certificationsList records after parsing the response data from the Trailhead API.
      *
-     * @param userId, the user handle to use when calling out to Trailhead.
+     * @param userId the user handle to use when calling out to Trailhead.
      *
-     * @return, a List of CertificationData.certificationsList records.
+     * @return a List of CertificationData.certificationsList records.
      */
     @AuraEnabled
     public static List<CertificationData.certificationsList> getCertificationData(String userId) {
-        HttpResponse res = doCallout(GetTrailblazerInfoAsync.GO_TRAILHEAD_API + userId + '/certifications');
+        String resBody = TrailheadHelper.doCallout(
+            TrailheadHelper.GO_TRAILHEAD_API +
+                userId + TrailheadHelper.CERTIFICATIONS_PATH
+        );
 
-        if (res.getBody().contains('application-error')) {
+        if (resBody.contains('application-error')) {
             return null;
         }
 
-        CertificationData data = (CertificationData) JSON.deserialize(res.getBody().replaceAll('__c', ''), CertificationData.class);
+        CertificationData data = (CertificationData) JSON.deserialize(
+            resBody.replaceAll('__c', ''),
+            CertificationData.class
+        );
 
-        if (String.isBlank(data.error) 
-            && data != null 
-            && data.certificationsList != null 
-            && !data.certificationsList.isEmpty()
+        if (String.isBlank(data.error)
+            && data?.certificationsList != null
         ) {
             return data.certificationsList;
         } else {
             return null;
         }
-    }
-
-    /**
-     * Does a callout with the provided URL. 
-     * 
-     * @param calloutURL, the URL to call out to.
-     * 
-     * @return a HttpResponse from the callout.
-     */
-    public static HttpResponse doCallout(String calloutURL) {
-        Http h = new Http();
-        HttpRequest req = new HttpRequest();
-        req.setEndpoint(calloutURL);
-        req.setMethod('GET');
-        req.setTimeout(60000);
-        HttpResponse res = h.send(req);
-
-        return res;
     }
 }

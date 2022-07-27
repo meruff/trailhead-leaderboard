@@ -8,14 +8,14 @@
             background-size: cover;
         }
 
-        body:after{
-            content:"";
-            position:fixed;
-            top:0;
-            height:100vh;
-            left:0;
-            right:0;
-            z-index:-1;
+        body:after {
+            content: "";
+            position: fixed;
+            top: 0;
+            height: 100vh;
+            left: 0;
+            right: 0;
+            z-index: -1;
             background: url({!URLFOR($Resource.Trailhead_Leaderboard, 'trailheadLeaderboard/bg.png')}) center center;
             -webkit-background-size: cover;
             -moz-background-size: cover;
@@ -32,10 +32,11 @@
         }
 
         .slds-card {
-            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24) !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
         }
 
-        .container .slds-card {
+        .desktop-table .slds-card,
+        .mobile-table .slds-card {
             background-color: #f4f6f9 !important;
         }
     </style>

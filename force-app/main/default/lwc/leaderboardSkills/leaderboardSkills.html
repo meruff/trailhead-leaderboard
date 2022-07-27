@@ -1,11 +1,23 @@
 <template>
-    <div class="slds-is-relative" style="min-height:100px;">
+    <div
+        class="slds-is-relative"
+        style="min-height:100px;"
+    >
         <div if:true={showSpinner}>
-            <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+            <lightning-spinner
+                alternative-text="Loading"
+                size="large"
+                variant="brand"
+            ></lightning-spinner>
         </div>
+
         <div style="width:100%;margin:auto;max-width:450px;">
-            <div class="chart" lwc:dom="manual"></div>
+            <div
+                class="chart"
+                lwc:dom="manual"
+            ></div>
         </div>
+
         <template if:true={showNoSkillsMessage}>
             <div class="slds-align_absolute-center slds-p-top_large">
                 {noSkillsMessage}

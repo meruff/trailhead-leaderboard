@@ -1,85 +1,221 @@
 <template>
     <!-- Desktop View -->
-    <div class="slds-show_medium container">
-        <lightning-card title="">
+    <div class="slds-show_medium container desktop-table">
+        <lightning-card>
             <h2 slot="title">
                 <span class="slds-text-heading_small">
-                    {trailblazerCountString}
-                    <br/><span class="slds-text-title">{moreInfoText}</span>
+                  {trailblazerCountString}
+                  <br /><span class="slds-text-title">{moreInfoText}</span>
                 </span>
             </h2>
 
             <div slot="actions">
-                <button type="button" class="slds-button slds-button_neutral brand-link" onclick={showNewTrailblazerModal}>
-                    Add New
-                </button>
+                <lightning-button
+                    label="Add New"
+                    icon-name="utility:adduser"
+                    variant="neutral"
+                    class="brand-link_button"
+                    onclick={showNewTrailblazerModal}
+                ></lightning-button>
             </div>
 
             <div class="slds-scrollable_x">
                 <table class="slds-table slds-table_bordered slds-table_cell-buffer">
                     <thead>
                         <tr class="slds-text-title_caps">
-                            <th scope="col" class="slds-cell-wrap">
-                                <div class="slds-truncate" title="Number">#</div>
+                            <th
+                                scope="col"
+                                class="slds-cell-wrap"
+                            >
+                                <div
+                                    class="slds-truncate"
+                                    title="Number"
+                                >#
+                                </div>
                             </th>
-                            <th scope="col" class="slds-cell-wrap">
-                                <div class="slds-truncate click-hover" title="Name" data-field="Name" onclick={sort}>
+
+                            <th
+                                scope="col"
+                                class="slds-cell-wrap"
+                            >
+                                <div
+                                    class="slds-truncate click-hover"
+                                    title="Name"
+                                    data-field="Name"
+                                    onclick={sort}
+                                >
                                     Name
-                                    <c-leaderboard-sort-dir column-field="Name" field-to-sort-by={fieldToSortBy} descending={descending}></c-leaderboard-sort-dir>
+                                    <c-leaderboard-sort-dir
+                                        column-field="Name"
+                                        field-to-sort-by={fieldToSortBy}
+                                        descending={descending}
+                                    ></c-leaderboard-sort-dir>
                                 </div>
                             </th>
-                            <th scope="col" class="slds-cell-wrap">
-                                <div class="slds-truncate click-hover" title="Rank" data-field="Rank__c" onclick={sort}>
+
+                            <th
+                                scope="col"
+                                class="slds-cell-wrap"
+                            >
+                                <div
+                                    class="slds-truncate click-hover"
+                                    title="Rank"
+                                    data-field="Rank__c"
+                                    onclick={sort}
+                                >
                                     Rank
-                                    <c-leaderboard-sort-dir column-field="Rank__c" field-to-sort-by={fieldToSortBy} descending={descending}></c-leaderboard-sort-dir>
+                                    <c-leaderboard-sort-dir
+                                        column-field="Rank__c"
+                                        field-to-sort-by={fieldToSortBy}
+                                        descending={descending}
+                                    ></c-leaderboard-sort-dir>
                                 </div>
                             </th>
-                            <th scope="col" class="slds-cell-wrap">
-                                <div class="slds-truncate click-hover" title="Points" data-field="Points__c" onclick={sort}>
+
+                            <th
+                                scope="col"
+                                class="slds-cell-wrap"
+                            >
+                                <div
+                                    class="slds-truncate click-hover"
+                                    title="Points"
+                                    data-field="Points__c"
+                                    onclick={sort}
+                                >
                                     Points
-                                    <c-leaderboard-sort-dir column-field="Points__c" field-to-sort-by={fieldToSortBy} descending={descending}></c-leaderboard-sort-dir>
+                                    <c-leaderboard-sort-dir
+                                        column-field="Points__c"
+                                        field-to-sort-by={fieldToSortBy}
+                                        descending={descending}
+                                    ></c-leaderboard-sort-dir>
                                 </div>
                             </th>
-                            <th scope="col" class="slds-cell-wrap">
-                                <div class="slds-truncate click-hover" title="Badges" data-field="Badges__c" onclick={sort}>
+
+                            <th
+                                scope="col"
+                                class="slds-cell-wrap"
+                            >
+                                <div
+                                    class="slds-truncate click-hover"
+                                    title="Badges"
+                                    data-field="Badges__c"
+                                    onclick={sort}
+                                >
                                     Badges
-                                    <c-leaderboard-sort-dir column-field="Badges__c" field-to-sort-by={fieldToSortBy} descending={descending}></c-leaderboard-sort-dir>
+                                    <c-leaderboard-sort-dir
+                                        column-field="Badges__c"
+                                        field-to-sort-by={fieldToSortBy}
+                                        descending={descending}
+                                    ></c-leaderboard-sort-dir>
                                 </div>
                             </th>
-                            <th scope="col" class="slds-cell-wrap">
-                                <div class="slds-truncate click-hover" title="Trails" data-field="Trails__c" onclick={sort}>
+
+                            <th
+                                scope="col"
+                                class="slds-cell-wrap"
+                            >
+                                <div
+                                    class="slds-truncate click-hover"
+                                    title="Trails"
+                                    data-field="Trails__c"
+                                    onclick={sort}
+                                >
                                     Trails
-                                    <c-leaderboard-sort-dir column-field="Trails__c" field-to-sort-by={fieldToSortBy} descending={descending}></c-leaderboard-sort-dir>
+                                    <c-leaderboard-sort-dir
+                                        column-field="Trails__c"
+                                        field-to-sort-by={fieldToSortBy}
+                                        descending={descending}
+                                    ></c-leaderboard-sort-dir>
                                 </div>
                             </th>
-                            <th scope="col" class="slds-cell-wrap">
-                                <div class="slds-truncate click-hover" title="Superbadges" data-field="Superbadges__c" onclick={sort}>
+
+                            <th
+                                scope="col"
+                                class="slds-cell-wrap"
+                            >
+                                <div
+                                    class="slds-truncate click-hover"
+                                    title="Superbadges"
+                                    data-field="Superbadges__c"
+                                    onclick={sort}
+                                >
                                     Superbadges
-                                    <c-leaderboard-sort-dir column-field="Superbadges__c" field-to-sort-by={fieldToSortBy} descending={descending}></c-leaderboard-sort-dir>
+                                    <c-leaderboard-sort-dir
+                                        column-field="Superbadges__c"
+                                        field-to-sort-by={fieldToSortBy}
+                                        descending={descending}
+                                    ></c-leaderboard-sort-dir>
                                 </div>
                             </th>
-                            <th scope="col" class="slds-cell-wrap">
-                                <div class="slds-truncate click-hover" title="Certifications" data-field="Certifications__c" onclick={sort}>
+
+                            <th
+                                scope="col"
+                                class="slds-cell-wrap"
+                            >
+                                <div
+                                    class="slds-truncate click-hover"
+                                    title="Certifications"
+                                    data-field="Certifications__c"
+                                    onclick={sort}
+                                >
                                     Certifications
-                                    <c-leaderboard-sort-dir column-field="Certifications__c" field-to-sort-by={fieldToSortBy} descending={descending}></c-leaderboard-sort-dir>
+                                    <c-leaderboard-sort-dir
+                                        column-field="Certifications__c"
+                                        field-to-sort-by={fieldToSortBy}
+                                        descending={descending}
+                                    ></c-leaderboard-sort-dir>
                                 </div>
                             </th>
-                            <th scope="col" class="slds-cell-wrap">
-                                <div class="slds-truncate" title="Profile">Profile</div>
+
+                            <th
+                                scope="col"
+                                class="slds-cell-wrap"
+                            >
+                                <div
+                                    class="slds-truncate"
+                                    title="Profile"
+                                >
+                                    Profile
+                                </div>
                             </th>
                         </tr>
                     </thead>
+
                     <tbody>
-                        <template for:each={trailblazers} for:item="trailblazer" for:index="index">
-                            <c-leaderboard-profile-table-row key={trailblazer.Id} trailblazer={trailblazer} index={index} onopenmodal={showProfileModal}></c-leaderboard-profile-table-row>
+                        <template
+                            for:each={trailblazers}
+                            for:item="trailblazer"
+                            for:index="index"
+                        >
+                            <c-leaderboard-profile-table-row
+                                key={trailblazer.Id}
+                                trailblazer={trailblazer}
+                                index={index}
+                                onopenmodal={showProfileModal}
+                            ></c-leaderboard-profile-table-row>
                         </template>
                     </tbody>
                 </table>
             </div>
 
             <div slot="footer">
-                <div class="slds-text-title_caps slds-align_absolute-center" style="margin-top:-.75rem;">
-                    Built&nbsp;by&nbsp;<a href="https://github.com/meruff" target="_blank" class="brand-link">meruff</a>
+                <div
+                    class="slds-text-title_caps slds-align_absolute-center"
+                    style="margin-top: -0.75rem"
+                >
+                    <img
+                        src={githubLogoUrl}
+                        width="24"
+                        alt="github"
+                    />
+                    &nbsp;/&nbsp;
+                    <a
+                        href="https://github.com/meruff"
+                        target="_blank"
+                        class="brand-link"
+                    >
+                        meruff
+                    </a>
                 </div>
             </div>
         </lightning-card>
@@ -87,40 +223,83 @@
 
     <!-- Mobile View -->
     <div class="slds-hide_medium">
-        <div class="slds-p-bottom_x-large">
-            <lightning-card title="">
+        <div class="slds-p-bottom_x-large mobile-table">
+            <lightning-card>
                 <h2 slot="title">
-                    <span class="slds-text-heading_small">
-                        {trailblazerCountString}
-                        <div class="slds-text-title">{moreInfoText}</div>
-                    </span>
+                        <span class="slds-text-heading_small">
+                            {trailblazerCountString}
+                            <div class="slds-text-title">{moreInfoText}</div>
+                        </span>
                 </h2>
 
                 <div slot="actions">
-                    <button type="button" class="slds-button slds-button_neutral brand-link" onclick={showNewTrailblazerModal}>
-                        Add New
-                    </button>
+                    <lightning-button-icon
+                        icon-name="utility:adduser"
+                        variant="container"
+                        class="brand-link_button-icon"
+                        onclick={showNewTrailblazerModal}
+                    ></lightning-button-icon>
                 </div>
             </lightning-card>
         </div>
 
         <lightning-layout multiple-rows="true">
-            <template for:each={trailblazers} for:item="trailblazer" for:index="index">
-                <lightning-layout-item key={trailblazer.Id} size="12">
-                    <c-leaderboard-profile-card trailblazer={trailblazer} index={index} onopenmodal={showProfileModal}></c-leaderboard-profile-card>
+            <template
+                for:each={trailblazers}
+                for:item="trailblazer"
+                for:index="index"
+            >
+                <lightning-layout-item
+                    key={trailblazer.Id}
+                    size="12"
+                >
+                    <c-leaderboard-profile-card
+                        trailblazer={trailblazer}
+                        index={index}
+                        onopenmodal={showProfileModal}
+                    ></c-leaderboard-profile-card>
                 </lightning-layout-item>
             </template>
         </lightning-layout>
 
-        <div style="margin-top:-1rem;">
-            <lightning-card title="">
-                <div class="slds-text-title_caps slds-align_absolute-center" style="margin-top:-.75rem;">
-                    Built&nbsp;by&nbsp;<a href="https://github.com/meruff" target="_blank" class="brand-link">meruff</a>
+        <div
+            style="margin-top: -1rem"
+            class="mobile-table"
+        >
+            <lightning-card>
+                <div
+                    class="slds-text-title_caps slds-align_absolute-center"
+                    style="margin-top: -0.75rem"
+                >
+                    <img
+                        src={githubLogoUrl}
+                        width="24"
+                        alt="github"
+                    />
+                    &nbsp;/&nbsp;
+                    <a
+                        href="https://github.com/meruff"
+                        target="_blank"
+                        class="brand-link"
+                    >
+                        meruff
+                    </a>
                 </div>
             </lightning-card>
         </div>
     </div>
 
-    <c-leaderboard-new-trailblazer-modal is-modal-open={isTrailblazerModalOpen} onclosemodal={hideNewTrailblazerModal} onrefreshtable={fireRefresh}></c-leaderboard-new-trailblazer-modal>
-    <c-leaderboard-profile-modal is-modal-open={isProfileModalOpen} trailblazers={trailblazers} selected-trailblazer-id={selectedTrailblazerId} selected-trailblazer-handle={selectedTrailblazerHandle} onclosemodal={hideProfileModal}></c-leaderboard-profile-modal>
+    <c-leaderboard-new-trailblazer-modal
+        is-modal-open={isTrailblazerModalOpen}
+        onclosemodal={hideNewTrailblazerModal}
+        onrefreshtable={fireRefresh}
+    ></c-leaderboard-new-trailblazer-modal>
+
+    <c-leaderboard-profile-modal
+        is-modal-open={isProfileModalOpen}
+        trailblazers={trailblazers}
+        selected-trailblazer-id={selectedTrailblazerId}
+        selected-trailblazer-handle={selectedTrailblazerHandle}
+        onclosemodal={hideProfileModal}
+    ></c-leaderboard-profile-modal>
 </template>

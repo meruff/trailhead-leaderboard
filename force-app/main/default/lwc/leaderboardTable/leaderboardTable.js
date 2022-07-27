@@ -1,4 +1,5 @@
 import { LightningElement, api, track } from "lwc";
+import LEADERBOARD_SOURCE from "@salesforce/resourceUrl/Trailhead_Leaderboard";
 
 export default class LeaderboardTable extends LightningElement {
     @api trailblazers;
@@ -10,11 +11,17 @@ export default class LeaderboardTable extends LightningElement {
     @track descending = true;
 
     get trailblazerCountString() {
-        return (this.trailblazers && this.trailblazers.length > 0) ? this.trailblazers.length + " Trailblazers" : "All Trailblazers";
+        return this.trailblazers && this.trailblazers.length > 0
+            ? this.trailblazers.length + " Trailblazers"
+            : "All Trailblazers";
     }
 
     get moreInfoText() {
         return "Click on a Trailblazer for more info.";
+    }
+
+    get githubLogoUrl() {
+        return LEADERBOARD_SOURCE + "/trailheadLeaderboard/github.svg";
     }
 
     showProfileModal(event) {
@@ -43,7 +50,14 @@ export default class LeaderboardTable extends LightningElement {
             this.descending = !this.descending;
         }
 
-        this.dispatchEvent(new CustomEvent("sort", { detail: {fieldToSortBy: this.fieldToSortBy, descending: this.descending} }));
+        this.dispatchEvent(
+            new CustomEvent("sort", {
+                detail: {
+                    fieldToSortBy: this.fieldToSortBy,
+                    descending: this.descending
+                }
+            })
+        );
     }
 
     fireRefresh() {
