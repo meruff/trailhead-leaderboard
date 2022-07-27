@@ -31,6 +31,10 @@
                 <behavior>Edit</behavior>
                 <field>Profile_Handle__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Profile_Id__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

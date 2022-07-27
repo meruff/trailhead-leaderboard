@@ -1,3 +1,9 @@
 .modal-container {
     padding: 3rem 0 1rem 0 !important;
 }
+
+@media only screen and (max-width: 768px) {
+    .modal-container {
+        margin: 0 0.875rem;
+    }
+}

@@ -1,48 +1,95 @@
 <template>
-    <div if:true={showSpinner} class="slds-is-relative">
-        <lightning-spinner style="position:fixed;" alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    <div
+        if:true={showSpinner}
+        class="slds-is-relative"
+    >
+        <lightning-spinner
+            class="slds-is-fixed"
+            alternative-text="Loading"
+            size="large"
+            variant="brand"
+        ></lightning-spinner>
     </div>
 
     <template if:true={isModalOpen}>
-        <section role="dialog" 
-                 tabindex="-1" 
-                 aria-labelledby="newTrailblazerHeading" 
-                 aria-modal="true" 
-                 aria-describedby="newTrailblazerModalContent" 
-                 class="slds-modal slds-fade-in-open">
+        <section
+            role="dialog"
+            tabindex="-1"
+            aria-labelledby="newTrailblazerHeading"
+            aria-modal="true"
+            aria-describedby="newTrailblazerModalContent"
+            class="slds-modal slds-fade-in-open"
+        >
             <div class="slds-modal__container">
                 <header class="slds-modal__header">
-                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModal}>
-                        <lightning-icon icon-name="utility:close" variant="inverse" size="small"></lightning-icon>
+                    <button
+                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close"
+                        onclick={hideModal}
+                    >
+                        <lightning-icon
+                            icon-name="utility:close"
+                            variant="inverse"
+                            size="small"
+                        ></lightning-icon>
                         <span class="slds-assistive-text">Close</span>
                     </button>
-                    <h2 id="newTrailblazerHeading" class="slds-text-heading_medium slds-hyphenate">Add a new Trailblazer</h2>
+
+                    <h2
+                        id="newTrailblazerHeading"
+                        class="slds-text-heading_medium slds-hyphenate"
+                    >
+                        New Trailblazer
+                    </h2>
                 </header>
-                <div class="slds-modal__content slds-p-around_medium modal-body" id="newTrailblazerModalContent">
+                <div
+                    class="slds-modal__content slds-p-around_medium modal-body"
+                    id="newTrailblazerModalContent"
+                >
                     <div if:true={error}>
-                        <c-alert-message type="error" message={error} show-icon textured></c-alert-message>
+                        <c-alert-message
+                            type="error"
+                            message={error}
+                            show-icon
+                            textured
+                        ></c-alert-message>
                     </div>
+
                     <lightning-input
-                            label="Trailhead Handle"
-                            variant="label-hidden"
-                            placeholder="Trailhead handle"
-                            value={userId}
-                            onchange={updateUserId}
-                            message-when-value-missing="Please enter a Trailblazer handle"
-                            class="slds-p-vertical_small trailblazer-handle-input"
-                            required>
+                        label="Trailhead Handle"
+                        variant="label-hidden"
+                        placeholder="Trailhead handle"
+                        value={userId}
+                        onchange={updateUserId}
+                        message-when-value-missing="Please enter a Trailblazer handle"
+                        class="slds-p-vertical_small trailblazer-handle-input"
+                        required
+                    >
                     </lightning-input>
                     <div class="slds-p-horizontal_xxx-small">
-                        <b>Note:</b> To find your Trailblazer handle, first make sure your Trailhead profile is set to public,
+                        <b>Note:</b> To find your Trailblazer handle, first make sure your Trailhead profile is set to
+                        public,
                         then copy the handle from your profile URL after "trailblazer.me/id/".
                     </div>
                 </div>
+
                 <footer class="slds-modal__footer">
-                    <lightning-button label="Cancel" onclick={hideModal}></lightning-button>
-                    <lightning-button label="Submit" variant="brand" onclick={saveTrailblazer} class="slds-m-left_xx-small"></lightning-button>
+                    <lightning-button
+                        label="Cancel"
+                        class="brand-link_button"
+                        onclick={hideModal}
+                    ></lightning-button>
+
+                    <lightning-button
+                        label="Submit"
+                        variant="brand"
+                        onclick={saveTrailblazer}
+                        class="slds-m-left_xx-small"
+                    ></lightning-button>
                 </footer>
             </div>
         </section>
+
         <div class="slds-backdrop slds-backdrop_open"></div>
     </template>
 </template>

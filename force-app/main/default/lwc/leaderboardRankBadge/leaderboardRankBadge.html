@@ -1,7 +1,10 @@
 <template>
-    <span class="slds-avatar slds-avatar_large" style="overflow:visible;">
-        <img src={rankBadgeURL} alt={alt} class={imgAdjust}/>
-    </span>
+    <img
+        src={rankBadgeLink}
+        alt={alt}
+        style="width:3rem"
+    />
+
     <span if:true={showName}>
         <span class="slds-p-left_medium">{rankName}</span>
     </span>

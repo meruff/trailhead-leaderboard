@@ -1,64 +1,128 @@
 <template>
-    <div class="slds-m-bottom_x-large" onclick={openModalHandler}>
+    <div
+        class="slds-m-bottom_x-large"
+        onclick={openModalHandler}
+    >
         <article class="slds-card profile-card">
             <div class="slds-p-horizontal_medium slds-p-top_small slds-grid">
                 <div class="slds-media slds-media_large slds-has-flexi-truncate slds-p-top_none">
-                    <div class="slds-media__figure" style="margin-right:0;">
+                    <div
+                        class="slds-media__figure"
+                        style="margin-right:0;"
+                    >
                         <span class="slds-avatar slds-avatar_large slds-avatar_circle slds-m-right_medium mobile-avatar">
-                            <img if:false={photoError} src={trailblazer.Profile_Photo__c} onerror={loadPlaceholderPhoto} alt={profileAlt}/>
-                            <img if:true={photoError} src={placeholderProfilePhotoURL} alt={profileAlt}/>
+                            <img
+                                if:false={photoError}
+                                src={trailblazer.Profile_Photo__c}
+                                onerror={loadPlaceholderPhoto}
+                                alt={profileAlt}
+                            />
+
+                            <img
+                                if:true={photoError}
+                                src={placeholderProfilePhotoURL}
+                                alt={profileAlt}
+                            />
                         </span>
                     </div>
+
                     <div class="slds-media__body">
                         <h2 class="slds-text-heading_small">
-                            <c-leaderboard-rank rank={index} show-hashtag="true"></c-leaderboard-rank>
+                            <c-leaderboard-rank
+                                rank={index}
+                                show-hashtag="true"
+                            ></c-leaderboard-rank>
                             &nbsp;{trailblazer.Name}
                         </h2>
                         <lightning-formatted-rich-text value={titleString}></lightning-formatted-rich-text>
                     </div>
+
                     <div class="slds-media slds-media_reverse">
                         <span class="mobile-avatar-rank">
-                            <c-leaderboard-rank-badge rank-name={trailblazer.Rank__c} mobile=true></c-leaderboard-rank-badge>
+                            <c-leaderboard-rank-badge
+                                rank-name={trailblazer.Rank__c}
+                                rank-badge-link={trailblazer.Rank_Badge_Link__c}
+                            ></c-leaderboard-rank-badge>
                         </span>
                     </div>
                 </div>
             </div>
             <div class="slds-card__body slds-card__body_inner">
                 <lightning-layout multiple-rows="true">
-                    <lightning-layout-item size="6" small-device-size="4" padding="around-small">
+                    <lightning-layout-item
+                        size="6"
+                        small-device-size="4"
+                        padding="around-small"
+                    >
                         <div class="slds-text-title slds-m-bottom_xx-small">Points</div>
                         <div class="slds-text-body_regular">
                             <lightning-formatted-number value={trailblazer.Points__c}></lightning-formatted-number>
                         </div>
                     </lightning-layout-item>
-                    <lightning-layout-item size="6" small-device-size="4" padding="around-small">
+
+                    <lightning-layout-item
+                        size="6"
+                        small-device-size="4"
+                        padding="around-small"
+                    >
                         <div class="slds-text-title slds-m-bottom_xx-small">Badges</div>
                         <div class="slds-text-body_regular">
                             <lightning-formatted-number value={trailblazer.Badges__c}></lightning-formatted-number>
                         </div>
                     </lightning-layout-item>
-                    <lightning-layout-item size="6" small-device-size="4" padding="around-small">
+
+                    <lightning-layout-item
+                        size="6"
+                        small-device-size="4"
+                        padding="around-small"
+                    >
                         <div class="slds-text-title slds-m-bottom_xx-small">Trails</div>
                         <div class="slds-text-body_regular">{trailblazer.Trails__c}</div>
                     </lightning-layout-item>
-                    <lightning-layout-item size="6" small-device-size="4" padding="around-small">
+
+                    <lightning-layout-item
+                        size="6"
+                        small-device-size="4"
+                        padding="around-small"
+                    >
                         <div class="slds-text-title slds-m-bottom_xx-small">Superbadges</div>
                         <div class="slds-text-body_regular">
                             <lightning-formatted-number value={trailblazer.Superbadges__c}></lightning-formatted-number>
                         </div>
                     </lightning-layout-item>
-                    <lightning-layout-item size="6" small-device-size="4" padding="around-small">
+
+                    <lightning-layout-item
+                        size="6"
+                        small-device-size="4"
+                        padding="around-small"
+                    >
                         <div class="slds-text-title slds-m-bottom_xx-small">Certifications</div>
                         <div class="slds-text-body_regular">
                             <lightning-formatted-number value={trailblazer.Certifications__c}></lightning-formatted-number>
                         </div>
                     </lightning-layout-item>
-                    <lightning-layout-item size="6" small-device-size="4" padding="around-small">
+
+                    <lightning-layout-item
+                        size="6"
+                        small-device-size="4"
+                        padding="around-small"
+                    >
                         <div class="slds-text-title slds-truncate slds-m-bottom_xx-small">Profile</div>
-                        <div class="slds-text-body_regular">
-                            <a href={trailblazer.Profile_Link__c} class="brand-link" target="_blank" onclick={handleProfileClick}>
+
+                        <div class="slds-text-body_regular slds-badge">
+                            <a
+                                href={trailblazer.Profile_Link__c}
+                                class="brand-link"
+                                target="_blank"
+                                onclick={handleProfileClick}
+                            >
                                 {trailblazer.Profile_Handle__c}
-                                <lightning-icon icon-name="utility:new_window" alternative-text="Open Profile" size="xx-small" class="slds-p-left_xx-small adjust-icon"></lightning-icon>
+                                <lightning-icon
+                                    icon-name="utility:new_window"
+                                    alternative-text="Open Profile"
+                                    size="xx-small"
+                                    class="slds-p-left_xx-small adjust-icon"
+                                ></lightning-icon>
                             </a>
                         </div>
                     </lightning-layout-item>

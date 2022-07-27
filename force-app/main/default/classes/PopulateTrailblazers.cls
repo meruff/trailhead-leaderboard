@@ -1,10 +1,11 @@
 /**
-* @author: meruff
-* @date 3/10/20
-*
-* A class to populate Trailblazer__c records in batch.
-*/
-global class PopulateTrailblazers implements Database.Batchable<sObject>, Database.Stateful, Schedulable {
+ * @description A class to populate Trailblazer__c records in batch.
+ *
+ * @author meruff
+ *
+ * @date 3/10/20
+ */
+global class PopulateTrailblazers implements Database.Batchable<SObject>, Database.Stateful, Schedulable {
     private List<Trailblazer__c> trailblazers;
 
     public PopulateTrailblazers() {

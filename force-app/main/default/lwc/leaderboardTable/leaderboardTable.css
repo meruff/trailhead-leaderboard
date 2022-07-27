@@ -1,5 +1,5 @@
 .container {
-    max-width: 1300px;
+    max-width: 1400px;
     margin: auto;
 }
 
@@ -7,6 +7,20 @@
 .brand-link:hover,
 .brand-link:focus {
     color: #16325C !important;
+}
+
+.brand-link_button {
+    --slds-c-button-color-background: #fff;
+    --slds-c-button-neutral-color-border: #ccc;
+    --slds-c-button-neutral-color-border-hover: #ccc;
+    --slds-c-icon-color-foreground: #16325C;
+    --slds-c-button-text-color: #16325C;
+}
+
+.brand-link_button-icon {
+    --slds-c-icon-color-foreground: #16325C;
+    --slds-c-button-color-background: #fff;
+    --slds-c-button-color-border: #ccc;
 }
 
 .click-hover {

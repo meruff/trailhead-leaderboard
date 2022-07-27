@@ -1,11 +1,13 @@
 /**
+* @description Mock callout class for PopulateTrailblazers.cls
+ *
 * @author: meruff
+ *
 * @date: 2017-07-27
-*
-* Mock callout class for PopulateTrailblazers.cls
 */
 @IsTest
 public class TrailheadCalloutMock implements HttpCalloutMock {
+    // TODO:
     List<HttpResponse> responses = new List<HttpResponse>();
 
     public void addResponse(HttpResponse response) {
@@ -20,83 +22,17 @@ public class TrailheadCalloutMock implements HttpCalloutMock {
         }
     }
 
-    public static String getSuccessfulResponseData() {
+    public static String getSuccessfulTrailheadResponse() {
         return '' +
             '{' +
-                '"value":[' +
-                    '{' +
-                        '"ProfileCounts": [' +
-                            '{' +
-                                '"Id":"2887eeca-39ea-4608-9714-eba668e9532e",' +
-                                '"RankLabel":"ranger",' +
-                                '"RankImageUrl":"https://trailhead.salesforce.com/assets/ranks/ranger-c52b81631f16e35fe619b58215db59f7be4d8809acd253606ad9701186bba218.png",' +
-                                '"NextRankImageUrl":null,' +
-                                '"EarnedPointTotal":108775,' +
-                                '"EarnedBadgeTotal":107,' +
-                                '"CompletedTrailTotal":6,' +
-                                '"PointTotalForNextRank":0,' +
-                                '"BadgeTotalForNextRank":0' +
-                            '}' +
-                        '],' +
-                        '"EarnedAwards": [' +
-                            '{' +
-                                '"LearningUrl": "https://trailhead.salesforce.com/content/learn/modules/platform-developer-i-certification-maintenance-winter-20",' +
-                                '"AwardType": "Module",'+
-                                '"Award": {' +
-                                    '"Name": "platform-developer-i-certification-maintenance-winter-20",' +
-                                    '"Label": "Platform Developer I Certification Maintenance (Winter \'20)",' +
-                                    '"ImageUrl": "https://res.cloudinary.com/hy4kyit2a/f_auto,fl_lossy,q_70/learn/modules/platform-developer-i-certification-maintenance-winter-20/55fefed61ec894ec7ba4ae62f8b997cc_badge.png"' +
-                                '}' +
-                            '},' +
-                            '{' +
-                                '"LearningUrl": "https://trailhead.salesforce.com/content/learn/modules/administrator-certification-maintenance-winter-20",' +
-                                '"AwardType": "Module",' +
-                                '"Award": {' +
-                                    '"Name": "administrator-certification-maintenance-winter-20",' +
-                                    '"Label": "Administrator Certification Maintenance (Winter \'20)",' +
-                                    '"ImageUrl": "https://res.cloudinary.com/hy4kyit2a/f_auto,fl_lossy,q_70/learn/modules/administrator-certification-maintenance-winter-20/9a8789a05b9606bc29fed35750445fa2_badge.png"' +
-                                '}' +
-                            '},' +
-                            '{' +
-                                '"LearningUrl": "https://trailhead.salesforce.com/en/content/learn/superbadges/superbadge_lwc_specialist",' +
-                                '"AwardType": "Superbadge",' +
-                                '"Award": {' +
-                                    '"Name": "superbadge_lwc_specialist",' +
-                                    '"Label": "Lightning Web Components Specialist",' +
-                                    '"ImageUrl": "https://res.cloudinary.com/hy4kyit2a/f_auto,fl_lossy,q_70/learn/superbadges/superbadge_lwc_specialist/78066c22238610a42feb2565c4553d24_badge.png"' +
-                                '}' +
-                            '}' +
-                        '],' +
-                        '"LearnedSkills": [' +
-                            '{' +
-                                '"Id": "0246ac31-20f5-95a9-3f27-f6eefe26f3b0",' +
-                                '"Label": "Apex",' +
-                                '"Name": "apex",' +
-                                '"UnitTotalPerSkill": 238' +
-                            '},' +
-                            '{' +
-                                '"Id": "0246ac31-20f5-95c8-40af-7ae405925d8a",' +
-                                '"Label": "Integration",' +
-                                '"Name": "integration",' +
-                                '"UnitTotalPerSkill": 217' +
-                            '},' +
-                            '{' +
-                                '"Id": "0246ac31-20f5-9502-7e50-097c19144f62",' +
-                                '"Label": "CRM",' +
-                                '"Name": "crm",' +
-                                '"UnitTotalPerSkill": 683' +
-                            '}' +
-                        ']' +
-                    '}' +
-                '],' +
                 '"profileUser": {' +
                     '"AboutMe": null,' +
                     '"FirstName": "Mat",' +
                     '"StateCode": "AZ",' +
-                    '"Title": "Senior Consultant/Developer",' +
+                    '"Title": "Senior Developer",' +
                     '"Relationship_To_Salesforce__c": "Partner",' +
                     '"TBID_Role__c": "Developer",' +
-                    '"CompanyName": "Sierra-Cedar",' +
+                    '"CompanyName": "ABC Co.",' +
                     '"TrailblazerId__c": "matruff",' +
                     '"LastName": "Ruff",' +
                     '"Id": "0051I000004UgTlQAK"' +
@@ -117,11 +53,130 @@ public class TrailheadCalloutMock implements HttpCalloutMock {
             '}';
     }
 
-    public static String getUnsuccessfulResponseData() { 
+    public static String getSuccessfulGraphQLResponse() {
+        return '{\n' +
+            '    "profile": {\n' +
+            '        "__typename": "PublicProfile",\n' +
+            '        "trailheadStats": {\n' +
+            '            "__typename": "TrailheadProfileStats",\n' +
+            '            "earnedPointsSum": 167050,\n' +
+            '            "earnedBadgesCount": 168,\n' +
+            '            "completedTrailCount": 21,\n' +
+            '            "rank": {\n' +
+            '                "__typename": "TrailheadRank",\n' +
+            '                "title": "Ranger",\n' +
+            '                "requiredPointsSum": 50000,\n' +
+            '                "requiredBadgesCount": 100,\n' +
+            '                "imageUrl": "https://trailhead.salesforce.com/assets/ranks/ranger-c18ceeaa67bb14bf214edd30a4343f40e766012a0dbda79b5c758209acaeb334.png"\n' +
+            '            },\n' +
+            '            "nextRank": null\n' +
+            '        },\n' +
+            '        "earnedSkills": [\n' +
+            '            {\n' +
+            '                "__typename": "EarnedSkill",\n' +
+            '                "earnedPointsSum": 5724,\n' +
+            '                "id": "705cc0ea-414f-4bb7-a097-6d90452888fb",\n' +
+            '                "itemProgressEntryCount": 51,\n' +
+            '                "skill": {\n' +
+            '                    "__typename": "Skill",\n' +
+            '                    "apiName": "crm",\n' +
+            '                    "id": "0246ac31-20f5-9502-7e50-097c19144f62",\n' +
+            '                    "name": "CRM"\n' +
+            '                }\n' +
+            '            },\n' +
+            '            {\n' +
+            '                "__typename": "EarnedSkill",\n' +
+            '                "earnedPointsSum": 1200,\n' +
+            '                "id": "22bb4e4e-a83f-4208-a3c9-7c0a9e5fd86b",\n' +
+            '                "itemProgressEntryCount": 4,\n' +
+            '                "skill": {\n' +
+            '                    "__typename": "Skill",\n' +
+            '                    "apiName": "chatter",\n' +
+            '                    "id": "0246ac31-20f5-9515-92dc-618d160498da",\n' +
+            '                    "name": "Chatter"\n' +
+            '                }\n' +
+            '            }\n' +
+            '        ],\n' +
+            '        "earnedAwards": {\n' +
+            '            "edges": [\n' +
+            '                {\n' +
+            '                    "node": {\n' +
+            '                        "__typename": "EarnedAwardBase",\n' +
+            '                        "id": "029ad362-ad42-2964-ce13-e9a8c6959b39",\n' +
+            '                        "award": {\n' +
+            '                            "__typename": "Award",\n' +
+            '                            "id": "0299a056-d802-aeeb-0499-f8530d1f8b28",\n' +
+            '                            "title": "Administrator Certification Maintenance (Spring \'22)",\n' +
+            '                            "type": "MODULE",\n' +
+            '                            "icon": "https://res.cloudinary.com/hy4kyit2a/f_auto,fl_lossy,q_70/learn/modules/administrator-certification-maintenance-spring-22/adeda0c8102c2b18988e32b86754e4b2_badge.png",\n' +
+            '                            "content": {\n' +
+            '                                "__typename": "Content",\n' +
+            '                                "webUrl": "https://trailhead.salesforce.com/content/learn/modules/administrator-certification-maintenance-spring-22",\n' +
+            '                                "description": "Review updates to Salesforce to maintain your Administrator certification."\n' +
+            '                            }\n' +
+            '                        },\n' +
+            '                        "earnedAt": "",\n' +
+            '                        "earnedPointsSum": ""\n' +
+            '                    }\n' +
+            '                },\n' +
+            '                {\n' +
+            '                    "node": {\n' +
+            '                        "__typename": "EarnedAwardBase",\n' +
+            '                        "id": "02920528-af65-0c0e-7b4c-ae93be02cd5e",\n' +
+            '                        "award": {\n' +
+            '                            "__typename": "Award",\n' +
+            '                            "id": "028fb9fe-34cc-b36d-0e3c-b22d280b8434",\n' +
+            '                            "title": "Platform Developer I Certification Maintenance (Winter \'22)",\n' +
+            '                            "type": "MODULE",\n' +
+            '                            "icon": "https://res.cloudinary.com/hy4kyit2a/f_auto,fl_lossy,q_70/learn/modules/platform-developer-i-certification-maintenance-winter-22/9f70c0e3f1affdc98ef7bfe9bd2211e3_badge.png",\n' +
+            '                            "content": {\n' +
+            '                                "__typename": "Content",\n' +
+            '                                "webUrl": "https://trailhead.salesforce.com/content/learn/modules/platform-developer-i-certification-maintenance-winter-22",\n' +
+            '                                "description": "Review updates to Salesforce to maintain your Platform Developer I Certification."\n' +
+            '                            }\n' +
+            '                        },\n' +
+            '                        "earnedAt": "",\n' +
+            '                        "earnedPointsSum": ""\n' +
+            '                    }\n' +
+            '                },\n' +
+            '               {\n' +
+            '                    "node": {\n' +
+            '                        "__typename": "EarnedAwardBase",\n' +
+            '                        "id": "0267597c-4bfd-9314-cad5-4b8b43d4cd63",\n' +
+            '                        "award": {\n' +
+            '                            "__typename": "Award",\n' +
+            '                            "id": "0265dbe8-1e2f-4ce8-3cfa-726c28e850ad",\n' +
+            '                            "title": "Lightning Web Components Specialist",\n' +
+            '                            "type": "SUPERBADGE",\n' +
+            '                            "icon": "https://res.cloudinary.com/hy4kyit2a/f_auto,fl_lossy,q_70/learn/superbadges/superbadge_lwc_specialist/0b422a78e019b08aa699dc76b48cc7e8_badge.png",\n' +
+            '                            "content": {\n' +
+            '                                "__typename": "Content",\n' +
+            '                                "webUrl": "https://trailhead.salesforce.com/content/learn/superbadges/superbadge_lwc_specialist",\n' +
+            '                                "description": "Showcase your mastery of Lightning Web Components by building a sophisticated app."\n' +
+            '                            }\n' +
+            '                        },\n' +
+            '                        "earnedAt": "",\n' +
+            '                        "earnedPointsSum": ""\n' +
+            '                    }\n' +
+            '                }' +
+            '            ],\n' +
+            '            "pageInfo": {\n' +
+            '                "__typename": "PageInfo",\n' +
+            '                "endCursor": "eyJzIjoiMDI4ODFlZjYtM2I5MS1lN...DItOGZkMWJiNWY1OWRkIiwicHAiOjMsInBuIjoxfQ",\n' +
+            '                "hasNextPage": true,\n' +
+            '                "startCursor": "eyJzIjoiMDI5YWQzNjItYWQ0Mi0...WNlMTMtZTlhOGU5YjM5IiwicHAiOjMsInBuIjoxfQ",\n' +
+            '                "hasPreviousPage": false\n' +
+            '            }\n' +
+            '        }\n' +
+            '    }\n' +
+            '}';
+    }
+
+    public static String getUnsuccessfulResponseData() {
         return '{"error":"No response from Trailhead"}';
     }
 
-    public static String getApplicationDownResponseData() { 
+    public static String getApplicationDownResponseData() {
         return 'Application error';
     }
 }
