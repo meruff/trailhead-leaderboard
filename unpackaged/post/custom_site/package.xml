@@ -4,9 +4,5 @@
         <members>Trailhead_Leaderboard_Dev_Site</members>
         <name>CustomSite</name>
     </types>
-    <types>
-        <members>Trailhead Leaderboard Dev Site Profile</members>
-        <name>Profile</name>
-    </types>
     <version>48.0</version>
 </Package>
