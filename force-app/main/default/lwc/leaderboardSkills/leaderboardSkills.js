@@ -183,6 +183,15 @@ export default class LeaderboardSkills extends LightningElement {
                     }
                   })
                 );
+              } else {
+                this.dispatchEvent(
+                  new CustomEvent("updatesectionlabel", {
+                    detail: {
+                      name: "skills",
+                      label: "0 Skills"
+                    }
+                  })
+                );
               }
             }
 

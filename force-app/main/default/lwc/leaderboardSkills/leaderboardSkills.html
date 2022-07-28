@@ -11,15 +11,17 @@
             ></lightning-spinner>
         </div>
 
-        <div style="width:100%;margin:auto;max-width:450px;">
-            <div
-                class="chart"
-                lwc:dom="manual"
-            ></div>
-        </div>
+        <template if:false={showNoSkillsMessage}>
+            <div style="width:100%;margin:auto;max-width:450px;">
+                <div
+                    class="chart"
+                    lwc:dom="manual"
+                ></div>
+            </div>
+        </template>
 
         <template if:true={showNoSkillsMessage}>
-            <div class="slds-align_absolute-center slds-p-top_large">
+            <div class="slds-align_absolute-center slds-p-around_large">
                 {noSkillsMessage}
             </div>
         </template>

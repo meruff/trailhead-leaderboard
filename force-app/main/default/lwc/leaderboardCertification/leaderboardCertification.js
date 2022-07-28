@@ -1,13 +1,20 @@
 import { LightningElement, api } from "lwc";
 
 export default class LeaderboardCertification extends LightningElement {
-    @api certification;
+  @api certification;
 
-    get dateCompleted() {
-        return new Date(this.certification.dateCompleted).toISOString();
-    }
+  get dateCompleted() {
+    // Safari is dumb...
+    let dateString = this.certification.dateCompleted
+      .replace(/-/g, "/")
+      .replace("T", " ");
+    return new Date(dateString).toISOString();
+  }
 
-    get showEndDate() {
-        return this.certification.certificationStatus === "EXPIRED" && this.certification.dateExpired;
-    }
+  get showEndDate() {
+    return (
+      this.certification.certificationStatus === "EXPIRED" &&
+      this.certification.dateExpired
+    );
+  }
 }
