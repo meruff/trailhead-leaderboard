@@ -68,6 +68,7 @@
     </types>
     <types>
         <members>Trailhead_Leaderboard_Admin</members>
+        <members>Trailhead_Leaderboard_Guest</members>
         <name>PermissionSet</name>
     </types>
     <types>
