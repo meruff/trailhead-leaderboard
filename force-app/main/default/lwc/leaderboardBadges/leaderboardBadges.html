@@ -1,7 +1,7 @@
 <template>
     <div
         class="slds-is-relative"
-        style="min-height:100px;"
+        style="min-height: 100px"
     >
         <div if:true={showSpinner}>
             <lightning-spinner
@@ -50,7 +50,7 @@
                     large-device-size="2"
                     flexibility="auto"
                 >
-                    <div style="max-width:130px;margin:auto;">
+                    <div style="max-width: 130px; margin: auto">
                         <a
                             href={badge.node.award.content.webUrl}
                             target="_blank"
@@ -59,8 +59,10 @@
                             <img
                                 src={badge.node.award.icon}
                                 alt={badge.node.award.title}
+                            />
+                            <p
+                                class="slds-text-align_center slds-p-top_small slds-line-clamp_small"
                             >
-                            <p class="slds-text-align_center slds-p-top_small slds-line-clamp_small">
                                 {badge.node.award.title}
                             </p>
                         </a>
@@ -69,7 +71,7 @@
             </template>
 
             <template if:true={showNoBadgesMessage}>
-                <div class="slds-align_absolute-center slds-p-top_xx-large">
+                <div class="slds-align_absolute-center slds-p-around_large">
                     {noBadgesMessage}
                 </div>
             </template>
