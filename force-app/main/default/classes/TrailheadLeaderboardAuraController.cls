@@ -103,14 +103,14 @@ public without sharing class TrailheadLeaderboardAuraController {
     }
 
     /**
-     * @description Returns a List of BadgeData.EarnedAwards records after parsing the response data from the Trailhead API.
+     * @description Returns a TrailheadGraphQlData.earnedAwards record after parsing the response data from the API.
      *
      * @param userId the user handle to use when calling out to Trailhead.
      * @param filter the value to filter badges on.
      * @param count the count of badges to return. Defaults to 8.
      * @param after the "after" page value to query for more pages.
      *
-     * @return a List of BadgeData.EarnedAwards records.
+     * @return a TrailheadGraphQlData.earnedAwards record.
      */
     @AuraEnabled
     public static TrailheadGraphQlData.earnedAwards getBadgeData(
@@ -161,11 +161,11 @@ public without sharing class TrailheadLeaderboardAuraController {
     }
 
     /**
-     * @description Returns a List of ProfileCountData.LearnedSkills records after parsing the response data from the Trailhead API.
+     * @description Returns a List of TrailheadGraphQlData.earnedSkills records after parsing the response data from the API.
      *
      * @param userId the user handle to use when calling out to Trailhead.
      *
-     * @return a List of ProfileCountData.LearnedSkills records.
+     * @return a List of TrailheadGraphQlData.earnedSkills records.
      */
     @AuraEnabled
     public static List<TrailheadGraphQlData.earnedSkills> getSkillData(String userId) {
