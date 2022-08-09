@@ -1,0 +1,142 @@
+:host {
+  /* Custom Theme vars */
+  --text-primary: #16325c;
+  --elements-second: #f4f6f9;
+  --elements-main-dark: #222;
+  --elements-second-dark: #333;
+  --elements-third-dark: #444;
+  --text-primary-dark: lightgray;
+
+  /* SLDS Styling Hooks */
+  /* Cards */
+  --slds-c-card-radius-border: 0.75rem;
+
+  /* Modals */
+  --slds-c-modal-radius-border: 0.75rem;
+
+  /* Buttons */
+  --slds-c-button-color-background: #fff;
+  --slds-c-button-color-border: #ccc;
+  --slds-c-button-text-color: var(--text-primary);
+  --slds-c-button-neutral-color-border: #ccc;
+  --slds-c-button-neutral-color-border-hover: #ccc;
+
+  --slds-c-icon-color-foreground: var(--text-primary);
+
+  /* Inputs */
+  --slds-c-input-color-border: #ccc;
+  --slds-c-input-color-border-focus: #ccc;
+  --slds-c-input-radius-border: 0.75rem;
+  --slds-c-input-shadow-focus: none;
+}
+
+.brand-link,
+.brand-link:hover,
+.brand-link:focus {
+  color: var(--text-primary);
+}
+
+.modal-close-button {
+  --slds-c-button-color-background: initial;
+  --slds-c-button-color-border: transparent;
+  --slds-c-icon-color-foreground: initial;
+}
+
+@media (prefers-color-scheme: dark) {
+  :host {
+    /* Cards */
+    --slds-c-card-color-background: var(--elements-main-dark);
+    --slds-c-card-text-color: var(--text-primary-dark);
+    --slds-c-card-color-border: var(--elements-second-dark);
+
+    /* Buttons */
+    --slds-c-button-neutral-color-background: var(--elements-second-dark);
+    --slds-c-button-neutral-color-border: var(--elements-second-dark);
+    --slds-c-button-neutral-color-border-focus: var(--elements-second-dark);
+    --slds-c-button-neutral-color-border-active: var(--elements-second-dark);
+    --slds-c-button-neutral-color-background-hover: var(--elements-third-dark);
+    --slds-c-button-neutral-color-background-focus: var(--elements-third-dark);
+    --slds-c-button-neutral-color-background-active: var(--elements-third-dark);
+    --slds-c-button-neutral-color-border-hover: var(--elements-third-dark);
+
+    --slds-c-button-brand-color-background: var(--text-primary);
+    --slds-c-button-brand-color-border: var(--text-primary);
+    --slds-c-button-brand-color-border-focus: var(--text-primary);
+    --slds-c-button-brand-color-border-active: var(--text-primary);
+
+    --slds-c-button-text-color: var(--text-primary-dark);
+    --slds-c-button-text-color-hover: var(--text-primary-dark);
+    --slds-c-button-text-color-focus: var(--text-primary-dark);
+    --slds-c-button-text-color-active: var(--text-primary-dark);
+    --slds-c-button-shadow-focus: none;
+    --slds-c-button-color-border: var(--elements-second-dark);
+    --slds-c-button-color-border-hover: var(--elements-second-dark);
+    --slds-c-button-color-background: var(--elements-main-dark);
+
+    /* Icons */
+    --slds-c-icon-color-foreground: var(--text-primary-dark);
+
+    /* Inputs */
+    --slds-c-input-color-background: var(--elements-second-dark);
+    --slds-c-input-color-background-focus: var(--elements-second-dark);
+    --slds-c-input-color-border: var(--elements-second-dark);
+    --slds-c-input-color-border-focus: var(--elements-second-dark);
+    --slds-c-input-text-color: var(--text-primary-dark);
+    --slds-c-input-text-color-focus: #ccc;
+    --slds-c-input-radius-border: 0.75rem;
+    --slds-c-input-shadow-focus: var(--text-primary);
+
+    /* Modals */
+    --slds-c-modal-color-border: var(--elements-second-dark);
+    --slds-c-modal-header-color-background: var(--elements-main-dark);
+    --slds-c-modal-header-text-color: var(--text-primary-dark);
+    --slds-c-modal-content-color-background: var(--elements-main-dark);
+    --slds-c-modal-content-text-color: var(--text-primary-dark);
+    --slds-c-modal-footer-color-background: var(--elements-main-dark);
+    --slds-c-modal-footer-text-color: var(--text-primary-dark);
+
+    --slds-c-backdrop-color-background: rgba(10, 10, 10, 0.7);
+
+    /*  Accordion */
+    --slds-c-accordion-heading-text-color: var(--text-primary-dark);
+    --slds-c-accordion-heading-text-color-hover: var(--text-primary-dark);
+    --slds-c-accordion-heading-text-color-focus: var(--text-primary-dark);
+    --slds-c-accordion-color-border: var(--elements-second-dark);
+  }
+
+  .brand-link,
+  .brand-link:hover,
+  .brand-link:focus {
+    color: var(--text-primary-dark);
+  }
+
+  .custom-badge > a {
+    color: var(--text-primary-dark);
+  }
+
+  .custom-badge {
+    background-color: var(--elements-second-dark);
+  }
+
+  .modal-close-button {
+    --slds-c-button-shadow-focus: none;
+    --slds-c-button-color-background: none;
+    --slds-c-button-color-border: transparent;
+    --slds-c-button-color-border-hover: transparent;
+    --slds-c-button-color-border-active: transparent;
+    --slds-c-button-color-border-focus: transparent;
+    --slds-c-icon-color-foreground: var(--text-primary-dark);
+  }
+
+  .spinner {
+    background-color: rgba(10, 10, 10, 0.7);
+  }
+
+  .spinner-no-background {
+    background-color: transparent;
+  }
+
+  img {
+    filter: brightness(0.85);
+  }
+}

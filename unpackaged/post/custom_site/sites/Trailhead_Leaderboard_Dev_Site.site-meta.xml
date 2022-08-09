@@ -12,7 +12,6 @@
     <browserXssProtection>false</browserXssProtection>
     <clickjackProtectionLevel>SameOriginOnly</clickjackProtectionLevel>
     <contentSniffingProtection>false</contentSniffingProtection>
-    <cspUpgradeInsecureRequests>true</cspUpgradeInsecureRequests>
     <enableAuraRequests>true</enableAuraRequests>
     <fileNotFoundPage>FileNotFound</fileNotFoundPage>
     <genericErrorPage>Exception</genericErrorPage>
@@ -21,8 +20,6 @@
     <indexPage>trailheadLeaderboard</indexPage>
     <masterLabel>Trailhead Leaderboard Dev Site</masterLabel>
     <referrerPolicyOriginWhenCrossOrigin>false</referrerPolicyOriginWhenCrossOrigin>
-    <requireHttps>true</requireHttps>
-    <requireInsecurePortalAccess>false</requireInsecurePortalAccess>
     <siteAdmin>meruff@devbox.com</siteAdmin>
     <siteGuestRecordDefaultOwner>meruff@devbox.com</siteGuestRecordDefaultOwner>
     <siteTemplate>SiteTemplate</siteTemplate>

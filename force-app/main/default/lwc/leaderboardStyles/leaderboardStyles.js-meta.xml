@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>54.0</apiVersion>
-    <description>Displays a trailblazer&#39;s rank badge.</description>
+    <description>A LWC to hold shared leaderboard styles / hooks.</description>
     <isExposed>false</isExposed>
-    <masterLabel>Leaderboard Rank Badge</masterLabel>
+    <masterLabel>Leaderboard Styles</masterLabel>
 </LightningComponentBundle>

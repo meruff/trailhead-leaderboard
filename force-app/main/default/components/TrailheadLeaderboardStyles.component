@@ -1,11 +1,12 @@
 <apex:component id="TrailheadLeaderboardStyles">
     <style>
-        body {
-            background: url({!URLFOR($Resource.Trailhead_Leaderboard, 'trailheadLeaderboard/bg.png')}) no-repeat center center fixed !important;
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            background-size: cover;
+        :root {
+            /* Custom Theme vars */
+            --elements-second: #f4f6f9;
+            --elements-main-dark: #222;
+            --elements-second-dark: #333;
+            --elements-third-dark: #444;
+            --text-primary-dark: lightgray;
         }
 
         body:after {
@@ -23,21 +24,44 @@
             background-size: cover;
         }
 
-        a.brand-link {
-            color: #394355 !important;
+        @media (prefers-color-scheme: light) {
+            .desktop-table .slds-card,
+            .desktop-table .slds-card {
+                background-color: var(--elements-second) !important;
+            }
         }
 
-        a.brand-link svg {
-            fill: #394355 !important;
-        }
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #2e383c;
+            }
 
-        .slds-card {
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
-        }
+            body:after {
+                background-color: #2e383c;
+                filter: brightness(.25);
+            }
 
-        .desktop-table .slds-card,
-        .mobile-table .slds-card {
-            background-color: #f4f6f9 !important;
+            .slds-scope .slds-has-error .slds-input {
+                background-color: var(--elements-second-dark);
+            }
+
+            .slds-scope .slds-dropdown {
+                background-color: var(--elements-second-dark);
+                border-color: var(--elements-second-dark);
+            }
+
+            .slds-scope .slds-listbox__option {
+                color: var(--text-primary-dark);
+            }
+
+            .slds-scope .slds-listbox_vertical .slds-listbox__option.slds-has-focus {
+                background-color: var(--elements-third-dark);
+            }
+
+            .slds-scope .slds-accordion__summary-action:hover,
+            .slds-scope .slds-accordion__summary-action:focus {
+                color: var(--text-primary-dark);
+            }
         }
     </style>
 </apex:component>

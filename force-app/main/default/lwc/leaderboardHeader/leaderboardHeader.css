@@ -1,8 +1,11 @@
-.adjust-icon {
-    vertical-align: top;
-    margin-top: 1px;
-}
+@import "c/leaderboardStyles";
 
 .brand-header {
-    color: #394355 !important;
+  color: #394355;
+}
+
+@media (prefers-color-scheme: dark) {
+  .brand-header {
+    color: var(--text-primary-dark);
+  }
 }

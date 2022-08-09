@@ -140,7 +140,13 @@ export default class LeaderboardSkills extends LightningElement {
                     display: true,
                     labels: {
                       boxWidth: 12,
-                      padding: 10
+                      padding: 10,
+                      fontColor:
+                        window.matchMedia &&
+                        window.matchMedia("(prefers-color-scheme: dark)")
+                          .matches
+                          ? "lightgray"
+                          : window.Chart.defaults.color
                     },
                     position: "bottom",
                     fontFamily:

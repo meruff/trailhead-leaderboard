@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>46.0</apiVersion>
+    <apiVersion>54.0</apiVersion>
     <description>Displays which direction the rows on the lederboard table are sorted.</description>
     <isExposed>false</isExposed>
     <masterLabel>Leaderboard Sort Dir</masterLabel>

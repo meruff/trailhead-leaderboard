@@ -6,22 +6,42 @@
             aria-labelledby="modalHeading"
             aria-modal="true"
             aria-describedby="modalContent"
-            class="slds-modal slds-fade-in-open slds-modal_medium"
+            class="slds-modal profile-modal slds-fade-in-open slds-modal_medium"
         >
             <div class="slds-modal__container modal-container">
                 <header class="slds-modal__header">
-                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" 
-                            title="Close" 
-                            onclick={hideModal}>
-                        <lightning-icon icon-name="utility:close" variant="inverse" size="small"></lightning-icon>
+                    <button
+                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse modal-close-button"
+                        title="Close"
+                        onclick={hideModal}
+                    >
+                        <lightning-icon
+                            icon-name="utility:close"
+                            variant="inverse"
+                            size="small"
+                        ></lightning-icon>
                         <span class="slds-assistive-text">Close</span>
                     </button>
-                    <h2 id="modalHeading" class="slds-text-heading_medium slds-hyphenate">{firstName}'s Achievements</h2>
+                    <h2
+                        id="modalHeading"
+                        class="slds-text-heading_medium slds-hyphenate"
+                    >
+                        {firstName}'s Achievements
+                    </h2>
                 </header>
 
-                <div class="slds-modal__content" id="modalContent">
-                    <lightning-accordion allow-multiple-sections-open="true" active-section-name={activeSections}>
-                        <lightning-accordion-section name="certifications" label={certificationsLabel}>
+                <div
+                    class="slds-modal__content"
+                    id="modalContent"
+                >
+                    <lightning-accordion
+                        allow-multiple-sections-open="true"
+                        active-section-name={activeSections}
+                    >
+                        <lightning-accordion-section
+                            name="certifications"
+                            label={certificationsLabel}
+                        >
                             <c-leaderboard-certifications
                                 trailblazer={trailblazer}
                                 trailblazer-id={selectedTrailblazerId}
@@ -30,7 +50,10 @@
                             ></c-leaderboard-certifications>
                         </lightning-accordion-section>
 
-                        <lightning-accordion-section name="badges" label={badgesLabel}>
+                        <lightning-accordion-section
+                            name="badges"
+                            label={badgesLabel}
+                        >
                             <c-leaderboard-badges
                                 trailblazer={trailblazer}
                                 trailblazer-id={selectedTrailblazerId}
@@ -39,7 +62,10 @@
                             ></c-leaderboard-badges>
                         </lightning-accordion-section>
 
-                        <lightning-accordion-section name="skills" label={skillsLabel}>
+                        <lightning-accordion-section
+                            name="skills"
+                            label={skillsLabel}
+                        >
                             <c-leaderboard-skills
                                 trailblazer={trailblazer}
                                 trailblazer-id={selectedTrailblazerId}
@@ -51,7 +77,7 @@
                 </div>
             </div>
         </section>
-        
+
         <div class="slds-backdrop slds-backdrop_open"></div>
     </template>
 </template>

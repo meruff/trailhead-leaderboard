@@ -1,7 +1,7 @@
 <template>
     <!-- Desktop View -->
-    <div class="slds-show_medium container desktop-table">
-        <lightning-card>
+    <div class="slds-show_medium container">
+        <lightning-card class="desktop-table">
             <h2 slot="title">
                 <span class="slds-text-heading_small">
                   {trailblazerCountString}
@@ -20,7 +20,7 @@
             </div>
 
             <div class="slds-scrollable_x">
-                <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                <table class="slds-table slds-table_bordered slds-table_cell-buffer leaderboard-table">
                     <thead>
                         <tr class="slds-text-title_caps">
                             <th
@@ -207,6 +207,7 @@
                         src={githubLogoUrl}
                         width="24"
                         alt="github"
+                        class="logo"
                     />
                     &nbsp;/&nbsp;
                     <a
@@ -223,13 +224,13 @@
 
     <!-- Mobile View -->
     <div class="slds-hide_medium">
-        <div class="slds-p-bottom_x-large mobile-table">
-            <lightning-card>
+        <div class="slds-p-bottom_x-large">
+            <lightning-card class="mobile-table">
                 <h2 slot="title">
-                        <span class="slds-text-heading_small">
-                            {trailblazerCountString}
-                            <div class="slds-text-title">{moreInfoText}</div>
-                        </span>
+                    <span class="slds-text-heading_small">
+                        {trailblazerCountString}
+                        <div class="slds-text-title">{moreInfoText}</div>
+                    </span>
                 </h2>
 
                 <div slot="actions">
@@ -262,10 +263,7 @@
             </template>
         </lightning-layout>
 
-        <div
-            style="margin-top: -1rem"
-            class="mobile-table"
-        >
+        <div style="margin-top: -1rem">
             <lightning-card>
                 <div
                     class="slds-text-title_caps slds-align_absolute-center"
@@ -275,6 +273,7 @@
                         src={githubLogoUrl}
                         width="24"
                         alt="github"
+                        class="logo"
                     />
                     &nbsp;/&nbsp;
                     <a

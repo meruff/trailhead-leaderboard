@@ -1,0 +1,23 @@
+@import "c/leaderboardStyles";
+
+.alert-icon {
+  --slds-c-icon-color-foreground: initial;
+}
+
+.alert-close-button {
+  --slds-c-button-color-background: initial;
+  --slds-c-button-color-border: transparent;
+  --slds-c-icon-color-foreground: initial;
+}
+
+@media (prefers-color-scheme: dark) {
+  .alert-close-button {
+    --slds-c-button-shadow-focus: none;
+    --slds-c-button-color-background: none;
+    --slds-c-button-color-border: transparent;
+    --slds-c-button-color-border-hover: transparent;
+    --slds-c-button-color-border-active: transparent;
+    --slds-c-button-color-border-focus: transparent;
+    --slds-c-icon-color-foreground: var(--text-primary-dark);
+  }
+}
