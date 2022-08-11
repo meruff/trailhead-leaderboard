@@ -3,10 +3,15 @@
         :root {
             /* Custom Theme vars */
             --elements-second: #f4f6f9;
+            --elements-main-darker: #1e1e1e;
             --elements-main-dark: #222;
             --elements-second-dark: #333;
             --elements-third-dark: #444;
             --text-primary-dark: lightgray;
+        }
+
+        body {
+            margin: 0;
         }
 
         body:after {
@@ -39,6 +44,11 @@
             body:after {
                 background-color: #2e383c;
                 filter: brightness(.25);
+            }
+
+            .desktop-table .slds-card,
+            .desktop-table .slds-card {
+                background-color: var(--elements-main-darker) !important;
             }
 
             .slds-scope .slds-has-error .slds-input {
