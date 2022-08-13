@@ -57,6 +57,7 @@
     --slds-c-button-neutral-color-background-hover: var(--elements-third-dark);
     --slds-c-button-neutral-color-background-focus: var(--elements-third-dark);
     --slds-c-button-neutral-color-background-active: var(--elements-third-dark);
+    --lwc-colorBackgroundButtonDefaultDisabled: var(--elements-main-dark);
     --slds-c-button-neutral-color-border-hover: var(--elements-third-dark);
 
     --slds-c-button-brand-color-background: var(--text-primary);
