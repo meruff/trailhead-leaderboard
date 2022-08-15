@@ -1,5 +1,4 @@
 :host {
-  /* Custom Theme vars */
   --text-primary: #16325c;
   --elements-second: #f4f6f9;
   --elements-main-dark: #222;
@@ -100,8 +99,8 @@
 
     /*  Accordion */
     --slds-c-accordion-heading-text-color: var(--text-primary-dark);
-    --slds-c-accordion-heading-text-color-hover: var(--text-primary-dark);
-    --slds-c-accordion-heading-text-color-focus: var(--text-primary-dark);
+    --sds-c-accordion-heading-text-color-hover: var(--text-primary-dark);
+    --sds-c-accordion-heading-text-color-focus: var(--text-primary-dark);
     --slds-c-accordion-color-border: var(--elements-second-dark);
   }
 

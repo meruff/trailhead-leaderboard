@@ -1,7 +1,6 @@
 <apex:component id="TrailheadLeaderboardStyles">
     <style>
         :root {
-            /* Custom Theme vars */
             --elements-second: #f4f6f9;
             --elements-main-darker: #1e1e1e;
             --elements-main-dark: #222;
@@ -66,11 +65,6 @@
 
             .slds-scope .slds-listbox_vertical .slds-listbox__option.slds-has-focus {
                 background-color: var(--elements-third-dark);
-            }
-
-            .slds-scope .slds-accordion__summary-action:hover,
-            .slds-scope .slds-accordion__summary-action:focus {
-                color: var(--text-primary-dark);
             }
         }
     </style>
