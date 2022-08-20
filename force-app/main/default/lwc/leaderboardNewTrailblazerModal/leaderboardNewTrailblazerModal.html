@@ -4,7 +4,7 @@
         class="slds-is-relative"
     >
         <lightning-spinner
-            class="slds-is-fixed"
+            class="slds-is-fixed spinner"
             alternative-text="Loading"
             size="large"
             variant="brand"
@@ -23,7 +23,7 @@
             <div class="slds-modal__container">
                 <header class="slds-modal__header">
                     <button
-                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse modal-close-button"
                         title="Close"
                         onclick={hideModal}
                     >
@@ -64,19 +64,18 @@
                         message-when-value-missing="Please enter a Trailblazer handle"
                         class="slds-p-vertical_small trailblazer-handle-input"
                         required
-                    >
-                    </lightning-input>
+                    ></lightning-input>
+
                     <div class="slds-p-horizontal_xxx-small">
-                        <b>Note:</b> To find your Trailblazer handle, first make sure your Trailhead profile is set to
-                        public,
-                        then copy the handle from your profile URL after "trailblazer.me/id/".
+                        <b>Note:</b> To find your Trailblazer handle, first make sure your
+                        Trailhead profile is set to public, then copy the handle from your
+                        profile URL after "trailblazer.me/id/".
                     </div>
                 </div>
 
                 <footer class="slds-modal__footer">
                     <lightning-button
                         label="Cancel"
-                        class="brand-link_button"
                         onclick={hideModal}
                     ></lightning-button>
 

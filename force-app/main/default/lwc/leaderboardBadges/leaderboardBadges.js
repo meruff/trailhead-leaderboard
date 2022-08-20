@@ -10,6 +10,8 @@ export default class LeaderboardBadges extends LightningElement {
   @track noMoreBadges = false;
   @track selectedBadgeType = "all";
   @track endCursor;
+
+  showMoreDisabled = false;
   offset = OFFSET_STEP;
 
   badgeTypeOptions = [
@@ -127,6 +129,7 @@ export default class LeaderboardBadges extends LightningElement {
 
   handleShowMore() {
     this.showSpinner = true;
+    this.showMoreDisabled = true;
 
     getBadgeData({
       userId: this.trailblazerHandle,
@@ -143,10 +146,12 @@ export default class LeaderboardBadges extends LightningElement {
         }
 
         this.showSpinner = false;
+        this.showMoreDisabled = false;
       })
       .catch((error) => {
         console.error(error);
         this.showSpinner = false;
+        this.showMoreDisabled = false;
       });
   }
 }

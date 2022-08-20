@@ -18,32 +18,31 @@
                 <a
                     href={certification.certificationUrl}
                     target="_blank"
+                    class="brand-link"
                 >
                     {certification.title}
                 </a>
             </h2>
 
-            <p>
-                <b>
+            <p class="slds-text-color_weak slds-p-vertical_xx-small">
+                <lightning-formatted-date-time
+                    value={dateCompleted}
+                    month="long"
+                    year="numeric"
+                ></lightning-formatted-date-time>
+
+                <template if:true={showEndDate}>
+                    &nbsp;-&nbsp;
                     <lightning-formatted-date-time
-                        value={dateCompleted}
+                        value={certification.dateExpired}
                         month="long"
                         year="numeric"
                     ></lightning-formatted-date-time>
+                </template>
 
-                    <template if:true={showEndDate}>
-                        &nbsp;-&nbsp;
-                        <lightning-formatted-date-time
-                            value={certification.dateExpired}
-                            month="long"
-                            year="numeric"
-                        ></lightning-formatted-date-time>
-                    </template>
-
-                    <template if:false={showEndDate}>
-                        &nbsp;-&nbsp;Present
-                    </template>
-                </b>
+                <template if:false={showEndDate}>
+                    &nbsp;-&nbsp;Present
+                </template>
             </p>
 
             <p>{certification.description}</p>

@@ -8,6 +8,7 @@
                 alternative-text="Loading"
                 size="large"
                 variant="brand"
+                class="spinner"
             ></lightning-spinner>
         </div>
 
@@ -55,6 +56,7 @@
                             href={badge.node.award.content.webUrl}
                             target="_blank"
                             title={badge.node.award.title}
+                            class="brand-link"
                         >
                             <img
                                 src={badge.node.award.icon}
@@ -85,6 +87,7 @@
                 variant="neutral"
                 label="Show More"
                 onclick={handleShowMore}
+                disabled={showMoreDisabled}
             ></lightning-button>
         </div>
     </div>

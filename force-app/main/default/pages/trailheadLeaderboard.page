@@ -4,9 +4,8 @@
     showHeader="false"
     docType="HTML-5.0"
     standardStylesheets="false"
-    cache="true"
 >
-    <title>⚡️ Trailhead Leaderboard</title>
+    <title>Trailhead Leaderboard</title>
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
@@ -14,18 +13,32 @@
     <meta
         name="theme-color"
         content="#b8e1f4"
+        media="(prefers-color-scheme: light)"
     />
+    <meta
+        name="theme-color"
+        content="#222"
+        media="(prefers-color-scheme: dark)"
+    />
+
     <c:TrailheadLeaderboardStyles />
     <apex:includeLightning />
 
-    <div id="leaderboardDiv"></div>
+    <body>
+        <div id="leaderboard"></div>
 
-    <script>
-        window.onload = function() {
-            $Lightning.use("c:LeaderboardContainer", function() {
-                $Lightning.createComponent("c:trailheadLeaderboard", null, "leaderboardDiv", function(cmp) {
+        <script>
+            window.onload = function() {
+                $Lightning.use("c:LeaderboardContainer", function() {
+                    $Lightning.createComponent(
+                        "c:trailheadLeaderboard",
+                        null,
+                        "leaderboard",
+                        function() {
+                        }
+                    );
                 });
-            });
-        };
-    </script>
+            };
+        </script>
+    </body>
 </apex:page>

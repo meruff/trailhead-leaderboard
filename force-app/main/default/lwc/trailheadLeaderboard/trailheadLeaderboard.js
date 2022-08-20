@@ -3,19 +3,22 @@ import populateTrailblazers from "@salesforce/apex/TrailheadLeaderboardAuraContr
 import { refreshApex } from "@salesforce/apex";
 
 export default class TrailheadLeaderboard extends LightningElement {
-    @track fieldToSortBy = "Points__c";
-    @track descending = true;
+  @track fieldToSortBy = "Points__c";
+  @track descending = true;
 
-    @wire(populateTrailblazers, { fieldToSortBy: "$fieldToSortBy", descending: "$descending" })
-    trailblazers;
+  @wire(populateTrailblazers, {
+    fieldToSortBy: "$fieldToSortBy",
+    descending: "$descending"
+  })
+  trailblazers;
 
-    handleSort(event) {
-        this.fieldToSortBy = event.detail.fieldToSortBy;
-        this.descending = event.detail.descending;
-        this.refresh();
-    }
+  handleSort(event) {
+    this.fieldToSortBy = event.detail.fieldToSortBy;
+    this.descending = event.detail.descending;
+    this.refresh();
+  }
 
-    refresh() {
-        return refreshApex(this.trailblazers);
-    }
+  refresh() {
+    return refreshApex(this.trailblazers);
+  }
 }

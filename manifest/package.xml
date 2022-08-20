@@ -59,8 +59,10 @@
         <members>leaderboardRankBadge</members>
         <members>leaderboardSkills</members>
         <members>leaderboardSortDir</members>
+        <members>leaderboardStyles</members>
         <members>leaderboardTable</members>
         <members>trailheadLeaderboard</members>
+        <members>leaderboardStyles</members>
         <name>LightningComponentBundle</name>
     </types>
     <types>
@@ -85,5 +87,5 @@
         <members>Trailhead_Leaderboard</members>
         <name>StaticResource</name>
     </types>
-    <version>55.0</version>
+    <version>54.0</version>
 </Package>
