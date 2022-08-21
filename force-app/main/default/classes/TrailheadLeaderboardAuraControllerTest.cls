@@ -35,7 +35,7 @@ private class TrailheadLeaderboardAuraControllerTest {
         // Act
         Test.startTest();
         List<Trailblazer__c> trailblazers =
-            TrailheadLeaderboardAuraController.populateTrailblazers('', null);
+            TrailheadLeaderboardAuraController.populateTrailblazers('', null, null, null);
         Test.stopTest();
 
         // Assert
@@ -52,7 +52,7 @@ private class TrailheadLeaderboardAuraControllerTest {
         // Act
         Test.startTest();
         List<Trailblazer__c> trailblazers =
-            TrailheadLeaderboardAuraController.populateTrailblazers('Superbadges__c', false);
+            TrailheadLeaderboardAuraController.populateTrailblazers('Superbadges__c', false, null, null);
         Test.stopTest();
 
         // Assert
@@ -88,7 +88,7 @@ private class TrailheadLeaderboardAuraControllerTest {
         System.assertEquals('success', resultString);
         System.assertEquals(
             2,
-            TrailheadLeaderboardAuraController.populateTrailblazers('', null).size(),
+            TrailheadLeaderboardAuraController.populateTrailblazers('', null, null, null).size(),
             'Two Trailblazers should exist now.'
         );
     }
@@ -117,7 +117,7 @@ private class TrailheadLeaderboardAuraControllerTest {
             'Test Trailblazer should not have been created.');
         System.assertNotEquals('success', resultString);
         System.assertEquals(2,
-            TrailheadLeaderboardAuraController.populateTrailblazers('', null).size(),
+            TrailheadLeaderboardAuraController.populateTrailblazers('', null, null, null).size(),
             'Only the two Trailblazers should exist, \'someId\' should not have been created.'
         );
     }

@@ -63,7 +63,7 @@ finished.
 - ~~Convert to Lightning Web Components ⚡~~
 - ~~Convert to Salesforce DX Project~~
 - ~~Add a custom Trailhead API~~
-- Dark mode? 😎
+- ~~Dark mode~~
 - Pagination / loading more.
 - Handle deactivating Trailblazers who go private / 404.
 - Remove `Badge__c`.

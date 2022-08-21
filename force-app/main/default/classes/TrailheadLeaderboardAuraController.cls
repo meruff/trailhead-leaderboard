@@ -9,16 +9,14 @@ public without sharing class TrailheadLeaderboardAuraController {
     /**
      * @description Queries for Trailblazer__c records to display on the page.
      *
-     * @param fieldToSortBy the API Name of the field used to sort, defaults to Points__c.
-     * @param descending whether or not to sort by DESC.
+     * @param options TrailheadLeaderboardAuraController.TrailblazerQueryConfig record of query options to use.
      *
      * @return a List of Trailblazer__c records.
+     *
+     * @see TrailheadLeaderboardAuraController.TrailblazerQueryConfig
      */
     @AuraEnabled(Cacheable=true)
-    public static List<Trailblazer__c> populateTrailblazers(
-        String fieldToSortBy,
-        Boolean descending
-    ) {
+    public static List<Trailblazer__c> populateTrailblazers(TrailblazerQueryConfig options) {
         String queryString = '' +
             'SELECT Id, Name, Badges__c, Points__c, Trailblazer_Since__c, Trails__c, Profile_Handle__c, Profile_Id__c, ' +
                 'Profile_Link__c, Rank__c, Profile_Photo__c, Job_Role__c, Job_Title__c, Company_Institution__c, ' +
@@ -27,23 +25,33 @@ public without sharing class TrailheadLeaderboardAuraController {
             'WHERE Points__c != NULL ' +
             'AND Rank__c != NULL';
 
-        if (String.isBlank(fieldToSortBy)) {
+        if (String.isBlank(options.sortBy)) {
             queryString += ' ORDER BY Points__c DESC';
         } else {
-            queryString += ' ORDER BY ' + fieldToSortBy;
+            queryString += ' ORDER BY ' + options.sortBy;
 
-            if (descending == null || descending) {
+            if (options.descending == null || options.descending) {
                 queryString += ' DESC';
             } else {
                 queryString += ' ASC';
             }
         }
 
-        return Database.query(queryString);
+        if (options.pageSize != null) {
+            queryString += ' LIMIT ' + options.pageSize;
+        }
+
+        if (options.offset != null) {
+            queryString += ' OFFSET ' + options.offset;
+        }
+
+        System.debug(LoggingLevel.DEBUG, 'merf ' + queryString);
+
+        return Database.query(String.escapeSingleQuotes(queryString));
     }
 
     /**
-     * @description Creates and upserts a new Trailblazer__c record by calling out to the Trailhead API and
+     * @description Create and upsert a new Trailblazer__c record by calling out to the Trailhead API and
      * parsing the response data.
      *
      * @param userId the user handle to use when calling out to Trailhead.
@@ -223,5 +231,19 @@ public without sharing class TrailheadLeaderboardAuraController {
         } else {
             return null;
         }
+    }
+
+    public class TrailblazerQueryConfig {
+        @AuraEnabled
+        public String sortBy { get; set; }
+
+        @AuraEnabled
+        public Boolean descending { get; set; }
+
+        @AuraEnabled
+        public Integer pageSize { get; set; }
+
+        @AuraEnabled
+        public Integer offset { get; set; }
     }
 }

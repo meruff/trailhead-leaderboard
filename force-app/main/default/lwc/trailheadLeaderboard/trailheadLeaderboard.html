@@ -1,6 +1,12 @@
 <template>
-    <div class="slds-p-around_small">
-        <c-leaderboard-header></c-leaderboard-header>
-        <c-leaderboard-table trailblazers={trailblazers.data} onrefreshtable={refresh} onsort={handleSort}></c-leaderboard-table>
-    </div>
+  <div class="slds-p-around_small">
+    <c-leaderboard-header></c-leaderboard-header>
+    <c-leaderboard-table
+      trailblazers={trailblazers.data}
+      onrefreshtable={refresh}
+      onsort={handleSort}
+      onprevious={handlePrevious}
+      onnext={handleNext}
+    ></c-leaderboard-table>
+  </div>
 </template>

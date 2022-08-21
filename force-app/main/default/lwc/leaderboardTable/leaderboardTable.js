@@ -12,7 +12,7 @@ export default class LeaderboardTable extends LightningElement {
 
   get trailblazerCountString() {
     return this.trailblazers && this.trailblazers.length > 0
-      ? this.trailblazers.length + " Trailblazers"
+      ? `${this.trailblazers.length} Trailblazers`
       : "All Trailblazers";
   }
 
@@ -21,7 +21,7 @@ export default class LeaderboardTable extends LightningElement {
   }
 
   get githubLogoUrl() {
-    return LEADERBOARD_SOURCE + "/trailheadLeaderboard/github.svg";
+    return `${LEADERBOARD_SOURCE}/trailheadLeaderboard/github.svg`;
   }
 
   showProfileModal(event) {
@@ -42,7 +42,7 @@ export default class LeaderboardTable extends LightningElement {
     this.isTrailblazerModalOpen = false;
   }
 
-  sort(event) {
+  handleSort(event) {
     if (this.fieldToSortBy !== event.target.dataset.field) {
       this.fieldToSortBy = event.target.dataset.field;
       this.descending = true;
@@ -58,6 +58,14 @@ export default class LeaderboardTable extends LightningElement {
         }
       })
     );
+  }
+
+  handlePrevious() {
+    this.dispatchEvent(new CustomEvent("previous"));
+  }
+
+  handleNext() {
+    this.dispatchEvent(new CustomEvent("next"));
   }
 
   fireRefresh() {

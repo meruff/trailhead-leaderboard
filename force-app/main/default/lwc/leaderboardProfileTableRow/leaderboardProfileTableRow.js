@@ -6,6 +6,7 @@ import LeaderboardProfileHelper from "c/leaderboardProfileHelper";
 
 export default class LeaderboardProfileTableRow extends LightningElement {
   @api trailblazer;
+  @api queryOffset = 0;
 
   @api
   get index() {
