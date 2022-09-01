@@ -2,11 +2,16 @@
   <div class="slds-p-around_small">
     <c-leaderboard-header></c-leaderboard-header>
     <c-leaderboard-table
+      if:true={showTable}
       trailblazers={trailblazers.data}
+      trailblazer-count={totalTrailblazerCount.data}
+      pagination-data={paginationData}
       onrefreshtable={refresh}
       onsort={handleSort}
       onprevious={handlePrevious}
+      onpagesize={handlePageSize}
       onnext={handleNext}
+      onshowmore={handleShowMore}
     ></c-leaderboard-table>
   </div>
 </template>

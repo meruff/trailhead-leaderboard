@@ -1,7 +1,12 @@
 <template>
-  <img src={rankBadgeLink} alt={alt} style="width: 3rem" />
+  <img
+    src={rankBadgeLink}
+    alt={altTitle}
+    title={altTitle}
+    style="width: 3rem"
+  />
 
-  <span if:true={showName}>
+  <template if:true={showName}>
     <span class="slds-p-left_medium">{rankName}</span>
-  </span>
+  </template>
 </template>

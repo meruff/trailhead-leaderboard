@@ -34,8 +34,9 @@ private class TrailheadLeaderboardAuraControllerTest {
     static void testPopulateTrailblazers() {
         // Act
         Test.startTest();
-        List<Trailblazer__c> trailblazers =
-            TrailheadLeaderboardAuraController.populateTrailblazers('', null, null, null);
+        List<Trailblazer__c> trailblazers = TrailheadLeaderboardAuraController.populateTrailblazers(
+            new TrailheadLeaderboardAuraController.TrailblazerQueryConfig()
+        );
         Test.stopTest();
 
         // Assert
@@ -51,8 +52,11 @@ private class TrailheadLeaderboardAuraControllerTest {
     static void testPopulateTrailblazersSort() {
         // Act
         Test.startTest();
-        List<Trailblazer__c> trailblazers =
-            TrailheadLeaderboardAuraController.populateTrailblazers('Superbadges__c', false, null, null);
+        TrailheadLeaderboardAuraController.TrailblazerQueryConfig config = new TrailheadLeaderboardAuraController.TrailblazerQueryConfig();
+        config.sortBy = 'Superbadges__c';
+        List<Trailblazer__c> trailblazers = TrailheadLeaderboardAuraController.populateTrailblazers(
+            config
+        );
         Test.stopTest();
 
         // Assert
@@ -88,7 +92,10 @@ private class TrailheadLeaderboardAuraControllerTest {
         System.assertEquals('success', resultString);
         System.assertEquals(
             2,
-            TrailheadLeaderboardAuraController.populateTrailblazers('', null, null, null).size(),
+            TrailheadLeaderboardAuraController.populateTrailblazers(
+                    new TrailheadLeaderboardAuraController.TrailblazerQueryConfig()
+                )
+                .size(),
             'Two Trailblazers should exist now.'
         );
     }
@@ -113,11 +120,18 @@ private class TrailheadLeaderboardAuraControllerTest {
         Test.stopTest();
 
         // Assert
-        System.assertEquals(0, [SELECT Id FROM Trailblazer__c WHERE Profile_Handle__c = :'someId'].size(),
-            'Test Trailblazer should not have been created.');
+        System.assertEquals(
+            0,
+            [SELECT Id FROM Trailblazer__c WHERE Profile_Handle__c = :'someId'].size(),
+            'Test Trailblazer should not have been created.'
+        );
         System.assertNotEquals('success', resultString);
-        System.assertEquals(2,
-            TrailheadLeaderboardAuraController.populateTrailblazers('', null, null, null).size(),
+        System.assertEquals(
+            2,
+            TrailheadLeaderboardAuraController.populateTrailblazers(
+                    new TrailheadLeaderboardAuraController.TrailblazerQueryConfig()
+                )
+                .size(),
             'Only the two Trailblazers should exist, \'someId\' should not have been created.'
         );
     }
@@ -138,8 +152,9 @@ private class TrailheadLeaderboardAuraControllerTest {
 
         // Act
         Test.startTest();
-        List<TrailheadGraphQlData.earnedSkills> skills =
-            TrailheadLeaderboardAuraController.getSkillData('someId');
+        List<TrailheadGraphQlData.earnedSkills> skills = TrailheadLeaderboardAuraController.getSkillData(
+            'someId'
+        );
         Test.stopTest();
 
         // Assert
@@ -167,12 +182,17 @@ private class TrailheadLeaderboardAuraControllerTest {
 
         // Act
         Test.startTest();
-        List<CertificationData.certificationsList> certifications =
-            TrailheadLeaderboardAuraController.getCertificationData('someId');
+        List<CertificationData.certificationsList> certifications = TrailheadLeaderboardAuraController.getCertificationData(
+            'someId'
+        );
         Test.stopTest();
 
         // Assert
-        System.assertEquals(1, certifications.size(), 'One certification should have been returned.');
+        System.assertEquals(
+            1,
+            certifications.size(),
+            'One certification should have been returned.'
+        );
 
         for (CertificationData.certificationsList certification : certifications) {
             System.assertEquals(null, certification.dateExpired);
@@ -210,18 +230,32 @@ private class TrailheadLeaderboardAuraControllerTest {
         Test.stopTest();
 
         // Assert
-        System.assertEquals(3, earnedAwards.edges.size(),
-            'Three badges should have been returned.');
-        System.assertNotEquals(null, earnedAwards.pageInfo,
-            'pageInfo should have been returned.');
-        System.assertNotEquals(null, earnedAwards.pageInfo.hasNextPage,
-            'hasNextPage should have been returned.');
-        System.assertNotEquals(null, earnedAwards.pageInfo.startCursor,
-            'startCursor should have been returned.');
-        System.assertNotEquals(null, earnedAwards.pageInfo.endCursor,
-            'endCursor should have been returned.');
-        System.assertNotEquals(null, earnedAwards.pageInfo.hasPreviousPage,
-            'hasPreviousPage should have been returned.');
+        System.assertEquals(
+            3,
+            earnedAwards.edges.size(),
+            'Three badges should have been returned.'
+        );
+        System.assertNotEquals(null, earnedAwards.pageInfo, 'pageInfo should have been returned.');
+        System.assertNotEquals(
+            null,
+            earnedAwards.pageInfo.hasNextPage,
+            'hasNextPage should have been returned.'
+        );
+        System.assertNotEquals(
+            null,
+            earnedAwards.pageInfo.startCursor,
+            'startCursor should have been returned.'
+        );
+        System.assertNotEquals(
+            null,
+            earnedAwards.pageInfo.endCursor,
+            'endCursor should have been returned.'
+        );
+        System.assertNotEquals(
+            null,
+            earnedAwards.pageInfo.hasPreviousPage,
+            'hasPreviousPage should have been returned.'
+        );
 
         for (TrailheadGraphQlData.edges award : earnedAwards.edges) {
             System.assertNotEquals(null, award.node.award.content.webUrl);
@@ -256,7 +290,10 @@ private class TrailheadLeaderboardAuraControllerTest {
         Test.stopTest();
 
         // Assert
-        System.assertEquals(null, earnedAwards,
-            'No badges should have been returned as the API failed to respond with data.');
+        System.assertEquals(
+            null,
+            earnedAwards,
+            'No badges should have been returned as the API failed to respond with data.'
+        );
     }
 }

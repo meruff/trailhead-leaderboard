@@ -1,15 +1,30 @@
 <template>
-  <lightning-button-icon
-    icon-name="utility:chevronleft"
-    variant="bare"
-    class="brand-link_button slds-p-around_xx-small"
-    onclick={handlePrevious}
-  ></lightning-button-icon>
+  <div class="slds-button-group" role="group">
+    <lightning-button-icon
+      icon-name="utility:chevronleft"
+      variant="container"
+      class="brand-link_button-icon slds-m-right_x-small"
+      onclick={handlePrevious}
+      disabled={previousDisabled}
+    ></lightning-button-icon>
 
-  <lightning-button-icon
-    icon-name="utility:chevronright"
-    variant="bare"
-    class="brand-link_button slds-p-around_xx-small"
-    onclick={handleNext}
-  ></lightning-button-icon>
+    <lightning-combobox
+      validity=""
+      variant="label-hidden"
+      value={selectedPageSize}
+      dropdown-alignment="right"
+      placeholder=""
+      class="slds-show_inline"
+      options={pageSizeOptions}
+      onchange={handlePageSizeChange}
+    ></lightning-combobox>
+
+    <lightning-button-icon
+      icon-name="utility:chevronright"
+      variant="container"
+      class="brand-link_button-icon slds-m-left_x-small"
+      onclick={handleNext}
+      disabled={nextDisabled}
+    ></lightning-button-icon>
+  </div>
 </template>

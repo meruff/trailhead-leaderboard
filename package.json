@@ -4,6 +4,6 @@
     "prettier-plugin-apex": "1.10.0"
   },
   "scripts": {
-    "prettier": "prettier --write '**/*.{css,js}'"
+    "prettier": "prettier --write 'force-app/**/*.{cls,apex,css,js,html}'"
   }
 }

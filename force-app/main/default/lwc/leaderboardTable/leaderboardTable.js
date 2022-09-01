@@ -1,18 +1,21 @@
-import { LightningElement, api, track } from "lwc";
+import { LightningElement, api } from "lwc";
 import LEADERBOARD_SOURCE from "@salesforce/resourceUrl/Trailhead_Leaderboard";
 
 export default class LeaderboardTable extends LightningElement {
   @api trailblazers;
-  @track isProfileModalOpen = false;
-  @track isTrailblazerModalOpen = false;
-  @track selectedTrailblazerId;
-  @track selectedTrailblazerHandle;
-  @track fieldToSortBy = "Points__c";
-  @track descending = true;
+  @api trailblazerCount;
+  @api paginationData;
+
+  isProfileModalOpen = false;
+  isTrailblazerModalOpen = false;
+  selectedTrailblazerId;
+  selectedTrailblazerHandle;
+  sortBy = "Points__c";
+  descending = true;
 
   get trailblazerCountString() {
-    return this.trailblazers && this.trailblazers.length > 0
-      ? `${this.trailblazers.length} Trailblazers`
+    return this.trailblazerCount
+      ? `${this.trailblazerCount} Trailblazers`
       : "All Trailblazers";
   }
 
@@ -43,8 +46,8 @@ export default class LeaderboardTable extends LightningElement {
   }
 
   handleSort(event) {
-    if (this.fieldToSortBy !== event.target.dataset.field) {
-      this.fieldToSortBy = event.target.dataset.field;
+    if (this.sortBy !== event.target.dataset.field) {
+      this.sortBy = event.target.dataset.field;
       this.descending = true;
     } else {
       this.descending = !this.descending;
@@ -53,7 +56,7 @@ export default class LeaderboardTable extends LightningElement {
     this.dispatchEvent(
       new CustomEvent("sort", {
         detail: {
-          fieldToSortBy: this.fieldToSortBy,
+          fieldToSortBy: this.sortBy,
           descending: this.descending
         }
       })
@@ -64,8 +67,16 @@ export default class LeaderboardTable extends LightningElement {
     this.dispatchEvent(new CustomEvent("previous"));
   }
 
+  handlePageSize(event) {
+    this.dispatchEvent(new CustomEvent("pagesize", { detail: event.detail }));
+  }
+
   handleNext() {
     this.dispatchEvent(new CustomEvent("next"));
+  }
+
+  handleShowMore() {
+    this.dispatchEvent(new CustomEvent("showmore"));
   }
 
   fireRefresh() {

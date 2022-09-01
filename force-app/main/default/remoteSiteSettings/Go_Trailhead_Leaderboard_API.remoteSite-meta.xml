@@ -2,5 +2,5 @@
 <RemoteSiteSetting xmlns="http://soap.sforce.com/2006/04/metadata">
     <disableProtocolSecurity>false</disableProtocolSecurity>
     <isActive>true</isActive>
-    <url>https://go-trailhead-leaderboard-api.herokuapp.com</url>
+    <url>https://go-trailhead-leaderboard-api.up.railway.app</url>
 </RemoteSiteSetting>

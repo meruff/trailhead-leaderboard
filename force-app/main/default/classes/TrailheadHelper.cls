@@ -6,13 +6,13 @@
  * @date 7/25/22
  */
 public class TrailheadHelper {
-    public static final String GO_TRAILHEAD_API = 'https://go-trailhead-leaderboard-api.herokuapp.com/trailblazer/';
+    public static final String GO_TRAILHEAD_API = 'https://go-trailhead-leaderboard-api.up.railway.app/trailblazer/';
     public static final String TRAILHEAD_ME = 'https://trailblazer.me/id/';
     public static final String TRAILHEAD_ME_USERID = 'https://trailblazer.me/id?cmty=trailhead&uid=';
 
     public static final String BADGES_PATH = '/badges';
     public static final String CERTIFICATIONS_PATH = '/certifications';
-    public static final String HEROKU_ERROR = 'Application error';
+    public static final String API_ERROR = 'Application error';
     public static final String PROFILE_PATH = '/profile';
     public static final String RANK_PATH = '/rank';
     public static final String SKILLS_PATH = '/skills';
@@ -30,11 +30,11 @@ public class TrailheadHelper {
      * @see TrailheadHelper.doCallout
      */
     public static String buildCalloutURL(Trailblazer__c trailblazer, String path) {
-        return TrailheadHelper.doCallout(TrailheadHelper.GO_TRAILHEAD_API +
+        return TrailheadHelper.doCallout(
+            TrailheadHelper.GO_TRAILHEAD_API +
             (String.isNotBlank(trailblazer.Profile_Handle__c)
                 ? trailblazer.Profile_Handle__c
-                : trailblazer.Profile_Id__c
-            ) +
+                : trailblazer.Profile_Id__c) +
             path
         );
     }

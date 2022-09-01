@@ -22,10 +22,22 @@ public class GetTrailblazerInfoAsync implements Queueable, Database.AllowsCallou
         }
 
         Trailblazer__c trailblazer = trailblazers[0];
-        getProfileData(trailblazer, TrailheadHelper.buildCalloutURL(trailblazer, TrailheadHelper.PROFILE_PATH));
-        getRankData(trailblazer, TrailheadHelper.buildCalloutURL(trailblazer, TrailheadHelper.RANK_PATH));
-        getSuperbadgeData(trailblazer, TrailheadHelper.buildCalloutURL(trailblazer, TrailheadHelper.SUPERBADGES_PATH));
-        getCertificationData(trailblazer, TrailheadHelper.buildCalloutURL(trailblazer, TrailheadHelper.CERTIFICATIONS_PATH));
+        getProfileData(
+            trailblazer,
+            TrailheadHelper.buildCalloutURL(trailblazer, TrailheadHelper.PROFILE_PATH)
+        );
+        getRankData(
+            trailblazer,
+            TrailheadHelper.buildCalloutURL(trailblazer, TrailheadHelper.RANK_PATH)
+        );
+        getSuperbadgeData(
+            trailblazer,
+            TrailheadHelper.buildCalloutURL(trailblazer, TrailheadHelper.SUPERBADGES_PATH)
+        );
+        getCertificationData(
+            trailblazer,
+            TrailheadHelper.buildCalloutURL(trailblazer, TrailheadHelper.CERTIFICATIONS_PATH)
+        );
 
         if (!String.isBlank(trailblazer.Profile_Handle__c)) {
             upsert trailblazer Profile_Handle__c;
@@ -54,8 +66,10 @@ public class GetTrailblazerInfoAsync implements Queueable, Database.AllowsCallou
      * @return a string representing a successful callout.
      */
     public static String getProfileData(Trailblazer__c trailblazer, String resBody) {
-        if (resBody.contains(TrailheadHelper.HEROKU_ERROR) || String.isBlank(resBody)) {
-            return TrailheadHelper.buildErrorAsJSON('Application Error, please try again. API may be down.');
+        if (resBody.contains(TrailheadHelper.API_ERROR) || String.isBlank(resBody)) {
+            return TrailheadHelper.buildErrorAsJSON(
+                'Application Error, please try again. API may be down.'
+            );
         }
 
         ProfileData data = (ProfileData) JSON.deserialize(
@@ -77,9 +91,11 @@ public class GetTrailblazerInfoAsync implements Queueable, Database.AllowsCallou
             trailblazer.Job_Role__c = data.profileUser.TBID_Role;
 
             if (!String.isBlank(data.profileUser.TrailblazerId)) {
-                trailblazer.Profile_Link__c = TrailheadHelper.TRAILHEAD_ME + data.profileUser.TrailblazerId;
+                trailblazer.Profile_Link__c =
+                    TrailheadHelper.TRAILHEAD_ME + data.profileUser.TrailblazerId;
             } else {
-                trailblazer.Profile_Link__c = TrailheadHelper.TRAILHEAD_ME_USERID + data.profileUser.Id;
+                trailblazer.Profile_Link__c =
+                    TrailheadHelper.TRAILHEAD_ME_USERID + data.profileUser.Id;
             }
         }
 
@@ -95,14 +111,14 @@ public class GetTrailblazerInfoAsync implements Queueable, Database.AllowsCallou
      * @return a string representing a successful callout.
      */
     public static String getRankData(Trailblazer__c trailblazer, String resBody) {
-        if (resBody.contains(TrailheadHelper.HEROKU_ERROR) || String.isBlank(resBody)) {
-            return TrailheadHelper.buildErrorAsJSON('Application Error, please try again. API may be down.');
+        if (resBody.contains(TrailheadHelper.API_ERROR) || String.isBlank(resBody)) {
+            return TrailheadHelper.buildErrorAsJSON(
+                'Application Error, please try again. API may be down.'
+            );
         }
 
         TrailheadGraphQlData data = (TrailheadGraphQlData) JSON.deserialize(
-            resBody
-                .replaceAll('__c', '')
-                .replaceAll('__', ''),
+            resBody.replaceAll('__c', '').replaceAll('__', ''),
             TrailheadGraphQlData.class
         );
 
@@ -130,14 +146,14 @@ public class GetTrailblazerInfoAsync implements Queueable, Database.AllowsCallou
      * @return a string representing a successful callout.
      */
     public static String getSuperbadgeData(Trailblazer__c trailblazer, String resBody) {
-        if (resBody.contains(TrailheadHelper.HEROKU_ERROR) || String.isBlank(resBody)) {
-            return TrailheadHelper.buildErrorAsJSON('Application Error, please try again. API may be down.');
+        if (resBody.contains(TrailheadHelper.API_ERROR) || String.isBlank(resBody)) {
+            return TrailheadHelper.buildErrorAsJSON(
+                'Application Error, please try again. API may be down.'
+            );
         }
 
         TrailheadGraphQlData data = (TrailheadGraphQlData) JSON.deserialize(
-            resBody
-                .replaceAll('__c', '')
-                .replaceAll('__', ''),
+            resBody.replaceAll('__c', '').replaceAll('__', ''),
             TrailheadGraphQlData.class
         );
 
@@ -169,8 +185,10 @@ public class GetTrailblazerInfoAsync implements Queueable, Database.AllowsCallou
      * @return a string representing a successful callout.
      */
     public static String getCertificationData(Trailblazer__c trailblazer, String resBody) {
-        if (resBody.contains(TrailheadHelper.HEROKU_ERROR) || String.isBlank(resBody)) {
-            return TrailheadHelper.buildErrorAsJSON('Application Error, please try again. API may be down.');
+        if (resBody.contains(TrailheadHelper.API_ERROR) || String.isBlank(resBody)) {
+            return TrailheadHelper.buildErrorAsJSON(
+                'Application Error, please try again. API may be down.'
+            );
         }
 
         CertificationData data = (CertificationData) JSON.deserialize(

@@ -36,5 +36,6 @@ global class PopulateTrailblazers implements Database.Batchable<SObject>, Databa
         }
     }
 
-    global void finish(Database.BatchableContext BC) { }
+    global void finish(Database.BatchableContext BC) {
+    }
 }

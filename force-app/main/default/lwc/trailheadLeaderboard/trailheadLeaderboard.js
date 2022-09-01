@@ -1,9 +1,9 @@
 import { LightningElement, wire } from "lwc";
-import populateTrailblazers from "@salesforce/apex/TrailheadLeaderboardAuraController.populateTrailblazers";
 import { refreshApex } from "@salesforce/apex";
+import populateTrailblazers from "@salesforce/apex/TrailheadLeaderboardAuraController.populateTrailblazers";
+import getTotalTrailblazerCount from "@salesforce/apex/TrailheadLeaderboardAuraController.getTotalTrailblazerCount";
 
 const DEFAULT_PAGE_SIZE = 10;
-const DEFAULT_PAGE_NUMBER = 1;
 
 export default class TrailheadLeaderboard extends LightningElement {
   sortBy = "Points__c";
@@ -16,20 +16,26 @@ export default class TrailheadLeaderboard extends LightningElement {
   })
   trailblazers;
 
-  get pageNumber() {
-    if (!this._pageNumber) {
-      return DEFAULT_PAGE_NUMBER;
-    }
+  @wire(getTotalTrailblazerCount)
+  totalTrailblazerCount;
 
-    return this._pageNumber;
+  get showTable() {
+    return this.trailblazers.data && this.totalTrailblazerCount.data;
+  }
+
+  get pageNumber() {
+    return this._pageNumber || 1;
   }
 
   set pageNumber(value) {
     this._pageNumber = value;
-    this.offset =
-      this._pageNumber > 1 ? --this._pageNumber * this.pageSize : null;
+    this.offset = value > 1 ? (value - 1) * this.pageSize : null;
   }
 
+  /**
+   * Formats filter, sort, and page data in an easily consumable config Object.
+   * @returns {{offset: null, pageSize: number, sortBy: string, descending: boolean}}
+   */
   get queryOptions() {
     return {
       sortBy: this.sortBy,
@@ -39,28 +45,62 @@ export default class TrailheadLeaderboard extends LightningElement {
     };
   }
 
+  /**
+   * Formats page number, size, and offset into consumable config object.
+   * @returns {{pageNumber: *, offset: null, pageSize: string}}
+   */
+  get paginationData() {
+    return {
+      totalPages: this.totalPages,
+      pageNumber: this.pageNumber,
+      pageSize: this.selectOptionPageSize,
+      offset: this.offset
+    };
+  }
+
+  get totalTrailblazers() {
+    return this.totalTrailblazerCount?.data ?? 0;
+  }
+
+  get totalPages() {
+    return Math.ceil(this.totalTrailblazers / this.pageSize);
+  }
+
+  get selectOptionPageSize() {
+    return "" + this.pageSize;
+  }
+
   handleSort(event) {
     this.sortBy = event.detail.fieldToSortBy;
     this.descending = event.detail.descending;
   }
 
   handlePrevious() {
-    console.log("prev");
-    this.pageNumber = this.pageNumber !== 1 ? this.pageNumber-- : 1;
+    const currentPageNumber = this.pageNumber;
+    this.pageNumber = currentPageNumber !== 1 ? currentPageNumber - 1 : 1;
   }
 
   handleNext() {
-    console.log("next");
-    // TODO: Some logic here to determine not going past max pages.
-    this.pageNumber++;
+    const currentPageNumber = this.pageNumber;
+    this.pageNumber =
+      currentPageNumber < this.totalPages
+        ? currentPageNumber + 1
+        : this.totalPages;
   }
 
-  handleSetPageSize(event) {
-    console.log(event.detail);
+  handleShowMore() {
+    this.pageSize += DEFAULT_PAGE_SIZE;
+  }
+
+  handlePageSize(event) {
+    this.pageNumber = 1;
     this.pageSize = event.detail;
   }
 
   refresh() {
-    return refreshApex(this.trailblazers);
+    Promise.all([
+      refreshApex(this.trailblazers),
+      refreshApex(this.totalTrailblazerCount)
+    ]).then();
   }
 }
