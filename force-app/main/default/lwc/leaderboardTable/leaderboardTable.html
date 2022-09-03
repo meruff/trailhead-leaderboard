@@ -5,7 +5,7 @@
       <h2 slot="title">
         <span class="slds-text-heading_small">
           {trailblazerCountString}
-          <br /><span class="slds-text-title">{moreInfoText}</span>
+          <br /><span class="slds-text-title">{desktopCountText}</span>
         </span>
       </h2>
 
@@ -234,6 +234,7 @@
     </lightning-layout>
 
     <div
+      if:true={showMoreButton}
       class="slds-text-title_caps slds-align_absolute-center"
       style="margin-top: -0.5rem; margin-bottom: 1.5rem"
     >

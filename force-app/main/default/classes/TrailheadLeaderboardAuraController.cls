@@ -123,7 +123,7 @@ public without sharing class TrailheadLeaderboardAuraController {
      * @return a TrailheadGraphQlData.earnedAwards record.
      */
     @AuraEnabled
-    public static TrailheadGraphQlData.earnedAwards getBadgeData(
+    public static TrailheadGraphQlData.EarnedAwards getBadgeData(
         String userId,
         String filter,
         Integer count,
@@ -174,7 +174,7 @@ public without sharing class TrailheadLeaderboardAuraController {
      * @return a List of TrailheadGraphQlData.earnedSkills records.
      */
     @AuraEnabled
-    public static List<TrailheadGraphQlData.earnedSkills> getSkillData(String userId) {
+    public static List<TrailheadGraphQlData.EarnedSkills> getSkillData(String userId) {
         String resBody = TrailheadHelper.doCallout(
             TrailheadHelper.GO_TRAILHEAD_API +
             userId +
@@ -205,7 +205,7 @@ public without sharing class TrailheadLeaderboardAuraController {
      * @return a List of CertificationData.certificationsList records.
      */
     @AuraEnabled
-    public static List<CertificationData.certificationsList> getCertificationData(String userId) {
+    public static List<CertificationData.CertificationsList> getCertificationData(String userId) {
         String resBody = TrailheadHelper.doCallout(
             TrailheadHelper.GO_TRAILHEAD_API +
             userId +

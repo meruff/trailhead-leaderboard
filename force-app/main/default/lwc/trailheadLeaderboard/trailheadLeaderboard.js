@@ -3,7 +3,7 @@ import { refreshApex } from "@salesforce/apex";
 import populateTrailblazers from "@salesforce/apex/TrailheadLeaderboardAuraController.populateTrailblazers";
 import getTotalTrailblazerCount from "@salesforce/apex/TrailheadLeaderboardAuraController.getTotalTrailblazerCount";
 
-const DEFAULT_PAGE_SIZE = 10;
+const DEFAULT_PAGE_SIZE = 15;
 
 export default class TrailheadLeaderboard extends LightningElement {
   sortBy = "Points__c";

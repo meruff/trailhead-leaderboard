@@ -152,7 +152,7 @@ private class TrailheadLeaderboardAuraControllerTest {
 
         // Act
         Test.startTest();
-        List<TrailheadGraphQlData.earnedSkills> skills = TrailheadLeaderboardAuraController.getSkillData(
+        List<TrailheadGraphQlData.EarnedSkills> skills = TrailheadLeaderboardAuraController.getSkillData(
             'someId'
         );
         Test.stopTest();
@@ -160,7 +160,7 @@ private class TrailheadLeaderboardAuraControllerTest {
         // Assert
         System.assertEquals(2, skills.size(), 'Two skills should have been returned.');
 
-        for (TrailheadGraphQlData.earnedSkills skill : skills) {
+        for (TrailheadGraphQlData.EarnedSkills skill : skills) {
             System.assertNotEquals(null, skill.skill.name);
             System.assertNotEquals(null, skill.earnedPointsSum);
         }
@@ -182,7 +182,7 @@ private class TrailheadLeaderboardAuraControllerTest {
 
         // Act
         Test.startTest();
-        List<CertificationData.certificationsList> certifications = TrailheadLeaderboardAuraController.getCertificationData(
+        List<CertificationData.CertificationsList> certifications = TrailheadLeaderboardAuraController.getCertificationData(
             'someId'
         );
         Test.stopTest();
@@ -194,7 +194,7 @@ private class TrailheadLeaderboardAuraControllerTest {
             'One certification should have been returned.'
         );
 
-        for (CertificationData.certificationsList certification : certifications) {
+        for (CertificationData.CertificationsList certification : certifications) {
             System.assertEquals(null, certification.dateExpired);
             System.assertNotEquals(null, certification.dateCompleted);
             System.assertNotEquals(null, certification.description);
@@ -221,7 +221,7 @@ private class TrailheadLeaderboardAuraControllerTest {
 
         // Act
         Test.startTest();
-        TrailheadGraphQlData.earnedAwards earnedAwards = TrailheadLeaderboardAuraController.getBadgeData(
+        TrailheadGraphQlData.EarnedAwards earnedAwards = TrailheadLeaderboardAuraController.getBadgeData(
             'someId',
             'all',
             16,
@@ -257,7 +257,7 @@ private class TrailheadLeaderboardAuraControllerTest {
             'hasPreviousPage should have been returned.'
         );
 
-        for (TrailheadGraphQlData.edges award : earnedAwards.edges) {
+        for (TrailheadGraphQlData.Edges award : earnedAwards.edges) {
             System.assertNotEquals(null, award.node.award.content.webUrl);
             System.assertNotEquals(null, award.node.award.title);
             System.assertNotEquals(null, award.node.award.icon);
@@ -281,7 +281,7 @@ private class TrailheadLeaderboardAuraControllerTest {
 
         // Act
         Test.startTest();
-        TrailheadGraphQlData.earnedAwards earnedAwards = TrailheadLeaderboardAuraController.getBadgeData(
+        TrailheadGraphQlData.EarnedAwards earnedAwards = TrailheadLeaderboardAuraController.getBadgeData(
             'someId',
             'all',
             null,

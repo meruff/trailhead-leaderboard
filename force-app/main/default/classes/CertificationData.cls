@@ -1,16 +1,17 @@
 /**
- * @author meruff
- * @date 3/18/20
+ * @description A class to deserialize Trailhead Certification data from the API into.
  *
- * A class to deserialize Trailhead Certification data from the API into.
+ * @author meruff
+ *
+ * @date 3/18/20
  */
 public class CertificationData {
     public String error { get; set; }
 
     @AuraEnabled
-    public List<certificationsList> certificationsList { get; set; }
+    public List<CertificationsList> certificationsList { get; set; }
 
-    public class certificationsList {
+    public class CertificationsList {
         @AuraEnabled
         public String dateExpired { get; set; }
 

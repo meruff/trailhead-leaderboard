@@ -164,7 +164,7 @@ public class GetTrailblazerInfoAsync implements Queueable, Database.AllowsCallou
         if (data.profile?.earnedAwards?.edges != null) {
             Integer count = 0;
 
-            for (TrailheadGraphQlData.edges edge : data.profile?.earnedAwards?.edges) {
+            for (TrailheadGraphQlData.Edges edge : data.profile?.earnedAwards?.edges) {
                 if (edge.node.award.type == 'SUPERBADGE') {
                     count++;
                 }

@@ -64,7 +64,7 @@ finished.
 - ~~Convert to Salesforce DX Project~~
 - ~~Add a custom Trailhead API~~
 - ~~Dark mode~~
-- Pagination / loading more.
+- ~~Pagination / loading more.~~
 - Handle deactivating Trailblazers who go private / 404.
 - Remove `Badge__c`.
 

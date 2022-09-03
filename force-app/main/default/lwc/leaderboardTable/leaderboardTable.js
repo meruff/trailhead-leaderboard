@@ -19,12 +19,37 @@ export default class LeaderboardTable extends LightningElement {
       : "All Trailblazers";
   }
 
+  get desktopCountText() {
+    return `Showing ${this.startCount}-${this.endCount} of ${this.trailblazerCount} • ${this.moreInfoText}`;
+  }
+
   get moreInfoText() {
-    return "Click on a Trailblazer for more info.";
+    return `Click on a Trailblazer for more info`;
+  }
+
+  get startCount() {
+    return 1 + this.offset;
+  }
+
+  get endCount() {
+    const endCount = this.pageSize + this.offset;
+    return endCount <= this.trailblazerCount ? endCount : this.trailblazerCount;
+  }
+
+  get offset() {
+    return this.paginationData.offset ?? 0;
+  }
+
+  get pageSize() {
+    return parseInt(this.paginationData.pageSize) ?? 0;
   }
 
   get githubLogoUrl() {
     return `${LEADERBOARD_SOURCE}/trailheadLeaderboard/github.svg`;
+  }
+
+  get showMoreButton() {
+    return this.paginationData.pageSize <= this.trailblazerCount;
   }
 
   showProfileModal(event) {
