@@ -6,16 +6,7 @@ export default class LeaderboardRankBadge extends LightningElement {
   @api rankBadgeLink;
   @api showName = false;
 
-  get rankBadgeURL() {
-    return (
-      LEADERBOARD_SOURCE +
-      "/trailheadLeaderboard/ranks/" +
-      this.rankName.toLowerCase() +
-      ".png"
-    );
-  }
-
-  get alt() {
+  get altTitle() {
     return this.rankName;
   }
 }

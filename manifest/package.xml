@@ -63,6 +63,7 @@
         <members>leaderboardTable</members>
         <members>trailheadLeaderboard</members>
         <members>leaderboardStyles</members>
+        <members>leaderboardPagination</members>
         <name>LightningComponentBundle</name>
     </types>
     <types>

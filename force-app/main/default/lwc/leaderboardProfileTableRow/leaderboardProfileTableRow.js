@@ -1,26 +1,22 @@
-import { LightningElement, api, track } from "lwc";
+import { LightningElement, api } from "lwc";
+import LeaderboardProfileHelper from "c/leaderboardProfileHelper";
 import LEADERBOARD_SOURCE from "@salesforce/resourceUrl/Trailhead_Leaderboard";
 
 const profileHelper = new LeaderboardProfileHelper();
-import LeaderboardProfileHelper from "c/leaderboardProfileHelper";
 
 export default class LeaderboardProfileTableRow extends LightningElement {
   @api trailblazer;
+  @api offset;
+  @api index;
 
-  @api
-  get index() {
-    return this._index;
+  photoError = false;
+
+  get rankNumber() {
+    return this.index + 1 + (isNaN(this.offset) ? 0 : this.offset);
   }
-
-  set index(value) {
-    this.setAttribute("index", value++);
-    this._index = value;
-  }
-
-  @track photoError = false;
 
   get placeholderProfilePhotoURL() {
-    return LEADERBOARD_SOURCE + "/trailheadLeaderboard/astro.png";
+    return `${LEADERBOARD_SOURCE}/trailheadLeaderboard/astro.png`;
   }
 
   get titleString() {

@@ -8,9 +8,9 @@
 public class ProfileData {
     public String error { get; set; }
     public String profilePhotoUrl { get; set; }
-    public profileUser profileUser { get; set; }
+    public ProfileUser profileUser { get; set; }
 
-    public class profileUser {
+    public class ProfileUser {
         public String TBID_Role { get; set; }
         public String CompanyName { get; set; }
         public String TrailblazerId { get; set; }

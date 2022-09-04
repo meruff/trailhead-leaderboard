@@ -13,44 +13,44 @@ public class TrailheadGraphQlData {
 
     public class Profile {
         @AuraEnabled
-        public trailheadStats trailheadStats { get; set; }
+        public TrailheadStats trailheadStats { get; set; }
 
         @AuraEnabled
-        public List<earnedSkills> earnedSkills { get; set; }
+        public List<EarnedSkills> earnedSkills { get; set; }
 
         @AuraEnabled
-        public earnedAwards earnedAwards { get; set; }
+        public EarnedAwards earnedAwards { get; set; }
     }
 
     // Rank data
-    public class trailheadStats {
+    public class TrailheadStats {
         public Integer completedTrailCount { get; set; }
         public Integer earnedBadgesCount { get; set; }
-        public rank rank { get; set; }
+        public Rank rank { get; set; }
         public Integer earnedPointsSum { get; set; }
     }
 
-    public class rank {
+    public class Rank {
         public String imageUrl { get; set; }
         public String title { get; set; }
     }
 
     // Skill data
-    public class skill {
+    public class Skill {
         @AuraEnabled
         public String name { get; set; }
     }
 
-    public class earnedSkills {
+    public class EarnedSkills {
         @AuraEnabled
         public Integer earnedPointsSum { get; set; }
 
         @AuraEnabled
-        public skill skill { get; set; }
+        public Skill skill { get; set; }
     }
 
     // Badge data
-    public class pageInfo {
+    public class PageInfo {
         @AuraEnabled
         public Boolean hasNextPage { get; set; }
 
@@ -64,9 +64,9 @@ public class TrailheadGraphQlData {
         public Boolean hasPreviousPage { get; set; }
     }
 
-    public class node {
+    public class Node {
         @AuraEnabled
-        public award award { get; set; }
+        public Award award { get; set; }
 
         @AuraEnabled
         public String earnedAt { get; set; }
@@ -75,25 +75,25 @@ public class TrailheadGraphQlData {
         public String earnedPointsSum { get; set; }
     }
 
-    public class edges {
+    public class Edges {
         @AuraEnabled
-        public node node { get; set; }
+        public Node node { get; set; }
     }
 
-    public class earnedAwards {
+    public class EarnedAwards {
         @AuraEnabled
-        public pageInfo pageInfo { get; set; }
+        public PageInfo pageInfo { get; set; }
 
         @AuraEnabled
-        public List<edges> edges { get; set; }
+        public List<Edges> edges { get; set; }
     }
 
-    public class content {
+    public class Content {
         @AuraEnabled
         public String webUrl { get; set; }
     }
 
-    public class award {
+    public class Award {
         @AuraEnabled
         public String icon { get; set; }
 
@@ -107,6 +107,6 @@ public class TrailheadGraphQlData {
         public String id { get; set; }
 
         @AuraEnabled
-        public content content { get; set; }
+        public Content content { get; set; }
     }
 }

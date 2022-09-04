@@ -9,41 +9,58 @@ public without sharing class TrailheadLeaderboardAuraController {
     /**
      * @description Queries for Trailblazer__c records to display on the page.
      *
-     * @param fieldToSortBy the API Name of the field used to sort, defaults to Points__c.
-     * @param descending whether or not to sort by DESC.
+     * @param options TrailheadLeaderboardAuraController.TrailblazerQueryConfig record of query options to use.
      *
      * @return a List of Trailblazer__c records.
+     *
+     * @see TrailheadLeaderboardAuraController.TrailblazerQueryConfig
      */
     @AuraEnabled(Cacheable=true)
-    public static List<Trailblazer__c> populateTrailblazers(
-        String fieldToSortBy,
-        Boolean descending
-    ) {
-        String queryString = '' +
+    public static List<Trailblazer__c> populateTrailblazers(TrailblazerQueryConfig options) {
+        String queryString =
+            '' +
             'SELECT Id, Name, Badges__c, Points__c, Trailblazer_Since__c, Trails__c, Profile_Handle__c, Profile_Id__c, ' +
-                'Profile_Link__c, Rank__c, Profile_Photo__c, Job_Role__c, Job_Title__c, Company_Institution__c, ' +
-                'Rank_Badge_Link__c, Superbadges__c, Certifications__c, LastModifiedDate ' +
+            'Profile_Link__c, Rank__c, Profile_Photo__c, Job_Role__c, Job_Title__c, Company_Institution__c, ' +
+            'Rank_Badge_Link__c, Superbadges__c, Certifications__c, LastModifiedDate ' +
             'FROM Trailblazer__c ' +
             'WHERE Points__c != NULL ' +
             'AND Rank__c != NULL';
 
-        if (String.isBlank(fieldToSortBy)) {
+        if (String.isBlank(options.sortBy)) {
             queryString += ' ORDER BY Points__c DESC';
         } else {
-            queryString += ' ORDER BY ' + fieldToSortBy;
+            queryString += ' ORDER BY ' + options.sortBy;
 
-            if (descending == null || descending) {
-                queryString += ' DESC';
-            } else {
+            if (options.descending == null || !options.descending) {
                 queryString += ' ASC';
+            } else {
+                queryString += ' DESC';
             }
         }
 
-        return Database.query(queryString);
+        if (options.pageSize != null) {
+            queryString += ' LIMIT ' + options.pageSize;
+        }
+
+        if (options.offset != null) {
+            queryString += ' OFFSET ' + options.offset;
+        }
+
+        return Database.query(String.escapeSingleQuotes(queryString));
     }
 
     /**
-     * @description Creates and upserts a new Trailblazer__c record by calling out to the Trailhead API and
+     * @description Runs an AggregateResult query for COUNT of all Trailblazer__c records.
+     *
+     * @return an Integer representing the count.
+     */
+    @AuraEnabled(Cacheable=true)
+    public static Integer getTotalTrailblazerCount() {
+        return (Integer) [SELECT COUNT(Id) FROM Trailblazer__c][0]?.get('expr0');
+    }
+
+    /**
+     * @description Create and upsert a new Trailblazer__c record by calling out to the Trailhead API and
      * parsing the response data.
      *
      * @param userId the user handle to use when calling out to Trailhead.
@@ -56,39 +73,32 @@ public without sharing class TrailheadLeaderboardAuraController {
             Profile_Handle__c = userId.replace(' ', '').trim()
         );
 
-        for (String s : new Set<String>{
-            GetTrailblazerInfoAsync.getProfileData(
-                newTrailblazer,
-                TrailheadHelper.buildCalloutURL(
+        for (
+            String s : new Set<String>{
+                GetTrailblazerInfoAsync.getProfileData(
                     newTrailblazer,
-                    TrailheadHelper.PROFILE_PATH
-                )
-            ),
-
-            GetTrailblazerInfoAsync.getRankData(
-                newTrailblazer,
-                TrailheadHelper.buildCalloutURL(
+                    TrailheadHelper.buildCalloutURL(newTrailblazer, TrailheadHelper.PROFILE_PATH)
+                ),
+                GetTrailblazerInfoAsync.getRankData(
                     newTrailblazer,
-                    TrailheadHelper.RANK_PATH
-                )
-            ),
-
-            GetTrailblazerInfoAsync.getSuperbadgeData(
-                newTrailblazer,
-                TrailheadHelper.buildCalloutURL(
+                    TrailheadHelper.buildCalloutURL(newTrailblazer, TrailheadHelper.RANK_PATH)
+                ),
+                GetTrailblazerInfoAsync.getSuperbadgeData(
                     newTrailblazer,
-                    TrailheadHelper.SUPERBADGES_PATH
-                )
-            ),
-
-            GetTrailblazerInfoAsync.getCertificationData(
-                newTrailblazer,
-                TrailheadHelper.buildCalloutURL(
+                    TrailheadHelper.buildCalloutURL(
+                        newTrailblazer,
+                        TrailheadHelper.SUPERBADGES_PATH
+                    )
+                ),
+                GetTrailblazerInfoAsync.getCertificationData(
                     newTrailblazer,
-                    TrailheadHelper.CERTIFICATIONS_PATH
+                    TrailheadHelper.buildCalloutURL(
+                        newTrailblazer,
+                        TrailheadHelper.CERTIFICATIONS_PATH
+                    )
                 )
-            )
-        }) {
+            }
+        ) {
             if (!s.equals(TrailheadHelper.SUCCESS)) {
                 return s;
             }
@@ -113,7 +123,7 @@ public without sharing class TrailheadLeaderboardAuraController {
      * @return a TrailheadGraphQlData.earnedAwards record.
      */
     @AuraEnabled
-    public static TrailheadGraphQlData.earnedAwards getBadgeData(
+    public static TrailheadGraphQlData.EarnedAwards getBadgeData(
         String userId,
         String filter,
         Integer count,
@@ -145,15 +155,11 @@ public without sharing class TrailheadLeaderboardAuraController {
         }
 
         TrailheadGraphQlData data = (TrailheadGraphQlData) JSON.deserialize(
-            resBody
-                .replaceAll('__c', '')
-                .replaceAll('__', ''),
+            resBody.replaceAll('__c', '').replaceAll('__', ''),
             TrailheadGraphQlData.class
         );
 
-        if (String.isBlank(data.error)
-            && data.profile?.earnedAwards != null
-        ) {
+        if (String.isBlank(data.error) && data.profile?.earnedAwards != null) {
             return data.profile.earnedAwards;
         } else {
             return null;
@@ -168,9 +174,11 @@ public without sharing class TrailheadLeaderboardAuraController {
      * @return a List of TrailheadGraphQlData.earnedSkills records.
      */
     @AuraEnabled
-    public static List<TrailheadGraphQlData.earnedSkills> getSkillData(String userId) {
+    public static List<TrailheadGraphQlData.EarnedSkills> getSkillData(String userId) {
         String resBody = TrailheadHelper.doCallout(
-            TrailheadHelper.GO_TRAILHEAD_API + userId + TrailheadHelper.SKILLS_PATH
+            TrailheadHelper.GO_TRAILHEAD_API +
+            userId +
+            TrailheadHelper.SKILLS_PATH
         );
 
         if (resBody.contains('application-error')) {
@@ -178,15 +186,11 @@ public without sharing class TrailheadLeaderboardAuraController {
         }
 
         TrailheadGraphQlData data = (TrailheadGraphQlData) JSON.deserialize(
-            resBody
-                .replaceAll('__c', '')
-                .replaceAll('__', ''),
+            resBody.replaceAll('__c', '').replaceAll('__', ''),
             TrailheadGraphQlData.class
         );
 
-        if (String.isBlank(data.error)
-            && data?.profile?.earnedSkills != null
-        ) {
+        if (String.isBlank(data.error) && data?.profile?.earnedSkills != null) {
             return data?.profile?.earnedSkills;
         } else {
             return null;
@@ -201,10 +205,11 @@ public without sharing class TrailheadLeaderboardAuraController {
      * @return a List of CertificationData.certificationsList records.
      */
     @AuraEnabled
-    public static List<CertificationData.certificationsList> getCertificationData(String userId) {
+    public static List<CertificationData.CertificationsList> getCertificationData(String userId) {
         String resBody = TrailheadHelper.doCallout(
             TrailheadHelper.GO_TRAILHEAD_API +
-                userId + TrailheadHelper.CERTIFICATIONS_PATH
+            userId +
+            TrailheadHelper.CERTIFICATIONS_PATH
         );
 
         if (resBody.contains('application-error')) {
@@ -216,12 +221,24 @@ public without sharing class TrailheadLeaderboardAuraController {
             CertificationData.class
         );
 
-        if (String.isBlank(data.error)
-            && data?.certificationsList != null
-        ) {
+        if (String.isBlank(data.error) && data?.certificationsList != null) {
             return data.certificationsList;
         } else {
             return null;
         }
+    }
+
+    public class TrailblazerQueryConfig {
+        @AuraEnabled
+        public String sortBy { get; set; }
+
+        @AuraEnabled
+        public Boolean descending { get; set; }
+
+        @AuraEnabled
+        public Integer pageSize { get; set; }
+
+        @AuraEnabled
+        public Integer offset { get; set; }
     }
 }

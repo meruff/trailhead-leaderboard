@@ -72,7 +72,7 @@ export default class LeaderboardCertifications extends LightningElement {
   }
 
   get noCertificationsMessage() {
-    return "No Salesforce certifications found for this Trailblazer. Does this Trailblazer have any certifications and have they connected Trailhead to Webassessor?";
+    return "No Salesforce certifications found for this Trailblazer";
   }
 
   get displayShowMore() {

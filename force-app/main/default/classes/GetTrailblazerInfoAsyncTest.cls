@@ -9,10 +9,7 @@
 private class GetTrailblazerInfoAsyncTest {
     @TestSetup
     static void setUpData() {
-        insert new Trailblazer__c(
-            Name = 'mat ruff',
-            Profile_Handle__c = 'matruff'
-        );
+        insert new Trailblazer__c(Name = 'mat ruff', Profile_Handle__c = 'matruff');
     }
 
     /**
@@ -36,32 +33,39 @@ private class GetTrailblazerInfoAsyncTest {
         System.enqueueJob(
             new GetTrailblazerInfoAsync(
                 0,
-                new List<Trailblazer__c>([
-                    SELECT Profile_Handle__c,
-                        Profile_Id__c
-                    FROM Trailblazer__c
-                ])
+                new List<Trailblazer__c>(
+                    [SELECT Profile_Handle__c, Profile_Id__c FROM Trailblazer__c]
+                )
             )
         );
         Test.stopTest();
 
         // Assert
         List<Trailblazer__c> assertTrailblazers = [
-            SELECT Name,
-                Badges__c,
-                Trails__c,
-                Superbadges__c
+            SELECT Name, Badges__c, Trails__c, Superbadges__c
             FROM Trailblazer__c
         ];
 
-        System.assertEquals(1, assertTrailblazers.size(),
-            'Should have created 1 Trailblazer during test set up and upserted that singular record.');
-        System.assertEquals(168, assertTrailblazers[0].Badges__c,
-            '168 badges should have been created from the profile counts data.');
-        System.assertEquals(1, assertTrailblazers[0].Superbadges__c,
-            'One superbadge should have been created.');
-        System.assertEquals(21, assertTrailblazers[0].Trails__c,
-            'Trails__c should have been upserted to 21');
+        System.assertEquals(
+            1,
+            assertTrailblazers.size(),
+            'Should have created 1 Trailblazer during test set up and upserted that singular record.'
+        );
+        System.assertEquals(
+            168,
+            assertTrailblazers[0].Badges__c,
+            '168 badges should have been created from the profile counts data.'
+        );
+        System.assertEquals(
+            1,
+            assertTrailblazers[0].Superbadges__c,
+            'One superbadge should have been created.'
+        );
+        System.assertEquals(
+            21,
+            assertTrailblazers[0].Trails__c,
+            'Trails__c should have been upserted to 21'
+        );
     }
 
     /**
@@ -80,11 +84,9 @@ private class GetTrailblazerInfoAsyncTest {
 
         Test.setMock(HttpCalloutMock.class, mock);
 
-        Trailblazer__c testTrailblazer = new List<Trailblazer__c>([
-            SELECT Profile_Handle__c,
-                Profile_Id__c
-            FROM Trailblazer__c
-        ])[0];
+        Trailblazer__c testTrailblazer = new List<Trailblazer__c>(
+            [SELECT Profile_Handle__c, Profile_Id__c FROM Trailblazer__c]
+        )[0];
 
         testTrailblazer.Superbadges__c = 3;
         update testTrailblazer; // Set existing Trailblazer superbadges to 3.
@@ -104,8 +106,11 @@ private class GetTrailblazerInfoAsyncTest {
             WHERE Id = :testTrailblazer.Id
         ];
 
-        System.assertEquals(3, assertTrailblazer.Superbadges__c,
-            'Superbadges should not have been updated from a failed server callout.');
+        System.assertEquals(
+            3,
+            assertTrailblazer.Superbadges__c,
+            'Superbadges should not have been updated from a failed server callout.'
+        );
     }
 
     /**
@@ -124,11 +129,9 @@ private class GetTrailblazerInfoAsyncTest {
 
         Test.setMock(HttpCalloutMock.class, mock);
 
-        Trailblazer__c testTrailblazer = new List<Trailblazer__c>([
-            SELECT Profile_Handle__c,
-                Profile_Id__c
-            FROM Trailblazer__c
-        ])[0];
+        Trailblazer__c testTrailblazer = new List<Trailblazer__c>(
+            [SELECT Profile_Handle__c, Profile_Id__c FROM Trailblazer__c]
+        )[0];
 
         testTrailblazer.Certifications__c = 5;
         update testTrailblazer; // Set existing Trailblazer certifications to 5.
@@ -148,12 +151,15 @@ private class GetTrailblazerInfoAsyncTest {
             WHERE Id = :testTrailblazer.Id
         ];
 
-        System.assertEquals(5, assertTrailblazer.Certifications__c,
-            'Certifications should not have been updated from a failed server callout.');
+        System.assertEquals(
+            5,
+            assertTrailblazer.Certifications__c,
+            'Certifications should not have been updated from a failed server callout.'
+        );
     }
 
     /**
-     * @description Tests an error with the Heroku application being down.
+     * @description Tests an error with the remote API application being down.
      */
     @IsTest
     static void testGetTrailblazerInfoApplicationError() {
@@ -172,35 +178,45 @@ private class GetTrailblazerInfoAsyncTest {
         Test.startTest();
         System.enqueueJob(
             new GetTrailblazerInfoAsync(
-                0, new List<Trailblazer__c>([
-                    SELECT Profile_Handle__c,
-                        Profile_Id__c
-                    FROM Trailblazer__c
-                ])
+                0,
+                new List<Trailblazer__c>(
+                    [SELECT Profile_Handle__c, Profile_Id__c FROM Trailblazer__c]
+                )
             )
         );
         Test.stopTest();
 
         // Assert
         List<Trailblazer__c> assertTrailblazers = [
-            SELECT Name,
-                Badges__c,
-                Trails__c,
-                Superbadges__c,
-                Certifications__c
+            SELECT Name, Badges__c, Trails__c, Superbadges__c, Certifications__c
             FROM Trailblazer__c
         ];
 
-        System.assertEquals(1, assertTrailblazers.size(),
-            'Should have created 1 Trailblazer during test set up and upserted that singular record.');
-        System.assertEquals(0, assertTrailblazers[0].Badges__c,
-            '0 badges should have been created from the profile counts data.');
-        System.assertEquals(0, assertTrailblazers[0].Superbadges__c,
-            '0 superbadges should have been created.');
-        System.assertEquals(0, assertTrailblazers[0].Certifications__c,
-            '0 certifications should have been created.');
-        System.assertEquals(0, assertTrailblazers[0].Trails__c,
-            '0 Trails__c should have been created.');
+        System.assertEquals(
+            1,
+            assertTrailblazers.size(),
+            'Should have created 1 Trailblazer during test set up and upserted that singular record.'
+        );
+        System.assertEquals(
+            0,
+            assertTrailblazers[0].Badges__c,
+            '0 badges should have been created from the profile counts data.'
+        );
+        System.assertEquals(
+            0,
+            assertTrailblazers[0].Superbadges__c,
+            '0 superbadges should have been created.'
+        );
+        System.assertEquals(
+            0,
+            assertTrailblazers[0].Certifications__c,
+            '0 certifications should have been created.'
+        );
+        System.assertEquals(
+            0,
+            assertTrailblazers[0].Trails__c,
+            '0 Trails__c should have been created.'
+        );
     }
 
     @IsTest
@@ -220,37 +236,50 @@ private class GetTrailblazerInfoAsyncTest {
         Test.startTest();
         System.enqueueJob(
             new GetTrailblazerInfoAsync(
-                0, new List<Trailblazer__c>([
-                    SELECT Profile_Handle__c,
-                        Profile_Id__c
-                    FROM Trailblazer__c
-                ])
+                0,
+                new List<Trailblazer__c>(
+                    [SELECT Profile_Handle__c, Profile_Id__c FROM Trailblazer__c]
+                )
             )
         );
         Test.stopTest();
 
         // Assert
         List<Trailblazer__c> assertTrailblazers = [
-            SELECT Name,
-                Certifications__c,
-                Company_Institution__c,
-                Job_Title__c,
-                Job_Role__c
+            SELECT Name, Certifications__c, Company_Institution__c, Job_Title__c, Job_Role__c
             FROM Trailblazer__c
         ];
 
         // Assert
-        System.assertEquals(1, assertTrailblazers.size(),
-            'Should have created 1 Trailblazer during test set up and upserted that singular record.');
-        System.assertEquals('Mat Ruff', assertTrailblazers[0].Name,
-            'Name should have been upserted to capitalized \'Mat Ruff\'.');
-        System.assertEquals('ABC Co.', assertTrailblazers[0].Company_Institution__c,
-            'Name should have been upserted to \'ABC Co.\'.');
-        System.assertEquals('Senior Developer', assertTrailblazers[0].Job_Title__c,
-            'Name should have been upserted to \'Senior Developer\'.');
-        System.assertEquals('Developer', assertTrailblazers[0].Job_Role__c,
-            'Name should have been upserted to \'Developer\'.');
-        System.assertEquals(1, assertTrailblazers[0].Certifications__c,
-            'One certification should have been created.');
+        System.assertEquals(
+            1,
+            assertTrailblazers.size(),
+            'Should have created 1 Trailblazer during test set up and upserted that singular record.'
+        );
+        System.assertEquals(
+            'Mat Ruff',
+            assertTrailblazers[0].Name,
+            'Name should have been upserted to capitalized \'Mat Ruff\'.'
+        );
+        System.assertEquals(
+            'ABC Co.',
+            assertTrailblazers[0].Company_Institution__c,
+            'Name should have been upserted to \'ABC Co.\'.'
+        );
+        System.assertEquals(
+            'Senior Developer',
+            assertTrailblazers[0].Job_Title__c,
+            'Name should have been upserted to \'Senior Developer\'.'
+        );
+        System.assertEquals(
+            'Developer',
+            assertTrailblazers[0].Job_Role__c,
+            'Name should have been upserted to \'Developer\'.'
+        );
+        System.assertEquals(
+            1,
+            assertTrailblazers[0].Certifications__c,
+            'One certification should have been created.'
+        );
     }
 }

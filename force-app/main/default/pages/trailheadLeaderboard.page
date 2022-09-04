@@ -12,11 +12,6 @@
     />
     <meta
         name="theme-color"
-        content="#b8e1f4"
-        media="(prefers-color-scheme: light)"
-    />
-    <meta
-        name="theme-color"
         content="#222"
         media="(prefers-color-scheme: dark)"
     />

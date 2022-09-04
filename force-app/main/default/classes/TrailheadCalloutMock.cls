@@ -1,10 +1,10 @@
 /**
-* @description Mock callout class for PopulateTrailblazers.cls
+ * @description Mock callout class for PopulateTrailblazers.cls
  *
-* @author: meruff
+ * @author: meruff
  *
-* @date: 2017-07-27
-*/
+ * @date: 2017-07-27
+ */
 @IsTest
 public class TrailheadCalloutMock implements HttpCalloutMock {
     // TODO:
@@ -25,31 +25,31 @@ public class TrailheadCalloutMock implements HttpCalloutMock {
     public static String getSuccessfulTrailheadResponse() {
         return '' +
             '{' +
-                '"profileUser": {' +
-                    '"AboutMe": null,' +
-                    '"FirstName": "Mat",' +
-                    '"StateCode": "AZ",' +
-                    '"Title": "Senior Developer",' +
-                    '"Relationship_To_Salesforce__c": "Partner",' +
-                    '"TBID_Role__c": "Developer",' +
-                    '"CompanyName": "ABC Co.",' +
-                    '"TrailblazerId__c": "matruff",' +
-                    '"LastName": "Ruff",' +
-                    '"Id": "0051I000004UgTlQAK"' +
-                '},' +
-                '"profilePhotoUrl": "https://trailblazer.me/profilephoto/7291I000000Jm2C/M",' +
-                '"certificationsList":[' +
-                    '{' +
-                        '"visibleToYouDescription":null,' +
-                        '"title":"Salesforce Certified Administrator",' +
-                        '"description":"Certified Administrators are Salesforce pros who are always looking for ways to help their companies get even more out of the Salesforce Platform through additional features and capabilities.",' +
-                        '"dateExpired":null,' +
-                        '"dateCompleted":"2013-06-13",' +
-                        '"certificationUrl":"https://trailhead.salesforce.com/credentials/administrator",' +
-                        '"certificationStatus":"ACTIVE",' +
-                        '"certificationImageUrl":"https://drm--c.na114.content.force.com/servlet/servlet.ImageServer?id=0153k00000AH6hb&oid=00DF0000000gZsu&lastMod=1571903578000"' +
-                    '}' +
-                ']' +
+            '"profileUser": {' +
+            '"AboutMe": null,' +
+            '"FirstName": "Mat",' +
+            '"StateCode": "AZ",' +
+            '"Title": "Senior Developer",' +
+            '"Relationship_To_Salesforce__c": "Partner",' +
+            '"TBID_Role__c": "Developer",' +
+            '"CompanyName": "ABC Co.",' +
+            '"TrailblazerId__c": "matruff",' +
+            '"LastName": "Ruff",' +
+            '"Id": "0051I000004UgTlQAK"' +
+            '},' +
+            '"profilePhotoUrl": "https://trailblazer.me/profilephoto/7291I000000Jm2C/M",' +
+            '"certificationsList":[' +
+            '{' +
+            '"visibleToYouDescription":null,' +
+            '"title":"Salesforce Certified Administrator",' +
+            '"description":"Certified Administrators are Salesforce pros who are always looking for ways to help their companies get even more out of the Salesforce Platform through additional features and capabilities.",' +
+            '"dateExpired":null,' +
+            '"dateCompleted":"2013-06-13",' +
+            '"certificationUrl":"https://trailhead.salesforce.com/credentials/administrator",' +
+            '"certificationStatus":"ACTIVE",' +
+            '"certificationImageUrl":"https://drm--c.na114.content.force.com/servlet/servlet.ImageServer?id=0153k00000AH6hb&oid=00DF0000000gZsu&lastMod=1571903578000"' +
+            '}' +
+            ']' +
             '}';
     }
 

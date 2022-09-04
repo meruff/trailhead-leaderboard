@@ -1,52 +1,46 @@
 <template>
-    <div
-        class="slds-is-relative"
-        style="min-height:100px;"
-    >
-        <div if:true={showSpinner}>
-            <lightning-spinner
-                alternative-text="Loading"
-                size="large"
-                variant="brand"
-                class="spinner"
-            ></lightning-spinner>
-        </div>
-
-        <lightning-layout
-            multiple-rows="true"
-            horizontal-align="space"
-        >
-            <template
-                for:each={certificationsDisplayed}
-                for:item="certification"
-            >
-                <lightning-layout-item
-                    key={certification.title}
-                    size="12"
-                    padding="around-small"
-                >
-                    <c-leaderboard-certification certification={certification}></c-leaderboard-certification>
-                </lightning-layout-item>
-            </template>
-
-            <div
-                if:true={displayShowMore}
-                class="slds-align_absolute-center slds-p-vertical_small"
-            >
-                <lightning-button
-                    label="Show More"
-                    onclick={showAll}
-                    variant="neutral"
-                ></lightning-button>
-            </div>
-
-            <div
-                if:true={showNoCertificationsMessage}
-                class="slds-align_absolute-center slds-p-around_large"
-                style="max-width:500px;"
-            >
-                {noCertificationsMessage}
-            </div>
-        </lightning-layout>
+  <div class="slds-is-relative" style="min-height: 100px">
+    <div if:true={showSpinner}>
+      <lightning-spinner
+        alternative-text="Loading"
+        size="large"
+        variant="brand"
+        class="spinner"
+      ></lightning-spinner>
     </div>
+
+    <lightning-layout multiple-rows="true" horizontal-align="space">
+      <template for:each={certificationsDisplayed} for:item="certification">
+        <lightning-layout-item
+          key={certification.title}
+          size="12"
+          padding="around-small"
+        >
+          <c-leaderboard-certification
+            certification={certification}
+          ></c-leaderboard-certification>
+        </lightning-layout-item>
+      </template>
+
+      <div
+        if:true={displayShowMore}
+        class="slds-align_absolute-center slds-p-vertical_small"
+      >
+        <lightning-button
+          icon-name="utility:jump_to_bottom"
+          label="Show More"
+          onclick={showAll}
+          variant="neutral"
+        ></lightning-button>
+      </div>
+
+      <div
+        if:true={showNoCertificationsMessage}
+        class="slds-align_absolute-center slds-p-around_large"
+        style="max-width: 500px"
+      >
+        {noCertificationsMessage}
+      </div>
+    </lightning-layout>
+  </div>
 </template>
