@@ -31,10 +31,10 @@ public without sharing class TrailheadLeaderboardAuraController {
         } else {
             queryString += ' ORDER BY ' + options.sortBy;
 
-            if (options.descending == null || options.descending) {
-                queryString += ' DESC';
-            } else {
+            if (options.descending == null || !options.descending) {
                 queryString += ' ASC';
+            } else {
+                queryString += ' DESC';
             }
         }
 
