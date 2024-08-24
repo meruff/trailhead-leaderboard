@@ -28,6 +28,10 @@
             background-size: cover;
         }
 
+        .slds-scope .slds-card .slds-card__footer {
+            border-top: none !important;
+        }
+
         @media (prefers-color-scheme: light) {
             .desktop-table .slds-card,
             .desktop-table .slds-card {

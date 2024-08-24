@@ -14,12 +14,14 @@
                 src={trailblazer.Profile_Photo__c}
                 onerror={loadPlaceholderPhoto}
                 alt={profileAlt}
+                class="profile-img"
               />
 
               <img
                 if:true={photoError}
                 src={placeholderProfilePhotoURL}
                 alt={profileAlt}
+                class="profile-img"
               />
             </span>
           </div>
