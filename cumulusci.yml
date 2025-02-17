@@ -1,62 +1,67 @@
-minimum_cumulusci_version: '3.8.0'
+minimum_cumulusci_version: "3.8.0"
 project:
+  name: trailhead-leaderboard
+  package:
     name: trailhead-leaderboard
-    package:
-        name:  trailhead-leaderboard
-        api_version: '54.0'
-    test:
-        name_match: '%Test'
-    source_format: sfdx
+    api_version: "54.0"
+  test:
+    name_match: "%Test"
+  source_format: sfdx
 
 tasks:
-    robot:
-        options:
-            suites: robot/trailhead-leaderboard/tests
-            options:
-                outputdir: robot/trailhead-leaderboard/results
+  robot:
+    options:
+      suites: robot/trailhead-leaderboard/tests
+      options:
+        outputdir: robot/trailhead-leaderboard/results
 
-    robot_testdoc:
-        options:
-            path: robot/trailhead-leaderboard/tests
-            output: robot/trailhead-leaderboard/doc/trailhead-leaderboard_tests.html
+  robot_testdoc:
+    options:
+      path: robot/trailhead-leaderboard/tests
+      output: robot/trailhead-leaderboard/doc/trailhead-leaderboard_tests.html
+  dx_deploy:
+    description: Deploy metadata to the org using the new command
+    class_path: cumulusci.tasks.sfdx.SFDXOrgTask
+    options:
+      command: "project deploy start --ignore-conflicts"
 
 flows:
-    dev_org:
-        steps:
-            2:
-                task: dx_push
-            3.3:
-                task: assign_permission_sets
-                options:
-                    api_names: Trailhead_Leaderboard_Guest
-                    user_alias: guest
-                    org: dev
-            5:
-                task: load_dataset
-                options:
-                    org: dev
-            6:
-                task: execute_anon
-                options:
-                    path: apex/executePopulateTrailblazers.apex
-                    org: dev
+  dev_org:
+    steps:
+      2:
+        task: dx_deploy
+      3.3:
+        task: assign_permission_sets
+        options:
+          api_names: Trailhead_Leaderboard_Guest
+          user_alias: guest
+          org: dev
+      5:
+        task: load_dataset
+        options:
+          org: dev
+      6:
+        task: execute_anon
+        options:
+          path: apex/executePopulateTrailblazers.apex
+          org: dev
 
-    qa_org:
-        steps:
-            2:
-                task: dx_push
-            3.3:
-                task: assign_permission_sets
-                options:
-                    api_names: Trailhead_Leaderboard_Guest
-                    user_alias: guest
-                    org: qa
-            5:
-                task: load_dataset
-                options:
-                    org: qa
-            6:
-                task: execute_anon
-                options:
-                    path: apex/executePopulateTrailblazers.apex
-                    org: dev
+  qa_org:
+    steps:
+      2:
+        task: dx_deploy
+      3.3:
+        task: assign_permission_sets
+        options:
+          api_names: Trailhead_Leaderboard_Guest
+          user_alias: guest
+          org: qa
+      5:
+        task: load_dataset
+        options:
+          org: qa
+      6:
+        task: execute_anon
+        options:
+          path: apex/executePopulateTrailblazers.apex
+          org: dev
