@@ -5,8 +5,8 @@
  *
  * @date 3/10/20
  */
-global class PopulateTrailblazers implements Database.Batchable<SObject>, Database.Stateful, Schedulable {
-    private List<Trailblazer__c> trailblazers;
+public class PopulateTrailblazers implements Database.Batchable<SObject>, Database.Stateful, Schedulable {
+    private final List<Trailblazer__c> trailblazers;
 
     public PopulateTrailblazers() {
         trailblazers = new List<Trailblazer__c>();
@@ -16,26 +16,30 @@ global class PopulateTrailblazers implements Database.Batchable<SObject>, Databa
         trailblazers = scope;
     }
 
-    global void execute(SchedulableContext SC) {
-        Database.executeBatch(new PopulateTrailblazers());
-    }
-
-    global Database.QueryLocator start(Database.BatchableContext BC) {
+    public Database.QueryLocator start(Database.BatchableContext batchableContext) {
         String queryString = 'SELECT Profile_Handle__c, Profile_Id__c FROM Trailblazer__c';
 
         if (trailblazers != null && !trailblazers.isEmpty()) {
             queryString += ' WHERE Id IN: trailblazers';
         }
 
-        return Database.getQueryLocator(queryString);
+        return Database.getQueryLocatorWithBinds(
+            queryString,
+            new Map<String, Object>{ 'trailblazers' => trailblazers },
+            AccessLevel.SYSTEM_MODE
+        );
     }
 
-    global void execute(Database.BatchableContext BC, List<SObject> scope) {
+    public void execute(SchedulableContext schedulableContext) {
+        Database.executeBatch(new PopulateTrailblazers());
+    }
+
+    public void execute(Database.BatchableContext batchableContext, List<SObject> scope) {
         if (!Test.isRunningTest()) {
             System.enqueueJob(new GetTrailblazerInfoAsync(0, scope));
         }
     }
 
-    global void finish(Database.BatchableContext BC) {
+    public void finish(Database.BatchableContext batchableContext) {
     }
 }

@@ -97,6 +97,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Trailblazer__c.Error_Message__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Trailblazer__c.Job_Role__c</field>
         <readable>true</readable>
     </fieldPermissions>

@@ -12,6 +12,8 @@ public class TrailheadGraphQlData {
     public Profile profile { get; set; }
 
     public class Profile {
+        public String typename { get; set; }
+
         @AuraEnabled
         public TrailheadStats trailheadStats { get; set; }
 

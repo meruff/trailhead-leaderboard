@@ -9,7 +9,7 @@ public class GetTrailblazerInfoAsync implements Queueable, Database.AllowsCallou
     private static final String JOB_NAME = 'Populate Trailblazers from GetTrailblazerInfoAsync';
 
     private Integer jobCount = 0;
-    private List<Trailblazer__c> trailblazers;
+    private final List<Trailblazer__c> trailblazers;
 
     public GetTrailblazerInfoAsync(Integer count, List<Trailblazer__c> scope) {
         jobCount = count;
@@ -22,25 +22,20 @@ public class GetTrailblazerInfoAsync implements Queueable, Database.AllowsCallou
         }
 
         Trailblazer__c trailblazer = trailblazers[0];
-        getProfileData(
-            trailblazer,
-            TrailheadHelper.buildCalloutURL(trailblazer, TrailheadHelper.PROFILE_PATH)
-        );
-        getRankData(
-            trailblazer,
-            TrailheadHelper.buildCalloutURL(trailblazer, TrailheadHelper.RANK_PATH)
-        );
-        getSuperbadgeData(
-            trailblazer,
-            TrailheadHelper.buildCalloutURL(trailblazer, TrailheadHelper.SUPERBADGES_PATH)
-        );
-        getCertificationData(
-            trailblazer,
-            TrailheadHelper.buildCalloutURL(trailblazer, TrailheadHelper.CERTIFICATIONS_PATH)
-        );
+        String errorMessage = '';
+        errorMessage += '\n' + getProfileData(trailblazer, TrailheadHelper.fetchTrailblazerData(trailblazer, TrailheadHelper.PROFILE_PATH));
+        errorMessage += '\n' + getRankData(trailblazer, TrailheadHelper.fetchTrailblazerData(trailblazer, TrailheadHelper.RANK_PATH));
+        errorMessage += '\n' + getSuperbadgeData(trailblazer, TrailheadHelper.fetchTrailblazerData(trailblazer, TrailheadHelper.SUPERBADGES_PATH));
+        errorMessage += '\n' + getCertificationData(trailblazer, TrailheadHelper.fetchTrailblazerData(trailblazer, TrailheadHelper.CERTIFICATIONS_PATH));
 
-        if (!String.isBlank(trailblazer.Profile_Handle__c)) {
-            upsert trailblazer Profile_Handle__c;
+        if (String.isNotBlank(trailblazer.Profile_Handle__c)) {
+            trailblazer.Error_Message__c = errorMessage.startsWith('\n') ? errorMessage.substring(1) : errorMessage;
+
+            try {
+                upsert trailblazer Profile_Handle__c;
+            } catch (Exception e) {
+                System.debug(LoggingLevel.ERROR, e.getMessage());
+            }
         }
 
         trailblazers.remove(0);
@@ -63,43 +58,44 @@ public class GetTrailblazerInfoAsync implements Queueable, Database.AllowsCallou
      * @param trailblazer a Trailblazer__c record to write to.
      * @param resBody the response body JSON to deserialize and write to the Trailblazer__c record.
      *
-     * @return a string representing a successful callout.
+     * @return a string representing an error, if any.
      */
     public static String getProfileData(Trailblazer__c trailblazer, String resBody) {
-        if (resBody.contains(TrailheadHelper.API_ERROR) || String.isBlank(resBody)) {
-            return TrailheadHelper.buildErrorAsJSON(
-                'Application Error, please try again. API may be down.'
-            );
+        if (TrailheadHelper.isResponseBodyError(resBody)) {
+            return TrailheadHelper.API_ERROR_MESSAGE;
         }
 
-        ProfileData data = (ProfileData) JSON.deserialize(
-            resBody.replaceAll('__c', ''),
-            ProfileData.class
-        );
+        ProfileData data;
 
-        if (!String.isBlank(data.error)) {
+        try {
+            data = (ProfileData) JSON.deserialize(TrailheadHelper.sanitizeResponseBody(resBody), ProfileData.class);
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+
+        if (data.error != null && String.isNotBlank(data.error)) {
             return data.error;
         }
 
-        if (data.profileUser != null) {
-            trailblazer.Profile_Id__c = data.profileUser.Id;
-            trailblazer.Name = data.profileUser.FirstName + ' ' + data.profileUser.LastName;
-            trailblazer.Profile_Photo__c = data.profilePhotoUrl;
-            trailblazer.Profile_Handle__c = data.profileUser.TrailblazerId;
-            trailblazer.Company_Institution__c = data.profileUser.CompanyName;
-            trailblazer.Job_Title__c = data.profileUser.Title;
-            trailblazer.Job_Role__c = data.profileUser.TBID_Role;
-
-            if (!String.isBlank(data.profileUser.TrailblazerId)) {
-                trailblazer.Profile_Link__c =
-                    TrailheadHelper.TRAILHEAD_ME + data.profileUser.TrailblazerId;
-            } else {
-                trailblazer.Profile_Link__c =
-                    TrailheadHelper.TRAILHEAD_ME_USERID + data.profileUser.Id;
-            }
+        if (data.profileUser == null) {
+            return TrailheadHelper.RES_BODY_CANNOT_FIND + ' profile data.';
         }
 
-        return TrailheadHelper.SUCCESS;
+        trailblazer.Profile_Id__c = data.profileUser.Id;
+        trailblazer.Name = data.profileUser.FirstName + ' ' + data.profileUser.LastName;
+        trailblazer.Profile_Photo__c = data.profilePhotoUrl;
+        trailblazer.Profile_Handle__c = data.profileUser.TrailblazerId;
+        trailblazer.Company_Institution__c = data.profileUser.CompanyName;
+        trailblazer.Job_Title__c = data.profileUser.Title;
+        trailblazer.Job_Role__c = data.profileUser.TBID_Role;
+
+        if (String.isNotBlank(data.profileUser.TrailblazerId)) {
+            trailblazer.Profile_Link__c = TrailheadHelper.TRAILHEAD_ME + data.profileUser.TrailblazerId;
+        } else {
+            trailblazer.Profile_Link__c = TrailheadHelper.TRAILHEAD_ME_USERID + data.profileUser.Id;
+        }
+
+        return '';
     }
 
     /**
@@ -108,33 +104,36 @@ public class GetTrailblazerInfoAsync implements Queueable, Database.AllowsCallou
      * @param trailblazer a Trailblazer__c record to write to.
      * @param resBody the response body JSON to deserialize and write to the Trailblazer__c record.
      *
-     * @return a string representing a successful callout.
+     * @return a string representing an error, if any.
      */
     public static String getRankData(Trailblazer__c trailblazer, String resBody) {
-        if (resBody.contains(TrailheadHelper.API_ERROR) || String.isBlank(resBody)) {
-            return TrailheadHelper.buildErrorAsJSON(
-                'Application Error, please try again. API may be down.'
-            );
+        if (TrailheadHelper.isResponseBodyError(resBody)) {
+            return TrailheadHelper.API_ERROR_MESSAGE;
         }
 
-        TrailheadGraphQlData data = (TrailheadGraphQlData) JSON.deserialize(
-            resBody.replaceAll('__c', '').replaceAll('__', ''),
-            TrailheadGraphQlData.class
-        );
+        TrailheadGraphQlData data;
 
-        if (!String.isBlank(data.error)) {
+        try {
+            data = (TrailheadGraphQlData) JSON.deserialize(TrailheadHelper.sanitizeResponseBody(resBody), TrailheadGraphQlData.class);
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+
+        if (data.error != null && String.isNotBlank(data.error)) {
             return data.error;
         }
 
-        if (data?.profile?.trailheadStats != null) {
-            trailblazer.Points__c = data.profile.trailheadStats.earnedPointsSum;
-            trailblazer.Badges__c = data.profile.trailheadStats.earnedBadgesCount;
-            trailblazer.Trails__c = data.profile.trailheadStats.completedTrailCount;
-            trailblazer.Rank__c = data.profile.trailheadStats.rank.title.capitalize();
-            trailblazer.Rank_Badge_Link__c = data.profile.trailheadStats.rank.imageUrl;
+        if (data?.profile?.trailheadStats == null || String.isBlank(data.profile?.typename)) {
+            return TrailheadHelper.RES_BODY_CANNOT_FIND + ' rank data.';
         }
 
-        return TrailheadHelper.SUCCESS;
+        trailblazer.Points__c = data.profile.trailheadStats.earnedPointsSum;
+        trailblazer.Badges__c = data.profile.trailheadStats.earnedBadgesCount;
+        trailblazer.Trails__c = data.profile.trailheadStats.completedTrailCount;
+        trailblazer.Rank__c = data.profile.trailheadStats.rank.title.capitalize();
+        trailblazer.Rank_Badge_Link__c = data.profile.trailheadStats.rank.imageUrl;
+
+        return '';
     }
 
     /**
@@ -143,37 +142,40 @@ public class GetTrailblazerInfoAsync implements Queueable, Database.AllowsCallou
      * @param trailblazer a Trailblazer__c record to write to.
      * @param resBody the response body JSON to deserialize and write to the Trailblazer__c record.
      *
-     * @return a string representing a successful callout.
+     * @return a string representing an error, if any.
      */
     public static String getSuperbadgeData(Trailblazer__c trailblazer, String resBody) {
-        if (resBody.contains(TrailheadHelper.API_ERROR) || String.isBlank(resBody)) {
-            return TrailheadHelper.buildErrorAsJSON(
-                'Application Error, please try again. API may be down.'
-            );
+        if (TrailheadHelper.isResponseBodyError(resBody)) {
+            return TrailheadHelper.API_ERROR_MESSAGE;
         }
 
-        TrailheadGraphQlData data = (TrailheadGraphQlData) JSON.deserialize(
-            resBody.replaceAll('__c', '').replaceAll('__', ''),
-            TrailheadGraphQlData.class
-        );
+        TrailheadGraphQlData data;
 
-        if (!String.isBlank(data.error)) {
+        try {
+            data = (TrailheadGraphQlData) JSON.deserialize(TrailheadHelper.sanitizeResponseBody(resBody), TrailheadGraphQlData.class);
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+
+        if (data.error != null && String.isNotBlank(data.error)) {
             return data.error;
         }
 
-        if (data.profile?.earnedAwards?.edges != null) {
-            Integer count = 0;
-
-            for (TrailheadGraphQlData.Edges edge : data.profile?.earnedAwards?.edges) {
-                if (edge.node.award.type == 'SUPERBADGE') {
-                    count++;
-                }
-            }
-
-            trailblazer.Superbadges__c = count;
+        if (data?.profile?.earnedAwards?.edges == null || String.isBlank(data?.profile?.typename)) {
+            return TrailheadHelper.RES_BODY_CANNOT_FIND + ' superbadge data.';
         }
 
-        return TrailheadHelper.SUCCESS;
+        Integer count = 0;
+
+        for (TrailheadGraphQlData.Edges edge : data.profile.earnedAwards.edges) {
+            if (edge.node.award.type == TrailheadHelper.SUPERBADGE) {
+                count++;
+            }
+        }
+
+        trailblazer.Superbadges__c = count;
+
+        return '';
     }
 
     /**
@@ -182,28 +184,32 @@ public class GetTrailblazerInfoAsync implements Queueable, Database.AllowsCallou
      * @param trailblazer a Trailblazer__c record to write to.
      * @param resBody the response body JSON to deserialize and write to the Trailblazer__c record.
      *
-     * @return a string representing a successful callout.
+     * @return a string representing an error, if any.
      */
     public static String getCertificationData(Trailblazer__c trailblazer, String resBody) {
-        if (resBody.contains(TrailheadHelper.API_ERROR) || String.isBlank(resBody)) {
-            return TrailheadHelper.buildErrorAsJSON(
-                'Application Error, please try again. API may be down.'
-            );
+        if (TrailheadHelper.isResponseBodyError(resBody)) {
+            return TrailheadHelper.API_ERROR_MESSAGE;
         }
 
-        CertificationData data = (CertificationData) JSON.deserialize(
-            resBody.replaceAll('__c', ''),
-            CertificationData.class
-        );
+        CertificationData data;
 
-        if (!String.isBlank(data.error)) {
+        try {
+            data = (CertificationData) JSON.deserialize(TrailheadHelper.sanitizeResponseBody(resBody), CertificationData.class);
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+
+        if (data.error != null && String.isNotBlank(data.error)) {
             return data.error;
         }
 
-        if (data != null && data.certificationsList != null && !data.certificationsList.isEmpty()) {
-            trailblazer.Certifications__c = data.certificationsList.size();
+        // No certifications found doesn't mean the response body is an error.
+        if (data == null || data.certificationsList == null) {
+            return '';
         }
 
-        return TrailheadHelper.SUCCESS;
+        trailblazer.Certifications__c = data.certificationsList.size();
+
+        return '';
     }
 }

@@ -3,7 +3,7 @@
  *
  * @author meruff
  *
- * @date 06/17/2019
+ * @date 6/17/19
  */
 public without sharing class TrailheadLeaderboardAuraController {
     /**
@@ -17,8 +17,7 @@ public without sharing class TrailheadLeaderboardAuraController {
      */
     @AuraEnabled(Cacheable=true)
     public static List<Trailblazer__c> populateTrailblazers(TrailblazerQueryConfig options) {
-        String queryString =
-            '' +
+        String queryString = '' +
             'SELECT Id, Name, Badges__c, Points__c, Trailblazer_Since__c, Trails__c, Profile_Handle__c, Profile_Id__c, ' +
             'Profile_Link__c, Rank__c, Profile_Photo__c, Job_Role__c, Job_Title__c, Company_Institution__c, ' +
             'Rank_Badge_Link__c, Superbadges__c, Certifications__c, LastModifiedDate ' +
@@ -73,43 +72,26 @@ public without sharing class TrailheadLeaderboardAuraController {
             Profile_Handle__c = userId.replace(' ', '').trim()
         );
 
-        for (
-            String s : new Set<String>{
-                GetTrailblazerInfoAsync.getProfileData(
-                    newTrailblazer,
-                    TrailheadHelper.buildCalloutURL(newTrailblazer, TrailheadHelper.PROFILE_PATH)
-                ),
-                GetTrailblazerInfoAsync.getRankData(
-                    newTrailblazer,
-                    TrailheadHelper.buildCalloutURL(newTrailblazer, TrailheadHelper.RANK_PATH)
-                ),
-                GetTrailblazerInfoAsync.getSuperbadgeData(
-                    newTrailblazer,
-                    TrailheadHelper.buildCalloutURL(
-                        newTrailblazer,
-                        TrailheadHelper.SUPERBADGES_PATH
-                    )
-                ),
-                GetTrailblazerInfoAsync.getCertificationData(
-                    newTrailblazer,
-                    TrailheadHelper.buildCalloutURL(
-                        newTrailblazer,
-                        TrailheadHelper.CERTIFICATIONS_PATH
-                    )
-                )
-            }
-        ) {
-            if (!s.equals(TrailheadHelper.SUCCESS)) {
-                return s;
+        Set<String> potentialErrors = new Set<String>{
+            GetTrailblazerInfoAsync.getProfileData(newTrailblazer, TrailheadHelper.fetchTrailblazerData(newTrailblazer, TrailheadHelper.PROFILE_PATH)),
+            GetTrailblazerInfoAsync.getRankData(newTrailblazer, TrailheadHelper.fetchTrailblazerData(newTrailblazer, TrailheadHelper.RANK_PATH)),
+            GetTrailblazerInfoAsync.getSuperbadgeData(newTrailblazer, TrailheadHelper.fetchTrailblazerData(newTrailblazer, TrailheadHelper.SUPERBADGES_PATH)),
+            GetTrailblazerInfoAsync.getCertificationData(newTrailblazer, TrailheadHelper.fetchTrailblazerData(newTrailblazer, TrailheadHelper.CERTIFICATIONS_PATH))
+        };
+
+        for (String errorString : potentialErrors) {
+            if (String.isNotBlank(errorString)) {
+                return errorString;
             }
         }
 
         try {
             upsert newTrailblazer Profile_Handle__c;
-            return 'success';
         } catch (Exception e) {
             return 'Error creating Trailblazer__c. Please try again.';
         }
+
+        return TrailheadHelper.SUCCESS;
     }
 
     /**
@@ -148,7 +130,7 @@ public without sharing class TrailheadLeaderboardAuraController {
             }
         }
 
-        String resBody = TrailheadHelper.doCallout(calloutURL);
+        String resBody = TrailheadHelper.executeHttpGetRequest(calloutURL);
 
         if (resBody.contains('application-error')) {
             return null;
@@ -175,7 +157,7 @@ public without sharing class TrailheadLeaderboardAuraController {
      */
     @AuraEnabled
     public static List<TrailheadGraphQlData.EarnedSkills> getSkillData(String userId) {
-        String resBody = TrailheadHelper.doCallout(
+        String resBody = TrailheadHelper.executeHttpGetRequest(
             TrailheadHelper.GO_TRAILHEAD_API +
             userId +
             TrailheadHelper.SKILLS_PATH
@@ -206,7 +188,7 @@ public without sharing class TrailheadLeaderboardAuraController {
      */
     @AuraEnabled
     public static List<CertificationData.CertificationsList> getCertificationData(String userId) {
-        String resBody = TrailheadHelper.doCallout(
+        String resBody = TrailheadHelper.executeHttpGetRequest(
             TrailheadHelper.GO_TRAILHEAD_API +
             userId +
             TrailheadHelper.CERTIFICATIONS_PATH

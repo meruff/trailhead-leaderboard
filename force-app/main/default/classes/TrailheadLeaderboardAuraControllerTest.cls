@@ -3,7 +3,7 @@
  *
  * @author meruff
  *
- * @date 2019-06-28
+ * @date 6/28/19
  */
 @IsTest
 private class TrailheadLeaderboardAuraControllerTest {
@@ -30,79 +30,65 @@ private class TrailheadLeaderboardAuraControllerTest {
         };
     }
 
+    /**
+     * @description Tests the default population of Trailblazer__c records.
+     */
     @IsTest
     static void testPopulateTrailblazers() {
-        // Act
         Test.startTest();
         List<Trailblazer__c> trailblazers = TrailheadLeaderboardAuraController.populateTrailblazers(
             new TrailheadLeaderboardAuraController.TrailblazerQueryConfig()
         );
         Test.stopTest();
 
-        // Assert
-        System.assertEquals(2, trailblazers.size());
-        System.assertEquals(
-            'Another Trailblazer',
-            trailblazers[0].Name,
-            'Sort should default to Points, making Another Trailblazer the first on the list.'
-        );
+        Assert.areEqual(2, trailblazers.size());
+        Assert.areEqual('Another Trailblazer', trailblazers[0].Name, 'Sort should default to Points, making Another Trailblazer the first on the list.');
     }
 
+    /**
+     * @description Tests the population of Trailblazer__c records sorted by Superbadges.
+     */
     @IsTest
     static void testPopulateTrailblazersSort() {
-        // Act
         Test.startTest();
         TrailheadLeaderboardAuraController.TrailblazerQueryConfig config = new TrailheadLeaderboardAuraController.TrailblazerQueryConfig();
         config.sortBy = 'Superbadges__c';
-        List<Trailblazer__c> trailblazers = TrailheadLeaderboardAuraController.populateTrailblazers(
-            config
-        );
+        List<Trailblazer__c> trailblazers = TrailheadLeaderboardAuraController.populateTrailblazers(config);
         Test.stopTest();
 
-        // Assert
-        System.assertEquals(2, trailblazers.size());
-        System.assertEquals(
-            'Some ExistingBlazer',
-            trailblazers[0].Name,
-            'Sort should be by Superbadges Ascending, making the lowest number, Some ExistingBlazer, the first person ' +
-            'on the list.'
-        );
+        Assert.areEqual(2, trailblazers.size());
+        Assert.areEqual('Some ExistingBlazer', trailblazers[0].Name, 'Sort should be by Superbadges Ascending, making the lowest number, Some ExistingBlazer, the first person ' + 'on the list.');
     }
 
+    /**
+     * @description Tests creating a new Trailblazer__c record.
+     */
     @IsTest
     static void testCreateNewTrailblazer() {
-        // Arrange
         TrailheadCalloutMock mock = new TrailheadCalloutMock();
         HttpResponse res = new HttpResponse();
         res.setHeader('Content-Type', 'application/json');
         res.setHeader('Location', 'trailheadURL.com');
         res.setStatusCode(200);
-        res.setBody(TrailheadCalloutMock.getSuccessfulTrailheadResponse());
+        res.setBody(TrailheadCalloutMock.getFullCalloutResponse());
         mock.addResponse(res);
 
         Test.setMock(HttpCalloutMock.class, mock);
         Test.setCurrentPage(Page.trailheadLeaderboard);
 
-        // Act
         Test.startTest();
         String resultString = TrailheadLeaderboardAuraController.createTrailblazer('someId');
         Test.stopTest();
 
-        // Assert
-        System.assertEquals('success', resultString);
-        System.assertEquals(
-            2,
-            TrailheadLeaderboardAuraController.populateTrailblazers(
-                    new TrailheadLeaderboardAuraController.TrailblazerQueryConfig()
-                )
-                .size(),
-            'Two Trailblazers should exist now.'
-        );
+        Assert.areEqual(TrailheadHelper.SUCCESS, resultString, 'Trailblazer should have been created without error.');
+        Assert.areEqual(3, TrailheadLeaderboardAuraController.populateTrailblazers(new TrailheadLeaderboardAuraController.TrailblazerQueryConfig()).size(), 'Three Trailblazers should exist now.');
     }
 
+    /**
+     * @description Tests creating a new Trailblazer__c record with an error.
+     */
     @IsTest
     static void testCreateNewTrailblazerWithError() {
-        // Arrange
         TrailheadCalloutMock mock = new TrailheadCalloutMock();
         HttpResponse res = new HttpResponse();
         res.setHeader('Content-Type', 'application/json');
@@ -114,31 +100,20 @@ private class TrailheadLeaderboardAuraControllerTest {
         Test.setMock(HttpCalloutMock.class, mock);
         Test.setCurrentPage(Page.trailheadLeaderboard);
 
-        // Act
         Test.startTest();
         String resultString = TrailheadLeaderboardAuraController.createTrailblazer('someId');
         Test.stopTest();
 
-        // Assert
-        System.assertEquals(
-            0,
-            [SELECT Id FROM Trailblazer__c WHERE Profile_Handle__c = :'someId'].size(),
-            'Test Trailblazer should not have been created.'
-        );
-        System.assertNotEquals('success', resultString);
-        System.assertEquals(
-            2,
-            TrailheadLeaderboardAuraController.populateTrailblazers(
-                    new TrailheadLeaderboardAuraController.TrailblazerQueryConfig()
-                )
-                .size(),
-            'Only the two Trailblazers should exist, \'someId\' should not have been created.'
-        );
+        Assert.areEqual(0, [SELECT Id FROM Trailblazer__c WHERE Profile_Handle__c = :'someId'].size(), 'Test Trailblazer should not have been created.');
+        Assert.areNotEqual('success', resultString);
+        Assert.areEqual(2, TrailheadLeaderboardAuraController.populateTrailblazers(new TrailheadLeaderboardAuraController.TrailblazerQueryConfig()).size(), 'Only the two Trailblazers should exist, \'someId\' should not have been created.');
     }
 
+    /**
+     * @description Tests getting skill data.
+     */
     @IsTest
     static void testGetSkillData() {
-        // Arrange
         TrailheadCalloutMock mock = new TrailheadCalloutMock();
         HttpResponse res = new HttpResponse();
         res.setHeader('Content-Type', 'application/json');
@@ -150,25 +125,23 @@ private class TrailheadLeaderboardAuraControllerTest {
         Test.setMock(HttpCalloutMock.class, mock);
         Test.setCurrentPage(Page.trailheadLeaderboard);
 
-        // Act
         Test.startTest();
-        List<TrailheadGraphQlData.EarnedSkills> skills = TrailheadLeaderboardAuraController.getSkillData(
-            'someId'
-        );
+        List<TrailheadGraphQlData.EarnedSkills> skills = TrailheadLeaderboardAuraController.getSkillData('someId');
         Test.stopTest();
 
-        // Assert
-        System.assertEquals(2, skills.size(), 'Two skills should have been returned.');
+        Assert.areEqual(2, skills.size(), 'Two skills should have been returned.');
 
         for (TrailheadGraphQlData.EarnedSkills skill : skills) {
-            System.assertNotEquals(null, skill.skill.name);
-            System.assertNotEquals(null, skill.earnedPointsSum);
+            Assert.isNotNull(skill.skill.name);
+            Assert.isNotNull(skill.earnedPointsSum);
         }
     }
 
+    /**
+     * @description Tests getting certification data.
+     */
     @IsTest
     static void testGetCertificationData() {
-        // Arrange
         TrailheadCalloutMock mock = new TrailheadCalloutMock();
         HttpResponse res = new HttpResponse();
         res.setHeader('Content-Type', 'application/json');
@@ -180,34 +153,28 @@ private class TrailheadLeaderboardAuraControllerTest {
         Test.setMock(HttpCalloutMock.class, mock);
         Test.setCurrentPage(Page.trailheadLeaderboard);
 
-        // Act
         Test.startTest();
-        List<CertificationData.CertificationsList> certifications = TrailheadLeaderboardAuraController.getCertificationData(
-            'someId'
-        );
+        List<CertificationData.CertificationsList> certifications = TrailheadLeaderboardAuraController.getCertificationData('someId');
         Test.stopTest();
 
-        // Assert
-        System.assertEquals(
-            1,
-            certifications.size(),
-            'One certification should have been returned.'
-        );
+        Assert.areEqual(1, certifications.size(), 'One certification should have been returned.');
 
         for (CertificationData.CertificationsList certification : certifications) {
-            System.assertEquals(null, certification.dateExpired);
-            System.assertNotEquals(null, certification.dateCompleted);
-            System.assertNotEquals(null, certification.description);
-            System.assertNotEquals(null, certification.certificationUrl);
-            System.assertNotEquals(null, certification.certificationStatus);
-            System.assertNotEquals(null, certification.title);
-            System.assertNotEquals(null, certification.certificationImageUrl);
+            Assert.isNull(certification.dateExpired);
+            Assert.isNotNull(certification.dateCompleted);
+            Assert.isNotNull(certification.description);
+            Assert.isNotNull(certification.certificationUrl);
+            Assert.isNotNull(certification.certificationStatus);
+            Assert.isNotNull(certification.title);
+            Assert.isNotNull(certification.certificationImageUrl);
         }
     }
 
+    /**
+     * @description Tests getting badge data.
+     */
     @IsTest
     static void testGetBadgeData() {
-        // Arrange
         TrailheadCalloutMock mock = new TrailheadCalloutMock();
         HttpResponse res = new HttpResponse();
         res.setHeader('Content-Type', 'application/json');
@@ -219,7 +186,6 @@ private class TrailheadLeaderboardAuraControllerTest {
         Test.setMock(HttpCalloutMock.class, mock);
         Test.setCurrentPage(Page.trailheadLeaderboard);
 
-        // Act
         Test.startTest();
         TrailheadGraphQlData.EarnedAwards earnedAwards = TrailheadLeaderboardAuraController.getBadgeData(
             'someId',
@@ -229,45 +195,26 @@ private class TrailheadLeaderboardAuraControllerTest {
         );
         Test.stopTest();
 
-        // Assert
-        System.assertEquals(
-            3,
-            earnedAwards.edges.size(),
-            'Three badges should have been returned.'
-        );
-        System.assertNotEquals(null, earnedAwards.pageInfo, 'pageInfo should have been returned.');
-        System.assertNotEquals(
-            null,
-            earnedAwards.pageInfo.hasNextPage,
-            'hasNextPage should have been returned.'
-        );
-        System.assertNotEquals(
-            null,
-            earnedAwards.pageInfo.startCursor,
-            'startCursor should have been returned.'
-        );
-        System.assertNotEquals(
-            null,
-            earnedAwards.pageInfo.endCursor,
-            'endCursor should have been returned.'
-        );
-        System.assertNotEquals(
-            null,
-            earnedAwards.pageInfo.hasPreviousPage,
-            'hasPreviousPage should have been returned.'
-        );
+        Assert.areEqual(3, earnedAwards.edges.size(), 'Three badges should have been returned.');
+        Assert.isNotNull(earnedAwards.pageInfo, 'pageInfo should have been returned.');
+        Assert.isNotNull(earnedAwards.pageInfo.hasNextPage, 'hasNextPage should have been returned.');
+        Assert.isNotNull(earnedAwards.pageInfo.startCursor, 'startCursor should have been returned.');
+        Assert.isNotNull(earnedAwards.pageInfo.endCursor, 'endCursor should have been returned.');
+        Assert.isNotNull(earnedAwards.pageInfo.hasPreviousPage, 'hasPreviousPage should have been returned.');
 
         for (TrailheadGraphQlData.Edges award : earnedAwards.edges) {
-            System.assertNotEquals(null, award.node.award.content.webUrl);
-            System.assertNotEquals(null, award.node.award.title);
-            System.assertNotEquals(null, award.node.award.icon);
-            System.assertNotEquals(null, award.node.award.type);
+            Assert.isNotNull(award.node.award.content.webUrl);
+            Assert.isNotNull(award.node.award.title);
+            Assert.isNotNull(award.node.award.icon);
+            Assert.isNotNull(award.node.award.type);
         }
     }
 
+    /**
+     * @description Tests getting badge data with a null response.
+     */
     @IsTest
     static void testGetBadgeDataNoAPIResponse() {
-        // Arrange
         TrailheadCalloutMock mock = new TrailheadCalloutMock();
         HttpResponse res = new HttpResponse();
         res.setHeader('Content-Type', 'application/json');
@@ -279,7 +226,6 @@ private class TrailheadLeaderboardAuraControllerTest {
         Test.setMock(HttpCalloutMock.class, mock);
         Test.setCurrentPage(Page.trailheadLeaderboard);
 
-        // Act
         Test.startTest();
         TrailheadGraphQlData.EarnedAwards earnedAwards = TrailheadLeaderboardAuraController.getBadgeData(
             'someId',
@@ -289,11 +235,6 @@ private class TrailheadLeaderboardAuraControllerTest {
         );
         Test.stopTest();
 
-        // Assert
-        System.assertEquals(
-            null,
-            earnedAwards,
-            'No badges should have been returned as the API failed to respond with data.'
-        );
+        Assert.isNull(earnedAwards, 'No badges should have been returned as the API failed to respond with data.');
     }
 }

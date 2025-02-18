@@ -1,14 +1,13 @@
 /**
  * @description Mock callout class for PopulateTrailblazers.cls
  *
- * @author: meruff
+ * @author meruff
  *
- * @date: 2017-07-27
+ * @date 7/27/17
  */
 @IsTest
 public class TrailheadCalloutMock implements HttpCalloutMock {
-    // TODO:
-    List<HttpResponse> responses = new List<HttpResponse>();
+    private final List<HttpResponse> responses = new List<HttpResponse>();
 
     public void addResponse(HttpResponse response) {
         responses.add(response);
@@ -24,33 +23,33 @@ public class TrailheadCalloutMock implements HttpCalloutMock {
 
     public static String getSuccessfulTrailheadResponse() {
         return '' +
-            '{' +
-            '"profileUser": {' +
-            '"AboutMe": null,' +
-            '"FirstName": "Mat",' +
-            '"StateCode": "AZ",' +
-            '"Title": "Senior Developer",' +
-            '"Relationship_To_Salesforce__c": "Partner",' +
-            '"TBID_Role__c": "Developer",' +
-            '"CompanyName": "ABC Co.",' +
-            '"TrailblazerId__c": "matruff",' +
-            '"LastName": "Ruff",' +
-            '"Id": "0051I000004UgTlQAK"' +
-            '},' +
-            '"profilePhotoUrl": "https://trailblazer.me/profilephoto/7291I000000Jm2C/M",' +
-            '"certificationsList":[' +
-            '{' +
-            '"visibleToYouDescription":null,' +
-            '"title":"Salesforce Certified Administrator",' +
-            '"description":"Certified Administrators are Salesforce pros who are always looking for ways to help their companies get even more out of the Salesforce Platform through additional features and capabilities.",' +
-            '"dateExpired":null,' +
-            '"dateCompleted":"2013-06-13",' +
-            '"certificationUrl":"https://trailhead.salesforce.com/credentials/administrator",' +
-            '"certificationStatus":"ACTIVE",' +
-            '"certificationImageUrl":"https://drm--c.na114.content.force.com/servlet/servlet.ImageServer?id=0153k00000AH6hb&oid=00DF0000000gZsu&lastMod=1571903578000"' +
-            '}' +
-            ']' +
-            '}';
+            '{\n' +
+            '    "profileUser": {\n' +
+            '        "AboutMe": null,\n' +
+            '        "FirstName": "Mat",\n' +
+            '        "StateCode": "AZ",\n' +
+            '        "Title": "Senior Developer",\n' +
+            '        "Relationship_To_Salesforce__c": "Partner",\n' +
+            '        "TBID_Role__c": "Developer",\n' +
+            '        "CompanyName": "ABC Co.",\n' +
+            '        "TrailblazerId__c": "matruff",\n' +
+            '        "LastName": "Ruff",\n' +
+            '        "Id": "0051I000004UgTlQAK"\n' +
+            '    },\n' +
+            '    "profilePhotoUrl": "https://trailblazer.me/profilephoto/7291I000000Jm2C/M",\n' +
+            '    "certificationsList":[\n' +
+            '        {\n' +
+            '            "visibleToYouDescription":null,\n' +
+            '            "title":"Salesforce Certified Administrator",\n' +
+            '            "description":"Certified Administrators are Salesforce pros who are always looking for ways to help their companies get even more out of the Salesforce Platform through additional features and capabilities.",\n' +
+            '            "dateExpired":null,\n' +
+            '            "dateCompleted":"2013-06-13",\n' +
+            '            "certificationUrl":"https://trailhead.salesforce.com/credentials/administrator",\n' +
+            '            "certificationStatus":"ACTIVE",\n' +
+            '            "certificationImageUrl":"https://drm--c.na114.content.force.com/servlet/servlet.ImageServer?id=0153k00000AH6hb&oid=00DF0000000gZsu&lastMod=1571903578000"\n' +
+            '        }\n' +
+            '    ]\n' +
+            '}\n';
     }
 
     public static String getSuccessfulGraphQLResponse() {
@@ -139,7 +138,7 @@ public class TrailheadCalloutMock implements HttpCalloutMock {
             '                        "earnedPointsSum": ""\n' +
             '                    }\n' +
             '                },\n' +
-            '               {\n' +
+            '                {\n' +
             '                    "node": {\n' +
             '                        "__typename": "EarnedAwardBase",\n' +
             '                        "id": "0267597c-4bfd-9314-cad5-4b8b43d4cd63",\n' +
@@ -158,7 +157,7 @@ public class TrailheadCalloutMock implements HttpCalloutMock {
             '                        "earnedAt": "",\n' +
             '                        "earnedPointsSum": ""\n' +
             '                    }\n' +
-            '                }' +
+            '                }\n' +
             '            ],\n' +
             '            "pageInfo": {\n' +
             '                "__typename": "PageInfo",\n' +
@@ -170,6 +169,10 @@ public class TrailheadCalloutMock implements HttpCalloutMock {
             '        }\n' +
             '    }\n' +
             '}';
+    }
+
+    public static String getFullCalloutResponse() {
+        return getSuccessfulTrailheadResponse().substring(0, getSuccessfulTrailheadResponse().length() - 2) + ',' + getSuccessfulGraphQLResponse().substring(1);
     }
 
     public static String getUnsuccessfulResponseData() {

@@ -41,3 +41,10 @@ sfdx-out/
 
 Icon?
 package-lock.json
+
+# Added by Illuminated Cloud
+.localdev/
+target/
+/.illuminatedCloud/
+**/tsconfig*.json
+**/*.tsbuildinfo

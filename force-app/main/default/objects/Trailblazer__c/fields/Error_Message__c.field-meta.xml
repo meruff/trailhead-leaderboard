@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Error_Message__c</fullName>
+    <description>Populated with any API or callout errors found during trailhead population.</description>
+    <inlineHelpText>Populated with any API or callout errors found during trailhead population.</inlineHelpText>
+    <label>Error Message</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>TextArea</type>
+</CustomField>
